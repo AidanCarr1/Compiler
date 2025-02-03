@@ -1,4 +1,11 @@
-/* lexer.js  */
+/* lexer.js  
+
+Globals:
+    tokens = "";
+    tokenIndex = 0;
+    currentToken = ' ';
+    errorCount = 0;  
+*/
 
     function lex()
     {
@@ -6,7 +13,16 @@
         var sourceCode = document.getElementById("taSourceCode").value;
         // Trim the leading and trailing spaces.
         sourceCode = trim(sourceCode);
-        // TODO: remove all spaces in the middle; remove line breaks too.
+        
+        //loop through text to find tokens
+        while (tokenIndex < sourceCode.length){
+            currentToken = sourceCode[tokenIndex];
+            putMessage("TOKEN [" + currentToken + "]");
+            tokenIndex++;
+        }
+        putMessage("EOP!");
+
+        //return a list of tokens
         return sourceCode;
     }
 
