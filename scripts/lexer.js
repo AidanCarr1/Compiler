@@ -16,8 +16,14 @@ Globals:
         
         //loop through text to find tokens
         while (tokenIndex < sourceCode.length){
-            currentToken = sourceCode[tokenIndex];
-            putMessage("TOKEN [" + currentToken + "]");
+            currentChar = sourceCode[tokenIndex];
+
+            tokenLine = 1;
+            //create token object
+            putMessage("before - token");
+            newToken = new Token(currentChar, tokenLine, tokenIndex);
+            putMessage("made - token");
+            putMessage("TOKEN [" + newToken.name + "]");
             tokenIndex++;
         }
         putMessage("EOP!");
