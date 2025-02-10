@@ -3,10 +3,11 @@
     
 class Token {
 
-    constructor(name, startLine, startIndex) { 
+    constructor(str, description, startLine, startIndex) { 
                     
         //set variables
-        this.name = name;
+        this.str = str;
+        this.description = description;
         this.startLine = startLine;
         this.startIndex = startIndex;
 

@@ -27,7 +27,7 @@ Keywords:
 */
 
 
-//Dictionary arrays
+//Category arrays
 keywords = ["keywords",
             ["int",           "string",        "boolean",       "while", "if", "false", "true", "print"],
             ["VARIABLE TYPE", "VARIABLE TYPE", "VARIABLE TYPE", "WHILE", "IF", "FALSE", "TRUE", "PRINT"]];
@@ -48,6 +48,7 @@ chars =    ["chars",
             [" ",    "a",    "b",    "c",    "d",    "e",    "f",    "g",    "h",    "i",    "j",    "k",    "l",    "m",    "n",    "o",    "p",    "q",    "r",    "s",    "t",    "u",    "v",    "w",    "x",    "y",    "z"],
             ["CHAR", "CHAR", "CHAR", "CHAR", "CHAR", "CHAR", "CHAR", "CHAR", "CHAR", "CHAR", "CHAR", "CHAR", "CHAR", "CHAR", "CHAR", "CHAR", "CHAR", "CHAR", "CHAR", "CHAR", "CHAR", "CHAR", "CHAR", "CHAR", "CHAR", "CHAR", "CHAR"]];
 
+//Ordered array of categories
 dictionary = [keywords, ids, symbols, digits, chars];
 
 
@@ -56,19 +57,20 @@ function lex() {
     // Grab the "raw" source code.
     var sourceCode = document.getElementById("taSourceCode").value;
     
-    // Trim the leading and trailing spaces.
-    //sourceCode = trim(sourceCode);
 
     //where in source code are we
     sourceCodeIndex = 0;
     sourceLineIndex = 1;  //start at 1
     sourceCharIndex = 1;  //start at 1
 
+    bestTokenStartIndex = [0,0];
+    bestTokenEndIndex = [0,0];
+
     //token strings
     checkingToken = "";
-    candidateToken = "";
+    bestToken = "";
 
-    //loop through text to find tokens
+    //loop through source text to find tokens
     while (sourceCodeIndex < sourceCode.length){
 
         //look at the next character
@@ -79,15 +81,29 @@ function lex() {
         // Labeled break: solution from ChatGPT: 
         // "How can I exit to the outer loop of a nested for loop without 'return'?" 
 
-        for (ruleNum = 0; ruleNum < dictionary.length; ruleNum ++) {
-            rule = dictionary[ruleNum];
-            for (i = 0; i < rule.length; i ++) {
+        dictionarySearch: for (categoryNum = 0; categoryNum < dictionary.length; categoryNum ++) {
+            category = dictionary[categoryNum]; // [symbols]
+            categoryName = category[0];         // "symbols"
+            tokenStrings = category[1];      // [==, !=]
+            tokenDescriptions = category[2]; // ["EQUALITY", "INEQUALITY"]
 
-                if (checkingToken === rule[i]) {
+            for (i = 0; i < tokenStrings.length; i ++) {
+
+                str = tokenStrings[i];
+                description = tokenDescriptions[i];
+
+                if (checkingToken === str) {
                     //match found
-                    putMessage("match: "+rule[i]);
-                    candidateToken = checkingToken;
-                    //break dictionarySearch;
+                    putMessage("Match: "+str+", "+description);
+                    bestTokenString = str;
+                    bestTokenDescription = description;
+
+                    //remember best token index
+                    if (bestToken.length == 1) {
+                        bestTokenStartIndex = [sourceLineIndex, sourceCharIndex];
+                    }
+                    bestTokenEndIndex = [sourceLineIndex, sourceCharIndex];
+                    break dictionarySearch;
     
                 }
             }
