@@ -8,8 +8,8 @@ class Token {
         //set variables
         this.str = str;
         this.description = description;
-        this.startIndex = startIndex;
-        this.endIndex = endIndex;
+        this.startIndex = startIndex.slice();
+        this.endIndex = endIndex.slice();
 
 
         //new token constructed!

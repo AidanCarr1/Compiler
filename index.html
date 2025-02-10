@@ -51,6 +51,7 @@ $</textarea>
     var currentToken = "";
     var errorCount = 0;
     var EOF = "$";
+    var debug = false;
 
     function init() {
         // Clear the message box.
@@ -78,6 +79,11 @@ $</textarea>
     
     function putMessage(msg) {
         document.getElementById("taOutput").value += msg + "\n";
+    }
+    function putDebug(msg) {
+        if (debug) {
+            putMessage(msg);
+        }
     }
     
     

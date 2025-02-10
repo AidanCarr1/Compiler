@@ -53,6 +53,7 @@ chars =    ["chars",
 dictionary = [keywords, ids, symbols, digits, chars];
 
 
+debug = true;
 
 function lex() {
     // Grab the "raw" source code.
@@ -78,7 +79,7 @@ function lex() {
     //loop through source text to find all tokens
     while (sourceCodeIndex < sourceCode.length){
 
-        //putMessage("----"+address(sourceIndex)+"----");
+        //putDebug("----"+address(sourceIndex)+"----");
 
         //look at the next character
         currentChar = sourceCode[sourceCodeIndex];
@@ -93,33 +94,35 @@ function lex() {
 
         //we are inside of a quote, only accept chars
         else if (quoteIsOpen) {
-            putMessage("                           quote is open");
+            //putDebug("                           quote is open");
             
             categoryName = chars[0];            // "chars"
-            tokenStrings = category[1];         // [" ", "a", "b", "c"]
+            tokenStrings = chars[1];         // [" ", "a", "b", "c"]
             //tokenDescriptions = category[2];    // ["CHAR", "CHAR", ...]
 
             //check the legal chars
-            for (i = 0; i < chars.length; i ++) {
+            for (i = 0; i < tokenStrings.length; i ++) {
 
                 str = tokenStrings[i];
-                //description = tokenDescriptions[i];
+                description = "CHAR";
 
                 if (checkingToken === str) {
                     //match found
-                    //putMessage("    Match: "+str+", "+description);
-                    bestTokenString = str;
-                    bestTokenDescription = "CHAR"; //description;
+                    putDebug("    Match: "+str+", "+description);
+                    //bestTokenString = str;
+                    //bestTokenDescription = "CHAR"; //description;
 
-                    //keep track of best token index
-                    if (bestTokenString.length == 1) {
-                        //COPY current index to start index 
-                        bestTokenStartIndex = sourceIndex.slice(); 
-                    }
-                    //COPY current index to end index 
+                    //COPY current index to start and end index 
+                    bestTokenStartIndex = sourceIndex.slice(); 
                     bestTokenEndIndex = sourceIndex.slice();
      
+                    //create Token object
+                    newToken = new Token(str, description, bestTokenStartIndex, bestTokenEndIndex);
 
+                    //reset token strings
+                    checkingToken = "";
+                    bestTokenString = "";
+                    bestTokenDescription = "";
                     //done with search for now
                     //break dictionarySearch;
                 }
@@ -137,7 +140,7 @@ function lex() {
         // Labeled break: solution from ChatGPT: 
         // "How can I exit to the outer loop of a nested for loop without 'return'?" 
 
-        //else {
+        else {
             dictionarySearch: for (categoryNum = 0; categoryNum < dictionary.length; categoryNum ++) {
                 category = dictionary[categoryNum]; // [symbols]
                 categoryName = category[0];         // "symbols"
@@ -151,7 +154,7 @@ function lex() {
 
                     if (checkingToken === str) {
                         //match found
-                        putMessage("    Match: "+str+", "+description);
+                        putDebug("    Match: "+str+", "+description);
                         bestTokenString = str;
                         bestTokenDescription = description;
 
@@ -179,12 +182,15 @@ function lex() {
                     }
                 }
             }
-        //}
+        
 
 
         //If a separator has been found
-        if (currentChar === " " || currentChar === "\n" || currentChar === "$") {
-            //putMessage("    separator found"      +"("+address(sourceIndex)+")");
+        if (currentChar === " " || 
+            currentChar === "\n" || 
+            currentChar === "$" ||
+            currentChar === "\"") {
+            //putDebug("    separator found"      +"("+address(sourceIndex)+")");
             
             //create Token object
             newToken = new Token(bestTokenString, bestTokenDescription, bestTokenStartIndex, bestTokenEndIndex);
@@ -209,7 +215,7 @@ function lex() {
             bestTokenStartIndex = bestTokenEndIndex;
 
         }
-        
+        }
 
 
         //Move index
