@@ -40,8 +40,8 @@ ids =      ["ids",
             ["ID", "ID", "ID", "ID", "ID", "ID", "ID", "ID", "ID", "ID", "ID", "ID", "ID", "ID", "ID", "ID", "ID", "ID", "ID", "ID", "ID", "ID", "ID", "ID", "ID", "ID"]];
 
 symbols =  ["symbols",
-            ["==",       "!=",         "\"",    "(",                ")",                 "{",            "}",             "/*",           "*/"],
-            ["EQAULITY", "INEQUALITY", "QUOTE", "OPEN PARENTHESIS", "CLOSE PARENTHESIS", "OPEN BRACKET", "CLOSE BRACKET", "OPEN COMMENT", "CLOSE COMMENT"]];
+            ["=",          "==",       "!=",         "\"",    "(",                ")",                 "{",            "}",             "/*",           "*/",            "$"],
+            ["ASSIGNMENT", "EQAULITY", "INEQUALITY", "QUOTE", "OPEN PARENTHESIS", "CLOSE PARENTHESIS", "OPEN BRACKET", "CLOSE BRACKET", "OPEN COMMENT", "CLOSE COMMENT", "EOP"]];
 
 digits =   ["digits",
             ["0",     "1",     "2",      "3",    "4",     "5",     "6",     "7",     "8",     "9"],
@@ -65,15 +65,18 @@ function lex() {
     sourceCodeIndex = 0;
     sourceIndex = [1,1];  //start at 1:1
 
-    bestTokenStartIndex = [0,0];
-    bestTokenEndIndex = [0,0];
+    bestTokenStartIndex = [1,1];
+    bestTokenEndIndex = [1,1];
 
     //token strings
     checkingToken = "";
-    bestToken = "";
+    bestTokenString = "";
+    bestTokenDescription = "";
 
     //loop through source text to find tokens
     while (sourceCodeIndex < sourceCode.length){
+
+        //putMessage("----"+sourceIndex+"----");
 
         //look at the next character
         currentChar = sourceCode[sourceCodeIndex];
@@ -96,20 +99,43 @@ function lex() {
 
                 if (checkingToken === str) {
                     //match found
-                    putMessage("Match: "+str+", "+description);
+                    putMessage("    Match: "+str+", "+description);
                     bestTokenString = str;
                     bestTokenDescription = description;
 
-                    //remember best token index
-                    if (bestToken.length == 1) {
-                        bestTokenStartIndex = sourceIndex;
+                    //keep track of best token index
+                    if (bestTokenString.length == 1) {
+                        //COPY current index to start index 
+                        bestTokenStartIndex = sourceIndex.slice(); 
+                        //putMessage("start"+bestTokenStartIndex);
                     }
-                    bestTokenEndIndex = sourceIndex;
+                    //COPY current index to end index 
+                    bestTokenEndIndex = sourceIndex.slice();
+
+                    //done with search for now
                     break dictionarySearch;
-    
                 }
             }
         }
+
+
+        if (currentChar === " " || currentChar === "\n" || currentChar === "$") {
+            putMessage("    separator found ("+bestTokenStartIndex+")");
+            
+            //create Token object
+            newToken = new Token(bestTokenString, bestTokenDescription, bestTokenStartIndex, bestTokenEndIndex);
+
+            //reset token strings
+            checkingToken = "";
+            bestTokenString = "";
+            bestTokenDescription = "";
+
+            //start again at end of best token
+            sourceIndex = bestTokenEndIndex;
+            bestTokenStartIndex = bestTokenEndIndex;
+
+        }
+        
 
 
         //Move index
@@ -125,9 +151,7 @@ function lex() {
         //next source char
         sourceCodeIndex ++;
 
-        //create Token object
-        newToken = new Token(bestTokenString, bestTokenDescription, bestTokenStartIndex);
-        //putMessage("TOKEN [" + newToken.name + "]");
+        
     }
 
     //return a list of tokens
