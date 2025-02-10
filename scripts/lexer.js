@@ -75,35 +75,41 @@ function lex() {
     quoteIsOpen = false;
     commentIsOpen = false;
 
-    //loop through source text to find tokens
+    //loop through source text to find all tokens
     while (sourceCodeIndex < sourceCode.length){
 
-        putMessage("----"+address(sourceIndex)+"----");
+        //putMessage("----"+address(sourceIndex)+"----");
 
         //look at the next character
         currentChar = sourceCode[sourceCodeIndex];
         checkingToken += currentChar;
 
         
-        // Labeled break: solution from ChatGPT: 
-        // "How can I exit to the outer loop of a nested for loop without 'return'?" 
+        //we are inside of a quote check for closing quote
+        if (quoteIsOpen && checkingToken === "\"") {
+            quoteIsOpen = false;
 
-        dictionarySearch: for (categoryNum = 0; categoryNum < dictionary.length; categoryNum ++) {
-            category = dictionary[categoryNum]; // [symbols]
-            categoryName = category[0];         // "symbols"
-            tokenStrings = category[1];         // [==, !=]
-            tokenDescriptions = category[2];    // ["EQUALITY", "INEQUALITY"]
+        }
 
-            for (i = 0; i < tokenStrings.length; i ++) {
+        //we are inside of a quote, only accept chars
+        else if (quoteIsOpen) {
+            putMessage("                           quote is open");
+            
+            categoryName = chars[0];            // "chars"
+            tokenStrings = category[1];         // [" ", "a", "b", "c"]
+            //tokenDescriptions = category[2];    // ["CHAR", "CHAR", ...]
+
+            //check the legal chars
+            for (i = 0; i < chars.length; i ++) {
 
                 str = tokenStrings[i];
-                description = tokenDescriptions[i];
+                //description = tokenDescriptions[i];
 
                 if (checkingToken === str) {
                     //match found
-                    putMessage("    Match: "+str+", "+description);
+                    //putMessage("    Match: "+str+", "+description);
                     bestTokenString = str;
-                    bestTokenDescription = description;
+                    bestTokenDescription = "CHAR"; //description;
 
                     //keep track of best token index
                     if (bestTokenString.length == 1) {
@@ -112,30 +118,73 @@ function lex() {
                     }
                     //COPY current index to end index 
                     bestTokenEndIndex = sourceIndex.slice();
-
-                    
-                    //Toggle open/close quote
-                    if (str === "\"") {
-                        quoteIsOpen = !quoteIsOpen;
-                    }
-                    //Toggle comment
-                    else if (str === "/*") {
-                        commentIsOpen = true;
-                    }
-                    else if (commentIsOpen && str === "*/") {
-                        commentIsOpen = false;
-                    }
+     
 
                     //done with search for now
-                    break dictionarySearch;
+                    //break dictionarySearch;
                 }
             }
+
         }
+
+        else if (commentIsOpen) {
+            
+            
+            if (commentIsOpen && str === "*/") {
+                commentIsOpen = false;
+            }
+        }
+        // Labeled break: solution from ChatGPT: 
+        // "How can I exit to the outer loop of a nested for loop without 'return'?" 
+
+        //else {
+            dictionarySearch: for (categoryNum = 0; categoryNum < dictionary.length; categoryNum ++) {
+                category = dictionary[categoryNum]; // [symbols]
+                categoryName = category[0];         // "symbols"
+                tokenStrings = category[1];         // [==, !=]
+                tokenDescriptions = category[2];    // ["EQUALITY", "INEQUALITY"]
+
+                for (i = 0; i < tokenStrings.length; i ++) {
+
+                    str = tokenStrings[i];
+                    description = tokenDescriptions[i];
+
+                    if (checkingToken === str) {
+                        //match found
+                        putMessage("    Match: "+str+", "+description);
+                        bestTokenString = str;
+                        bestTokenDescription = description;
+
+                        //keep track of best token index
+                        if (bestTokenString.length == 1) {
+                            //COPY current index to start index 
+                            bestTokenStartIndex = sourceIndex.slice(); 
+                        }
+                        //COPY current index to end index 
+                        bestTokenEndIndex = sourceIndex.slice();
+
+                        
+                        //Open quote
+                        if (str === "\"") {
+                            quoteIsOpen = true;
+                        }
+                        //Open comment
+                        else if (str === "/*") {
+                            commentIsOpen = true;
+                        }
+            
+
+                        //done with search for now
+                        break dictionarySearch;
+                    }
+                }
+            }
+        //}
 
 
         //If a separator has been found
         if (currentChar === " " || currentChar === "\n" || currentChar === "$") {
-            putMessage("    separator found"      +"("+address(sourceIndex)+")");
+            //putMessage("    separator found"      +"("+address(sourceIndex)+")");
             
             //create Token object
             newToken = new Token(bestTokenString, bestTokenDescription, bestTokenStartIndex, bestTokenEndIndex);
