@@ -26,8 +26,6 @@ Keywords:
     /* 
 */
 
-const LINE = 0;
-const CHAR = 1;
 
 
 //Category arrays
@@ -41,7 +39,7 @@ ids =      ["ids",
 
 symbols =  ["symbols",
             ["=",          "==",       "!=",         "\"",    "(",                ")",                 "{",            "}",             "/*",           "*/",            "$"],
-            ["ASSIGNMENT", "EQAULITY", "INEQUALITY", "QUOTE", "OPEN PARENTHESIS", "CLOSE PARENTHESIS", "OPEN BRACKET", "CLOSE BRACKET", "OPEN COMMENT", "CLOSE COMMENT", "EOP"]];
+            ["ASSIGNMENT", "EQUALITY", "INEQUALITY", "QUOTE", "OPEN PARENTHESIS", "CLOSE PARENTHESIS", "OPEN BRACKET", "CLOSE BRACKET", "OPEN COMMENT", "CLOSE COMMENT", "EOP"]];
 
 digits =   ["digits",
             ["0",     "1",     "2",      "3",    "4",     "5",     "6",     "7",     "8",     "9"],
@@ -73,10 +71,14 @@ function lex() {
     bestTokenString = "";
     bestTokenDescription = "";
 
+    //token switches open/close
+    quoteIsOpen = false;
+    commentIsOpen = false;
+
     //loop through source text to find tokens
     while (sourceCodeIndex < sourceCode.length){
 
-        //putMessage("----"+sourceIndex+"----");
+        putMessage("----"+address(sourceIndex)+"----");
 
         //look at the next character
         currentChar = sourceCode[sourceCodeIndex];
@@ -107,10 +109,22 @@ function lex() {
                     if (bestTokenString.length == 1) {
                         //COPY current index to start index 
                         bestTokenStartIndex = sourceIndex.slice(); 
-                        //putMessage("start"+bestTokenStartIndex);
                     }
                     //COPY current index to end index 
                     bestTokenEndIndex = sourceIndex.slice();
+
+                    
+                    //Toggle open/close quote
+                    if (str === "\"") {
+                        quoteIsOpen = !quoteIsOpen;
+                    }
+                    //Toggle comment
+                    else if (str === "/*") {
+                        commentIsOpen = true;
+                    }
+                    else if (commentIsOpen && str === "*/") {
+                        commentIsOpen = false;
+                    }
 
                     //done with search for now
                     break dictionarySearch;
@@ -119,8 +133,9 @@ function lex() {
         }
 
 
+        //If a separator has been found
         if (currentChar === " " || currentChar === "\n" || currentChar === "$") {
-            putMessage("    separator found ("+bestTokenStartIndex+")");
+            putMessage("    separator found"      +"("+address(sourceIndex)+")");
             
             //create Token object
             newToken = new Token(bestTokenString, bestTokenDescription, bestTokenStartIndex, bestTokenEndIndex);
@@ -130,8 +145,18 @@ function lex() {
             bestTokenString = "";
             bestTokenDescription = "";
 
+            //TO DO:
+            //go fully backwards (sourceIndex) to where we ended off
+            if (sourceIndex[CHAR] > bestTokenEndIndex[CHAR]+1) {
+                numberOfStepsBack = sourceIndex[CHAR] - bestTokenEndIndex[CHAR];
+                
+                sourceIndex[CHAR] = bestTokenEndIndex[CHAR];
+                sourceCodeIndex -= numberOfStepsBack;
+                currentChar = sourceCode[sourceCodeIndex];
+            }
+            //test case: inta = 0
             //start again at end of best token
-            sourceIndex = bestTokenEndIndex;
+            //sourceIndex = bestTokenEndIndex;
             bestTokenStartIndex = bestTokenEndIndex;
 
         }

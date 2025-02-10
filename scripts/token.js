@@ -17,7 +17,9 @@ class Token {
         tokenIndex ++;
 
         //debug
-        putMessage("Token "+description+" [ '"+str+"' ] "+startIndex[0]+":"+startIndex[1]+"-"+endIndex[0]+":"+endIndex[1]);
+        putMessage("Token [ '" + str + "' ] " + description + "  " +
+            address(startIndex) + "-" +
+            address(endIndex));
     }
 
     //setters
