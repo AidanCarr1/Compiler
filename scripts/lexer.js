@@ -26,6 +26,9 @@ Keywords:
     /* 
 */
 
+const LINE = 0;
+const CHAR = 1;
+
 
 //Category arrays
 keywords = ["keywords",
@@ -60,8 +63,7 @@ function lex() {
 
     //where in source code are we
     sourceCodeIndex = 0;
-    sourceLineIndex = 1;  //start at 1
-    sourceCharIndex = 1;  //start at 1
+    sourceIndex = [1,1];  //start at 1:1
 
     bestTokenStartIndex = [0,0];
     bestTokenEndIndex = [0,0];
@@ -84,8 +86,8 @@ function lex() {
         dictionarySearch: for (categoryNum = 0; categoryNum < dictionary.length; categoryNum ++) {
             category = dictionary[categoryNum]; // [symbols]
             categoryName = category[0];         // "symbols"
-            tokenStrings = category[1];      // [==, !=]
-            tokenDescriptions = category[2]; // ["EQUALITY", "INEQUALITY"]
+            tokenStrings = category[1];         // [==, !=]
+            tokenDescriptions = category[2];    // ["EQUALITY", "INEQUALITY"]
 
             for (i = 0; i < tokenStrings.length; i ++) {
 
@@ -100,9 +102,9 @@ function lex() {
 
                     //remember best token index
                     if (bestToken.length == 1) {
-                        bestTokenStartIndex = [sourceLineIndex, sourceCharIndex];
+                        bestTokenStartIndex = sourceIndex;
                     }
-                    bestTokenEndIndex = [sourceLineIndex, sourceCharIndex];
+                    bestTokenEndIndex = sourceIndex;
                     break dictionarySearch;
     
                 }
@@ -113,18 +115,18 @@ function lex() {
         //Move index
         //new source line
         if (currentChar === "\n") {
-            sourceCharIndex = 1;  //start at 1
-            sourceLineIndex ++;
+            sourceIndex[LINE] = sourceIndex[LINE] + 1;
+            sourceIndex[CHAR] = 1; //start at :1
         }
         //same source line
         else {
-            sourceCharIndex ++;
+            sourceIndex[CHAR] = sourceIndex[CHAR] + 1;
         }
         //next source char
         sourceCodeIndex ++;
 
         //create Token object
-        newToken = new Token(currentChar, sourceLineIndex, sourceCharIndex);
+        newToken = new Token(bestTokenString, bestTokenDescription, bestTokenStartIndex);
         //putMessage("TOKEN [" + newToken.name + "]");
     }
 

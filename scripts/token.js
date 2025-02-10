@@ -3,12 +3,11 @@
     
 class Token {
 
-    constructor(str, description, startLine, startIndex) { 
+    constructor(str, description, startIndex) { 
                     
         //set variables
         this.str = str;
         this.description = description;
-        this.startLine = startLine;
         this.startIndex = startIndex;
 
         //new token constructed!
@@ -16,7 +15,7 @@ class Token {
         tokenIndex ++;
 
         //debug
-        putMessage("Token "+this.tid+" ["+name+", "+startLine+":"+startIndex+"]");
+        putMessage("Token "+description+" ['"+str+"' "+startIndex[0]+":"+startIndex[1]+"]");
     }
 
     //setters
