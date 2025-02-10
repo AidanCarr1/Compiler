@@ -89,15 +89,14 @@ function lex() {
         //we are inside of a quote check for closing quote
         if (quoteIsOpen && checkingToken === "\"") {
             quoteIsOpen = false;
-
         }
 
         //we are inside of a quote, only accept chars
-        else if (quoteIsOpen) {
+        if (quoteIsOpen) {
             //putDebug("                           quote is open");
             
-            categoryName = chars[0];            // "chars"
-            tokenStrings = chars[1];         // [" ", "a", "b", "c"]
+            categoryName = chars[0];    // "chars"
+            tokenStrings = chars[1];    // [" ", "a", "b", "c"]
             //tokenDescriptions = category[2];    // ["CHAR", "CHAR", ...]
 
             //check the legal chars
