@@ -27,15 +27,29 @@ Keywords:
 */
 
 
-//Arrays
-keywords = ["int", "string", "boolean", "while", "if", "false", "true", "print"];
-ids =      ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", 
-            "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"];
-symbols =  ["==", "!=", "\"", "(", ")", "{", "}", "/*", "*/"];
-digits =   ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"]; 
-chars =    [" ", "a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m",  
-            "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"];
+//Dictionary arrays
+keywords = ["keywords",
+            ["int",           "string",        "boolean",       "while", "if", "false", "true", "print"],
+            ["VARIABLE TYPE", "VARIABLE TYPE", "VARIABLE TYPE", "WHILE", "IF", "FALSE", "TRUE", "PRINT"]];
+
+ids =      ["ids",
+            ["a",  "b",  "c",  "d",  "e",  "f",  "g",  "h",  "i",  "j",  "k",  "l",  "m",  "n",  "o",  "p",  "q",  "r",  "s",  "t",  "u",  "v",  "w",  "x",  "y",  "z"],
+            ["ID", "ID", "ID", "ID", "ID", "ID", "ID", "ID", "ID", "ID", "ID", "ID", "ID", "ID", "ID", "ID", "ID", "ID", "ID", "ID", "ID", "ID", "ID", "ID", "ID", "ID"]];
+
+symbols =  ["symbols",
+            ["==",       "!=",         "\"",    "(",                ")",                 "{",            "}",             "/*",           "*/"],
+            ["EQAULITY", "INEQUALITY", "QUOTE", "OPEN PARENTHESIS", "CLOSE PARENTHESIS", "OPEN BRACKET", "CLOSE BRACKET", "OPEN COMMENT", "CLOSE COMMENT"]];
+
+digits =   ["digits",
+            ["0",     "1",     "2",      "3",    "4",     "5",     "6",     "7",     "8",     "9"],
+            ["DIGIT", "DIGIT", "DIGIT", "DIGIT", "DIGIT", "DIGIT", "DIGIT", "DIGIT", "DIGIT", "DIGIT"]];
+
+chars =    ["chars",
+            [" ",    "a",    "b",    "c",    "d",    "e",    "f",    "g",    "h",    "i",    "j",    "k",    "l",    "m",    "n",    "o",    "p",    "q",    "r",    "s",    "t",    "u",    "v",    "w",    "x",    "y",    "z"],
+            ["CHAR", "CHAR", "CHAR", "CHAR", "CHAR", "CHAR", "CHAR", "CHAR", "CHAR", "CHAR", "CHAR", "CHAR", "CHAR", "CHAR", "CHAR", "CHAR", "CHAR", "CHAR", "CHAR", "CHAR", "CHAR", "CHAR", "CHAR", "CHAR", "CHAR", "CHAR", "CHAR"]];
+
 dictionary = [keywords, ids, symbols, digits, chars];
+
 
 
 function lex() {
@@ -65,14 +79,15 @@ function lex() {
         // Labeled break: solution from ChatGPT: 
         // "How can I exit to the outer loop of a nested for loop without 'return'?" 
 
-        dictionarySearch: for (ruleNum=0; i<dictionary.length; ruleNum++) {
+        for (ruleNum = 0; ruleNum < dictionary.length; ruleNum ++) {
             rule = dictionary[ruleNum];
-            for (i=0; i<rule.length; i++) {
+            for (i = 0; i < rule.length; i ++) {
 
                 if (checkingToken === rule[i]) {
                     //match found
+                    putMessage("match: "+rule[i]);
                     candidateToken = checkingToken;
-                    break dictionarySearch;
+                    //break dictionarySearch;
     
                 }
             }
