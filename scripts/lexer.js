@@ -35,6 +35,7 @@ symbols =  ["==", "!=", "\"", "(", ")", "{", "}", "/*", "*/"];
 digits =   ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"]; 
 chars =    [" ", "a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m",  
             "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"];
+dictionary = [keywords, ids, symbols, digits, chars];
 
 
 function lex() {
@@ -44,38 +45,55 @@ function lex() {
     // Trim the leading and trailing spaces.
     //sourceCode = trim(sourceCode);
 
-    //where in user code are we
-    sourceIndex = 0;
-    userLineIndex = 1;  //start at 1
-    userCharIndex = 1;  //start at 1
+    //where in source code are we
+    sourceCodeIndex = 0;
+    sourceLineIndex = 1;  //start at 1
+    sourceCharIndex = 1;  //start at 1
 
     //token strings
     checkingToken = "";
+    candidateToken = "";
 
     //loop through text to find tokens
-    while (sourceIndex < sourceCode.length){
+    while (sourceCodeIndex < sourceCode.length){
 
-        //look at the next character for a new token
-        currentChar = sourceCode[sourceIndex];
+        //look at the next character
+        currentChar = sourceCode[sourceCodeIndex];
         checkingToken += currentChar;
 
         
+        // Labeled break: solution from ChatGPT: 
+        // "How can I exit to the outer loop of a nested for loop without 'return'?" 
+
+        dictionarySearch: for (ruleNum=0; i<dictionary.length; ruleNum++) {
+            rule = dictionary[ruleNum];
+            for (i=0; i<rule.length; i++) {
+
+                if (checkingToken === rule[i]) {
+                    //match found
+                    candidateToken = checkingToken;
+                    break dictionarySearch;
+    
+                }
+            }
+        }
+
 
         //Move index
-        //new user line
+        //new source line
         if (currentChar === "\n") {
-            userCharIndex = 1;  //start at 1
-            userLineIndex ++;
+            sourceCharIndex = 1;  //start at 1
+            sourceLineIndex ++;
         }
-        //same user line
+        //same source line
         else {
-            userCharIndex ++;
+            sourceCharIndex ++;
         }
         //next source char
-        sourceIndex ++;
+        sourceCodeIndex ++;
 
         //create Token object
-        newToken = new Token(currentChar, userLineIndex, userCharIndex);
+        newToken = new Token(currentChar, sourceLineIndex, sourceCharIndex);
         //putMessage("TOKEN [" + newToken.name + "]");
     }
 
