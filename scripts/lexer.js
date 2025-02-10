@@ -38,8 +38,8 @@ ids =      ["ids",
             ["ID", "ID", "ID", "ID", "ID", "ID", "ID", "ID", "ID", "ID", "ID", "ID", "ID", "ID", "ID", "ID", "ID", "ID", "ID", "ID", "ID", "ID", "ID", "ID", "ID", "ID"]];
 
 symbols =  ["symbols",
-            ["=",          "==",       "!=",         "\"",    "(",                ")",                 "{",            "}",             "/*",           "*/",            "$"],
-            ["ASSIGNMENT", "EQUALITY", "INEQUALITY", "QUOTE", "OPEN PARENTHESIS", "CLOSE PARENTHESIS", "OPEN BRACKET", "CLOSE BRACKET", "OPEN COMMENT", "CLOSE COMMENT", "EOP"]];
+            ["+",        "=",          "==",       "!=",         "\"",    "(",                ")",                 "{",            "}",             "/*",           "*/",            "$"],
+            ["ADDITION", "ASSIGNMENT", "EQUALITY", "INEQUALITY", "QUOTE", "OPEN PARENTHESIS", "CLOSE PARENTHESIS", "OPEN BRACKET", "CLOSE BRACKET", "OPEN COMMENT", "CLOSE COMMENT", "EOP"]];
 
 digits =   ["digits",
             ["0",     "1",     "2",      "3",    "4",     "5",     "6",     "7",     "8",     "9"],
@@ -77,7 +77,7 @@ function lex() {
     commentIsOpen = false;
 
     //loop through source text to find all tokens
-    while (sourceCodeIndex < sourceCode.length){
+    while (sourceCodeIndex < sourceCode.length) {
 
         //putDebug("----"+address(sourceIndex)+"----");
 
@@ -86,13 +86,31 @@ function lex() {
         checkingToken += currentChar;
 
         
-        //we are inside of a quote check for closing quote
+        //inside of a quote, check for closing quote
         if (quoteIsOpen && checkingToken === "\"") {
             quoteIsOpen = false;
         }
 
-        //we are inside of a quote, only accept chars
-        if (quoteIsOpen) {
+        //inside of a comment, check for closing quote
+        if (commentIsOpen) {
+
+            putDebug("    comment:"+checkingToken);
+            if (checkingToken === "*") {
+
+            }
+            else if (checkingToken === "*/") {
+                commentIsOpen = false;
+                bestTokenString = "";
+                bestTokenDescription = "";
+                checkingToken = "";
+            }
+            else {
+                checkingToken = "";
+            }
+        }
+
+        //inside of a quote, only accept chars
+        else if (quoteIsOpen) {
             //putDebug("                           quote is open");
             
             categoryName = chars[0];    // "chars"
@@ -129,13 +147,13 @@ function lex() {
 
         }
 
-        else if (commentIsOpen) {
+        // else if (commentIsOpen) {
             
             
-            if (commentIsOpen && str === "*/") {
-                commentIsOpen = false;
-            }
-        }
+        //     if (commentIsOpen && str === "*/") {
+        //         commentIsOpen = false;
+        //     }
+        // }
         // Labeled break: solution from ChatGPT: 
         // "How can I exit to the outer loop of a nested for loop without 'return'?" 
 
@@ -173,6 +191,7 @@ function lex() {
                         //Open comment
                         else if (str === "/*") {
                             commentIsOpen = true;
+                            checkingToken = "";
                         }
             
 
@@ -189,7 +208,7 @@ function lex() {
             currentChar === "\n" || 
             currentChar === "$" ||
             currentChar === "\"") {
-            //putDebug("    separator found"      +"("+address(sourceIndex)+")");
+            putDebug("    separator found"      +"("+address(sourceIndex)+")");
             
             //create Token object
             newToken = new Token(bestTokenString, bestTokenDescription, bestTokenStartIndex, bestTokenEndIndex);

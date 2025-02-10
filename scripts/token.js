@@ -16,7 +16,7 @@ class Token {
         this.tid = tokenIndex; //token ID
         tokenIndex ++;
 
-        //debug
+        //print Token Message
         putMessage("Token [ '" + str + "' ] " + description + "  " +
             address(startIndex) + "-" +
             address(endIndex));
