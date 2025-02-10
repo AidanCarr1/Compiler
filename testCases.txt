@@ -1,0 +1,27 @@
+{
+while int a = 0
+}
+$
+
+{
+string x
+x = "hello world"
+print ( x )
+} $
+
+
+{
+inta
+stringz
+a = 7
+z = "real "
+}$
+
+stringz
+z = "real as rain"
+$
+
+/*abcd123*/{/**/
+intaintba=0b=0/*comment*/while(a!=3){print(a)while(b!=3){print(b)b=1+bif(b==2)
+{/**/print("there is no spoon"/**/)}}b=0a=1+a}}
+$ 
