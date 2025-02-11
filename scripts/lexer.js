@@ -53,12 +53,11 @@ chars =    ["chars",
 dictionary = [keywords, ids, symbols, digits, chars];
 
 
-debug = true;
 
 function lex() {
     // Grab the "raw" source code.
     var sourceCode = document.getElementById("taSourceCode").value;
-    
+    debug = true;
 
     //where in source code are we
     sourceCodeIndex = 0;
@@ -79,7 +78,7 @@ function lex() {
     //loop through source text to find all tokens
     while (sourceCodeIndex < sourceCode.length) {
 
-        //putDebug("----"+address(sourceIndex)+"----");
+        putDebug("----"+address(sourceIndex)+"----");
 
         //look at the next character
         currentChar = sourceCode[sourceCodeIndex];
@@ -111,7 +110,7 @@ function lex() {
 
         //inside of a quote, only accept chars
         else if (quoteIsOpen) {
-            //putDebug("                           quote is open");
+            putDebug("                           quote is open");
             
             categoryName = chars[0];    // "chars"
             tokenStrings = chars[1];    // [" ", "a", "b", "c"]
@@ -203,36 +202,38 @@ function lex() {
         
 
 
-        //If a separator has been found
-        if (currentChar === " " || 
-            currentChar === "\n" || 
-            currentChar === "$" ||
-            currentChar === "\"") {
-            putDebug("    separator found"      +"("+address(sourceIndex)+")");
-            
-            //create Token object
-            newToken = new Token(bestTokenString, bestTokenDescription, bestTokenStartIndex, bestTokenEndIndex);
-
-            //reset token strings
-            checkingToken = "";
-            bestTokenString = "";
-            bestTokenDescription = "";
-
-            //TO DO:
-            //go fully backwards (sourceIndex) to where we ended off
-            if (sourceIndex[CHAR] > bestTokenEndIndex[CHAR]+1) {
-                numberOfStepsBack = sourceIndex[CHAR] - bestTokenEndIndex[CHAR];
+            //If a separator has been found
+            if (currentChar === " " || 
+                currentChar === "\n" || 
+                currentChar === "$" /*||
+                currentChar === "\""*/) {
+                putDebug("    separator found"      +"("+address(sourceIndex)+")");
                 
-                sourceIndex[CHAR] = bestTokenEndIndex[CHAR];
-                sourceCodeIndex -= numberOfStepsBack;
-                currentChar = sourceCode[sourceCodeIndex];
-            }
-            //test case: inta = 0
-            //start again at end of best token
-            //sourceIndex = bestTokenEndIndex;
-            bestTokenStartIndex = bestTokenEndIndex;
+                //create Token object
+                if (bestTokenString !== "" && bestTokenString !== "*/") {
+                    newToken = new Token(bestTokenString, bestTokenDescription, bestTokenStartIndex, bestTokenEndIndex);
+                }
 
-        }
+                //reset token strings
+                checkingToken = "";
+                bestTokenString = "";
+                bestTokenDescription = "";
+
+                //TO DO:
+                //go fully backwards (sourceIndex) to where we ended off
+                if (sourceIndex[CHAR] > bestTokenEndIndex[CHAR]+1) {
+                    numberOfStepsBack = sourceIndex[CHAR] - bestTokenEndIndex[CHAR];
+                    
+                    sourceIndex[CHAR] = bestTokenEndIndex[CHAR];
+                    sourceCodeIndex -= numberOfStepsBack;
+                    currentChar = sourceCode[sourceCodeIndex];
+                }
+                //test case: inta = 0
+                //start again at end of best token
+                //sourceIndex = bestTokenEndIndex;
+                bestTokenStartIndex = bestTokenEndIndex;
+
+            }
         }
 
 
