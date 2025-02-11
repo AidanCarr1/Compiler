@@ -96,11 +96,17 @@ function lex() {
                     //newToken = new Token(bestTokenString, bestTokenDescription, bestTokenStartIndex, bestTokenEndIndex);
                     //checkingToken = "";
                     //bestTokenString = "";
+
+                    //IDEAS
+                    //change the dictionary to be only characters, then change it back?
+                    //checnge tokens from id to char?
                 }
                 //Open comment
                 else if (tokenStr === "/*") {
                     commentIsOpen = true;
                     //checkingToken = "";
+                    //throw all all tokens until comment is closed?
+                    //separate else loop (or function) that just looks for ending comments)
                 }
 
 
