@@ -87,7 +87,8 @@ function lex() {
         
         //inside of a quote, check for closing quote
         if (quoteIsOpen && checkingToken === "\"") {
-            quoteIsOpen = false;
+            //quoteIsOpen = false;
+            //newToken = new Token(str, description, bestTokenStartIndex, bestTokenEndIndex);
         }
 
         //inside of a comment, check for closing quote
@@ -109,7 +110,7 @@ function lex() {
         }
 
         //inside of a quote, only accept chars
-        else if (quoteIsOpen) {
+        else if (quoteIsOpen && checkingToken !== "\"") {
             putDebug("                           quote is open");
             
             categoryName = chars[0];    // "chars"
@@ -185,7 +186,9 @@ function lex() {
                         
                         //Open quote
                         if (str === "\"") {
-                            quoteIsOpen = true;
+                            quoteIsOpen = !quoteIsOpen;
+                            newToken = new Token(bestTokenString, bestTokenDescription, bestTokenStartIndex, bestTokenEndIndex);
+                            checkingToken = "";
                         }
                         //Open comment
                         else if (str === "/*") {
