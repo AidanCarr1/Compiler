@@ -32,16 +32,19 @@ Keywords:
 dictionary =  ["int",           "string",        "boolean",       "while", "if", "false", "true", "print", "a",  "b",  "c",  "d",  "e",  "f",  "g",  "h",  "i",  "j",  "k",  "l",  "m",  "n",  "o",  "p",  "q",  "r",  "s",  "t",  "u",  "v",  "w",  "x",  "y",  "z", "+",        "=",          "==",       "!=",         "\"",    "(",                ")",                 "{",            "}",             "/*",           "*/",            "$",    "0",     "1",     "2",      "3",    "4",     "5",     "6",     "7",     "8",     "9"];
 definitions = ["VARIABLE TYPE", "VARIABLE TYPE", "VARIABLE TYPE", "WHILE", "IF", "FALSE", "TRUE", "PRINT", "ID", "ID", "ID", "ID", "ID", "ID", "ID", "ID", "ID", "ID", "ID", "ID", "ID", "ID", "ID", "ID", "ID", "ID", "ID", "ID", "ID", "ID", "ID", "ID", "ID", "ID", "ADDITION", "ASSIGNMENT", "EQUALITY", "INEQUALITY", "QUOTE", "OPEN PARENTHESIS", "CLOSE PARENTHESIS", "OPEN BRACKET", "CLOSE BRACKET", "OPEN COMMENT", "CLOSE COMMENT", "EOP", "DIGIT", "DIGIT", "DIGIT", "DIGIT", "DIGIT", "DIGIT", "DIGIT", "DIGIT", "DIGIT", "DIGIT"];
 
-chars = [" ", "a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"],
+chars = [" ", "a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"];
 
 
-function lex2() {
-    // Grab the "raw" source code.
-    var sourceCode = document.getElementById("taSourceCode").value + "\n";
+function lex() {
     debug = true;
+    putDebug("--start--");
+    // Grab the "raw" source code.
+    
+    var sourceString = document.getElementById("taSourceCode").value + "\n";
+    
 
     //where in source code are we
-    sourceCodeIndex = 0;
+    sourceStringIndex = 0;
     sourceIndex = [1,1];  //start at 1:1
 
     bestTokenStartIndex = [1,1];
@@ -56,13 +59,15 @@ function lex2() {
     quoteIsOpen = false;
     commentIsOpen = false;
 
+    putDebug("--start--");
+
     //loop through source text to find all tokens
-    while (sourceCodeIndex < sourceCode.length) {
+    while (sourceStringIndex < sourceString.length) {
 
         putDebug("----"+address(sourceIndex)+"----");
 
         //look at the next character
-        currentChar = sourceCode[sourceCodeIndex];
+        currentChar = sourceString[sourceStringIndex];
         checkingToken += currentChar;
 
 
@@ -106,7 +111,7 @@ function lex2() {
 
                 //done with search for now
                 break; //dictionarySearch;
-                matchFound = true;
+                //matchFound = true;
             }
             //}
         }
@@ -116,8 +121,8 @@ function lex2() {
         //If a separator has been found
         if (currentChar === " " || 
             currentChar === "\n" || 
-            currentChar === "$" /*||
-            currentChar === "\""*/) {
+            currentChar === "$" ||
+            currentChar === "\"") {
             putDebug("    separator found"      +"("+address(sourceIndex)+")");
             
             //create Token object
@@ -138,8 +143,8 @@ function lex2() {
                 numberOfStepsBack = sourceIndex[CHAR] - bestTokenEndIndex[CHAR];
                 
                 sourceIndex[CHAR] = bestTokenEndIndex[CHAR];
-                sourceCodeIndex -= numberOfStepsBack;
-                currentChar = sourceCode[sourceCodeIndex];
+                sourceStringIndex -= numberOfStepsBack;
+                currentChar = sourceString[sourceStringIndex];
             }
             //test case: inta = 0
             //start again at end of best token
@@ -161,11 +166,12 @@ function lex2() {
             sourceIndex[CHAR] = sourceIndex[CHAR] + 1;
         }
         //next source char
-        sourceCodeIndex ++;
+        sourceStringIndex ++;
 
 
     }
 
+    
     //return a list of tokens
-    return sourceCode;
+    return sourceString;
 }
