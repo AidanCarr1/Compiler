@@ -56,7 +56,7 @@ dictionary = [keywords, ids, symbols, digits, chars];
 
 function lex() {
     // Grab the "raw" source code.
-    var sourceCode = document.getElementById("taSourceCode").value;
+    var sourceCode = document.getElementById("taSourceCode").value + "\n";
     debug = true;
 
     //where in source code are we
@@ -86,14 +86,15 @@ function lex() {
 
         
         //inside of a quote, check for closing quote
-        if (quoteIsOpen && checkingToken === "\"") {
+        //if (quoteIsOpen && checkingToken === "\"") {
             //quoteIsOpen = false;
             //newToken = new Token(str, description, bestTokenStartIndex, bestTokenEndIndex);
-        }
+        //}
 
-        //inside of a comment, check for closing quote
+        //inside of a comment, check for closing comment
         if (commentIsOpen) {
 
+            //findEndOfComment();
             putDebug("    comment:"+checkingToken);
             if (checkingToken === "*") {
 
@@ -200,6 +201,7 @@ function lex() {
 
                         //done with search for now
                         break dictionarySearch;
+                        matchFound = true;
                     }
                 }
             }
@@ -215,6 +217,7 @@ function lex() {
                 
                 //create Token object
                 if (bestTokenString !== "" && 
+                    bestTokenString !== "\n" &&
                     bestTokenString !== " " && //will only work as a token inside quote
                     bestTokenString !== "*/" ) {
                     newToken = new Token(bestTokenString, bestTokenDescription, bestTokenStartIndex, bestTokenEndIndex);
@@ -262,4 +265,3 @@ function lex() {
     //return a list of tokens
     return sourceCode;
 }
-

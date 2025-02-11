@@ -31,3 +31,5 @@ print("a b c")
 print ( "x y z" )
 string z
 $
+
+/*CApitAL*/ {/*intD3*/

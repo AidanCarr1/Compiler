@@ -43,7 +43,8 @@ $</textarea>
     <script type="text/javascript" src="scripts/token.js"></script>	
 
     <script type="text/javascript" src="scripts/utils.js"></script>	
-    <script type="text/javascript" src="scripts/lexer.js"></script>	
+    <script type="text/javascript" src="scripts/lexer.js"></script>
+    <script type="text/javascript" src="scripts/lexer2.js"></script>	
     <script type="text/javascript">
     // Global variables
     const LINE = 0;
@@ -72,7 +73,7 @@ $</textarea>
         init();
         putMessage("Compilation Started");
         // Grab the tokens from the lexer . . .
-        tokens = lex();
+        tokens = lex2();
         putMessage("Lex returned [" + tokens + "]");
         // . . . and parse!
         // ...later
