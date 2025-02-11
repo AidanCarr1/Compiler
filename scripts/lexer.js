@@ -189,6 +189,7 @@ function lex() {
                             quoteIsOpen = !quoteIsOpen;
                             newToken = new Token(bestTokenString, bestTokenDescription, bestTokenStartIndex, bestTokenEndIndex);
                             checkingToken = "";
+                            bestTokenString = "";
                         }
                         //Open comment
                         else if (str === "/*") {
@@ -213,7 +214,9 @@ function lex() {
                 putDebug("    separator found"      +"("+address(sourceIndex)+")");
                 
                 //create Token object
-                if (bestTokenString !== "" && bestTokenString !== "*/") {
+                if (bestTokenString !== "" && 
+                    bestTokenString !== " " && //will only work as a token inside quote
+                    bestTokenString !== "*/" ) {
                     newToken = new Token(bestTokenString, bestTokenDescription, bestTokenStartIndex, bestTokenEndIndex);
                 }
 
