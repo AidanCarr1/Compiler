@@ -36,12 +36,11 @@ chars = [" ", "a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "
 
 
 function lex() {
+    // show/hide my comments
     debug = true;
-    putDebug("--start--");
+
     // Grab the "raw" source code.
-    
     var sourceString = document.getElementById("taSourceCode").value + "\n";
-    
 
     //where in source code are we
     sourceStringIndex = 0;
@@ -59,8 +58,6 @@ function lex() {
     quoteIsOpen = false;
     commentIsOpen = false;
 
-    putDebug("--start--");
-
     //loop through source text to find all tokens
     while (sourceStringIndex < sourceString.length) {
 
@@ -70,20 +67,18 @@ function lex() {
         currentChar = sourceString[sourceStringIndex];
         checkingToken += currentChar;
 
-
+        //check every possible lex in our dictionary
         for (i = 0; i < dictionary.length; i ++) {
-            //tokenStrings = category[1];         // [==, !=]
-            //tokenDescriptions = category[2];    // ["EQUALITY", "INEQUALITY"]
 
-            //for (i = 0; i < tokenStrings.length; i ++) {
-
-            str = dictionary[i];
+            tokenStr = dictionary[i];
             description = definitions[i];
 
-            if (checkingToken === str) {
+            //does the highlighed token match?
+            if (checkingToken === tokenStr) {
+                
                 //match found
-                putDebug("    Match: "+str+", "+description);
-                bestTokenString = str;
+                putDebug("    Match: "+tokenStr+", "+description);
+                bestTokenString = tokenStr;
                 bestTokenDescription = description;
 
                 //keep track of best token index
@@ -96,24 +91,23 @@ function lex() {
 
                 
                 //Open quote
-                if (str === "\"") {
+                if (tokenStr === "\"") {
                     quoteIsOpen = !quoteIsOpen;
-                    newToken = new Token(bestTokenString, bestTokenDescription, bestTokenStartIndex, bestTokenEndIndex);
-                    checkingToken = "";
-                    bestTokenString = "";
+                    //newToken = new Token(bestTokenString, bestTokenDescription, bestTokenStartIndex, bestTokenEndIndex);
+                    //checkingToken = "";
+                    //bestTokenString = "";
                 }
                 //Open comment
-                else if (str === "/*") {
+                else if (tokenStr === "/*") {
                     commentIsOpen = true;
                     checkingToken = "";
                 }
 
 
                 //done with search for now
-                break; //dictionarySearch;
-                //matchFound = true;
+                break;
+                matchFound = true;
             }
-            //}
         }
 
 
@@ -121,8 +115,7 @@ function lex() {
         //If a separator has been found
         if (currentChar === " " || 
             currentChar === "\n" || 
-            currentChar === "$" ||
-            currentChar === "\"") {
+            currentChar === "$" ) {
             putDebug("    separator found"      +"("+address(sourceIndex)+")");
             
             //create Token object
