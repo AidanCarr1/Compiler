@@ -100,7 +100,7 @@ function lex() {
                 //Open comment
                 else if (tokenStr === "/*") {
                     commentIsOpen = true;
-                    checkingToken = "";
+                    //checkingToken = "";
                 }
 
 
