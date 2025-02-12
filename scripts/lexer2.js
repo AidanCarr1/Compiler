@@ -37,10 +37,10 @@ currentDictionary = mainDictionary;
 
 function lex() {
     // show/hide my comments
-    debug = true;
+    debug = false;
     loops = 0; //for debugging purposes
 
-    // Grab the "raw" source code. (and add a separator to the end)
+    // Grab the "raw" source code. (force a separator to the end)
     var sourceString = document.getElementById("taSourceCode").value + " ";
 
     //where in source code are we
@@ -166,7 +166,11 @@ function lex() {
             bestTokenDescription = "";
 
             //go fully backwards (sourceIndex) to where we ended off
-            if (sourceIndex[CHAR] > bestTokenEndIndex[CHAR]+1) {
+            if (commentIsOpen) {
+                //dont go backwards
+                //fixes space in comments issue
+            }
+            else if (sourceIndex[CHAR] > bestTokenEndIndex[CHAR]+1) {
                 numberOfStepsBack = sourceIndex[CHAR] - bestTokenEndIndex[CHAR];
                 
                 sourceIndex[CHAR] = bestTokenEndIndex[CHAR];
