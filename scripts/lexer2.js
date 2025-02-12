@@ -62,11 +62,11 @@ function lex() {
     //loop through source text to find all tokens
     while (sourceStringIndex < sourceString.length && loops < 5000) {
 
-        putDebug("----"+address(sourceIndex)+"----");
-
         //look at the next character
         currentChar = sourceString[sourceStringIndex];
         checkingToken += currentChar;
+
+        putDebug("----"+address(sourceIndex)+"---- cT:"+checkingToken+" bT:"+bestTokenString);
         
         //change dictionary based on quote/comment state
         if (quoteIsOpen) {
@@ -78,7 +78,7 @@ function lex() {
         }
         else if (commentIsOpen) {
             if (checkingToken === "*" || checkingToken === "*/") {
-
+                putDebug("--almost close--");
             }
             else {
                 checkingToken = "";
@@ -126,7 +126,7 @@ function lex() {
                 //Open comment
                 else if (tokenStr === "/*") {
                     commentIsOpen = true;
-                    //checkingToken = "";
+                    checkingToken = "";
                     //throw all all tokens until comment is closed?
                     //separate else loop (or function) that just looks for ending comments)
                 }
