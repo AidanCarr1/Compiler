@@ -60,7 +60,7 @@ function lex() {
     commentIsOpen = false;
 
     //loop through source text to find all tokens
-    while (sourceStringIndex < sourceString.length && loops < 200) {
+    while (sourceStringIndex < sourceString.length && loops < 500) {
 
         putDebug("----"+address(sourceIndex)+"----");
 
@@ -162,6 +162,9 @@ function lex() {
                 sourceStringIndex -= numberOfStepsBack;
                 currentChar = sourceString[sourceStringIndex];
             }
+            else if (sourceIndex[CHAR] == bestTokenEndIndex[CHAR]+1) {
+                bestTokenEndIndex[CHAR] = sourceIndex[CHAR];
+            }
             //test case: inta = 0
             //start again at end of best token
             //sourceIndex = bestTokenEndIndex;
@@ -185,7 +188,7 @@ function lex() {
         sourceStringIndex ++;
 
         loops ++;
-        putDebug("                                "+loops);
+        //putDebug("                                "+loops);
 
     }
 
