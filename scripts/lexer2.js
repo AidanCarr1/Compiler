@@ -37,7 +37,8 @@ currentDictionary = mainDictionary;
 
 function lex() {
     // show/hide my comments
-    debug = false;
+    debug = true;
+    loops = 0;
 
     // Grab the "raw" source code.
     var sourceString = document.getElementById("taSourceCode").value + "\n";
@@ -59,7 +60,7 @@ function lex() {
     commentIsOpen = false;
 
     //loop through source text to find all tokens
-    while (sourceStringIndex < sourceString.length) {
+    while (sourceStringIndex < sourceString.length && loops < 200) {
 
         putDebug("----"+address(sourceIndex)+"----");
 
@@ -183,6 +184,8 @@ function lex() {
         //next source char
         sourceStringIndex ++;
 
+        loops ++;
+        putDebug("                                "+loops);
 
     }
 

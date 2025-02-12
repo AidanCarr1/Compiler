@@ -32,4 +32,6 @@ print ( "x y z" )
 string z
 $
 
-/*CApitAL*/ {/*intD3*/
+/*CApitAL*/ {/*intD3*/ /**/
+
+print    ( "x y z " )
