@@ -37,7 +37,7 @@ currentDictionary = mainDictionary;
 
 function lex() {
     // show/hide my comments
-    debug = true;
+    debug = false;
 
     // Grab the "raw" source code.
     var sourceString = document.getElementById("taSourceCode").value + "\n";
@@ -135,7 +135,7 @@ function lex() {
 
 
         //If a separator has been found
-        if (currentChar === " " || 
+        if ((currentChar === " " && !quoteIsOpen) || 
             currentChar === "\n" || 
             currentChar === "$" ) {
             putDebug("    separator found"      +"("+address(sourceIndex)+")");
@@ -143,7 +143,7 @@ function lex() {
             //create Token object
             if (bestTokenString !== "" && 
                 bestTokenString !== "\n" &&
-                bestTokenString !== " " && //will only work as a token inside quote
+                //bestTokenString !== " " && //will only work as a token inside quote
                 bestTokenString !== "*/" ) {
                 newToken = new Token(bestTokenString, bestTokenDescription, bestTokenStartIndex, bestTokenEndIndex);
             }
