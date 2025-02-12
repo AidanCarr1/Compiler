@@ -38,10 +38,10 @@ currentDictionary = mainDictionary;
 function lex() {
     // show/hide my comments
     debug = true;
-    loops = 0;
+    loops = 0; //for debugging purposes
 
-    // Grab the "raw" source code.
-    var sourceString = document.getElementById("taSourceCode").value + "\n";
+    // Grab the "raw" source code. (and add a separator to the end)
+    var sourceString = document.getElementById("taSourceCode").value + " ";
 
     //where in source code are we
     sourceStringIndex = 0;
@@ -60,7 +60,7 @@ function lex() {
     commentIsOpen = false;
 
     //loop through source text to find all tokens
-    while (sourceStringIndex < sourceString.length && loops < 500) {
+    while (sourceStringIndex < sourceString.length && loops < 5000) {
 
         putDebug("----"+address(sourceIndex)+"----");
 
@@ -77,7 +77,12 @@ function lex() {
             currentDefinitions.push("QUOTATION");
         }
         else if (commentIsOpen) {
+            if (checkingToken === "*" || checkingToken === "*/") {
 
+            }
+            else {
+                checkingToken = "";
+            }
         }
         else {
             currentDictionary = mainDictionary;
@@ -125,6 +130,11 @@ function lex() {
                     //throw all all tokens until comment is closed?
                     //separate else loop (or function) that just looks for ending comments)
                 }
+                else if (tokenStr === "*/") {
+                    commentIsOpen = false;
+                    checkingToken = "";
+                    bestTokenString = "";
+                }
 
 
                 //done with search for now
@@ -137,15 +147,16 @@ function lex() {
 
         //If a separator has been found
         if ((currentChar === " " && !quoteIsOpen) || 
-            currentChar === "\n" || 
-            currentChar === "$" ) {
+            currentChar === "\n" /*|| 
+            currentChar === "$" */) {
             putDebug("    separator found"      +"("+address(sourceIndex)+")");
             
             //create Token object
-            if (bestTokenString !== "" && 
-                bestTokenString !== "\n" &&
+            //if (//bestTokenString !== "" && 
+                //bestTokenString !== "\n" &&
                 //bestTokenString !== " " && //will only work as a token inside quote
-                bestTokenString !== "*/" ) {
+                //bestTokenString !== "*/" ) {
+            if (!commentIsOpen && bestTokenString !== "") {
                 newToken = new Token(bestTokenString, bestTokenDescription, bestTokenStartIndex, bestTokenEndIndex);
             }
 
