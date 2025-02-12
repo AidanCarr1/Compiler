@@ -33,11 +33,14 @@ mainDictionary =  ["int",           "string",        "boolean",       "while", "
 definitions = ["VARIABLE TYPE", "VARIABLE TYPE", "VARIABLE TYPE", "WHILE", "IF", "FALSE", "TRUE", "PRINT", "ID", "ID", "ID", "ID", "ID", "ID", "ID", "ID", "ID", "ID", "ID", "ID", "ID", "ID", "ID", "ID", "ID", "ID", "ID", "ID", "ID", "ID", "ID", "ID", "ID", "ID", "ADDITION", "ASSIGNMENT", "EQUALITY", "INEQUALITY", "QUOTE", "OPEN PARENTHESIS", "CLOSE PARENTHESIS", "OPEN BRACKET", "CLOSE BRACKET", "OPEN COMMENT", "CLOSE COMMENT", "EOP", "DIGIT", "DIGIT", "DIGIT", "DIGIT", "DIGIT", "DIGIT", "DIGIT", "DIGIT", "DIGIT", "DIGIT"];
 
 chars = [" ", "a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z", "\""];
+charsDefinition = Array(27).fill("CHAR");
+charsDefinition.push("QUOTATION");
+
 currentDictionary = mainDictionary;
 
 function lex() {
     // show/hide my comments
-    debug = false;
+    debug = true;
     loops = 0; //for debugging purposes
 
     // Grab the "raw" source code. (force a separator to the end)
@@ -66,19 +69,22 @@ function lex() {
         currentChar = sourceString[sourceStringIndex];
         checkingToken += currentChar;
 
-        putDebug("----"+address(sourceIndex)+"---- cT:"+checkingToken+" bT:"+bestTokenString);
+        putDebug("----"+address(sourceIndex)+"----");
+        //putDebug("    cT:"+checkingToken+" bT:"+bestTokenString);
         
         //change dictionary based on quote/comment state
         if (quoteIsOpen) {
 
             //we are only looking for characters! (and final quote)
             currentDictionary = chars;
-            currentDefinitions = Array(27).fill("CHAR");
-            currentDefinitions.push("QUOTATION");
+            currentDefinitions = charsDefinition;
         }
         else if (commentIsOpen) {
             if (checkingToken === "*" || checkingToken === "*/") {
                 putDebug("--almost close--");
+            }
+            else if (checkingToken === "**") {
+                checkingToken = "*";
             }
             else {
                 checkingToken = "";
@@ -142,6 +148,10 @@ function lex() {
                 matchFound = true;
             }
         }
+
+        // if (!matchFound) {
+        //     putDebug("    unknown...");
+        // }
 
 
 
