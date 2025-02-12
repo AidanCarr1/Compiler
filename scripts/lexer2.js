@@ -29,11 +29,11 @@ Keywords:
 
 
 //Acceptable Lex arrays
-dictionary =  ["int",           "string",        "boolean",       "while", "if", "false", "true", "print", "a",  "b",  "c",  "d",  "e",  "f",  "g",  "h",  "i",  "j",  "k",  "l",  "m",  "n",  "o",  "p",  "q",  "r",  "s",  "t",  "u",  "v",  "w",  "x",  "y",  "z", "+",        "=",          "==",       "!=",         "\"",    "(",                ")",                 "{",            "}",             "/*",           "*/",            "$",    "0",     "1",     "2",      "3",    "4",     "5",     "6",     "7",     "8",     "9"];
+mainDictionary =  ["int",           "string",        "boolean",       "while", "if", "false", "true", "print", "a",  "b",  "c",  "d",  "e",  "f",  "g",  "h",  "i",  "j",  "k",  "l",  "m",  "n",  "o",  "p",  "q",  "r",  "s",  "t",  "u",  "v",  "w",  "x",  "y",  "z", "+",        "=",          "==",       "!=",         "\"",    "(",                ")",                 "{",            "}",             "/*",           "*/",            "$",    "0",     "1",     "2",      "3",    "4",     "5",     "6",     "7",     "8",     "9"];
 definitions = ["VARIABLE TYPE", "VARIABLE TYPE", "VARIABLE TYPE", "WHILE", "IF", "FALSE", "TRUE", "PRINT", "ID", "ID", "ID", "ID", "ID", "ID", "ID", "ID", "ID", "ID", "ID", "ID", "ID", "ID", "ID", "ID", "ID", "ID", "ID", "ID", "ID", "ID", "ID", "ID", "ID", "ID", "ADDITION", "ASSIGNMENT", "EQUALITY", "INEQUALITY", "QUOTE", "OPEN PARENTHESIS", "CLOSE PARENTHESIS", "OPEN BRACKET", "CLOSE BRACKET", "OPEN COMMENT", "CLOSE COMMENT", "EOP", "DIGIT", "DIGIT", "DIGIT", "DIGIT", "DIGIT", "DIGIT", "DIGIT", "DIGIT", "DIGIT", "DIGIT"];
 
-chars = [" ", "a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"];
-
+chars = [" ", "a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z", "\""];
+currentDictionary = mainDictionary;
 
 function lex() {
     // show/hide my comments
@@ -66,12 +66,28 @@ function lex() {
         //look at the next character
         currentChar = sourceString[sourceStringIndex];
         checkingToken += currentChar;
+        
+        //change dictionary based on quote/comment state
+        if (quoteIsOpen) {
 
-        //check every possible lex in our dictionary
-        for (i = 0; i < dictionary.length; i ++) {
+            //we are only looking for characters! (and final quote)
+            currentDictionary = chars;
+            currentDefinitions = Array(27).fill("CHAR");
+            currentDefinitions.push("QUOTATION");
+        }
+        else if (commentIsOpen) {
 
-            tokenStr = dictionary[i];
-            description = definitions[i];
+        }
+        else {
+            currentDictionary = mainDictionary;
+            currentDefinitions = definitions;
+        }
+
+        //check every possible lex in our (current) dictionary
+        for (i = 0; i < currentDictionary.length; i ++) {
+
+            tokenStr = currentDictionary[i];
+            description = currentDefinitions[i];
 
             //does the highlighed token match?
             if (checkingToken === tokenStr) {
