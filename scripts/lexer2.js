@@ -40,7 +40,7 @@ currentDictionary = mainDictionary;
 
 function lex() {
     // show/hide my comments
-    debug = true;
+    debug = false;
     loops = 0; //for debugging purposes
 
     // Grab the "raw" source code. (force a separator to the end)
@@ -144,7 +144,7 @@ function lex() {
         }
 
         if (!matchFound) {
-            putDebug("    unknown...");
+            //putDebug("    unknown...");
         }
 
 
@@ -162,13 +162,13 @@ function lex() {
             }
             //just a comment or blank space
             else if (commentIsOpen) {
-                //skip, no new token
+                //What happens in a comment, stays in a comment
                 putDebug("skip token, comment open");
             }
             //no match found means unknown char
             else if (!matchFound) {
                 //separator with no match means unknown char
-                putMessage("ERROR, unknown character "+address(bestTokenStartIndex));
+                putMessage("ERROR [ unknown character ]  "+address(bestTokenStartIndex));
                 return sourceString;
             }
             else /*if (!commentIsOpen && bestTokenString !== "") */{

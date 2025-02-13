@@ -17,16 +17,9 @@ class Token {
         tokenIndex ++;
 
         //print Token Message
-        putMessage("Token [ '" + str + "' ] " + description + "  " +
+        putMessage("TOKEN [ '" + str + "' ] " + description + "  " +
             address(startIndex) + "-" +
             address(endIndex));
     }
-
-    //setters
-    /*
-    setName(inputName) {
-        this.name = inputName;
-    }
-    */
 }
     
