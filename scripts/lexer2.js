@@ -151,17 +151,27 @@ function lex() {
 
         //If a separator has been found
         if ((currentChar === " " && !quoteIsOpen) || 
-            currentChar === "\n" /*|| 
-            currentChar === "$" */) {
+            currentChar === "\n" ) {
             putDebug("    separator found"      +"("+address(sourceIndex)+")");
             
-            //create Token object
-            if (!matchFound) {
-                //separator with no match means unknown CharacterData
-                putMessage("ERROR, unknown character");
+            //Create Token object
+            //separtor
+            if ((checkingToken === " " && !quoteIsOpen) || checkingToken === "\n") {
+                //just a separator, do nothing
+                putDebug("sep");
+            }
+            //just a comment or blank space
+            else if (commentIsOpen) {
+                //skip, no new token
+                putDebug("skip token, comment open");
+            }
+            //no match found means unknown char
+            else if (!matchFound) {
+                //separator with no match means unknown char
+                putMessage("ERROR, unknown character "+address(bestTokenStartIndex));
                 return sourceString;
             }
-            else if (!commentIsOpen && bestTokenString !== "") {
+            else /*if (!commentIsOpen && bestTokenString !== "") */{
                 newToken = new Token(bestTokenString, bestTokenDescription, bestTokenStartIndex, bestTokenEndIndex);
             }
 
