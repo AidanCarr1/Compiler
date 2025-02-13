@@ -1,15 +1,16 @@
 <!DOCTYPE HTML>
 <html>
 <head>
-    <title>My Compiler</title>
+    <title>ComPIEler</title>
     <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
     <link rel="stylesheet" type="text/css" href="compiler.css" />
 </head>
 <body onload="init();">
-    <h1>Aidan's Compiler Project</h1>
+    <h1>Aidan's Com<strong>pie</strong>ler Project</h1>
     <p>
-        Compiler? <em>I hardly know her</em>
+        it's like the food
     </p>
+
     <!--
     <pre>
 G ::== E
@@ -57,7 +58,16 @@ $</textarea>
 
     function init() {
         // Clear the message box.
-        document.getElementById("taOutput").value = "";
+        document.getElementById("taOutput").value = `
+                    )  
+                   (  \`  
+                )   ) (
+               __..---..__
+           ,-='  /  |  \\  \`=-.
+          :--..___________..--;
+           \\.,_____________,./`;
+        //Pie credit: https://ascii.co.uk/art/pie
+
         // Set the initial values for our globals.
         tokens = "";
         tokenIndex = 0;
@@ -69,7 +79,9 @@ $</textarea>
         // This is executed as a result of the usr pressing the 
         // "compile" button between the two text areas, above.  
         // Note the <input> element's event handler: onclick="btnCompile_click();
+        
         init();
+        document.getElementById("taOutput").value = "";
         putMessage("Compilation Started!!!!!");
         // Grab the tokens from the lexer . . .
         tokens = lex();

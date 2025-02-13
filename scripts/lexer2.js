@@ -61,6 +61,7 @@ function lex() {
     //token switches open/close
     quoteIsOpen = false;
     commentIsOpen = false;
+    matchFound = false;
 
     //loop through source text to find all tokens
     while (sourceStringIndex < sourceString.length && loops < 5000) {
@@ -81,7 +82,7 @@ function lex() {
         }
         else if (commentIsOpen) {
             if (checkingToken === "*" || checkingToken === "*/") {
-                putDebug("--almost close--");
+                putDebug("--almost closed--");
             }
             else if (checkingToken === "**") {
                 checkingToken = "*";
@@ -117,25 +118,18 @@ function lex() {
                 //COPY current index to end index 
                 bestTokenEndIndex = sourceIndex.slice();
 
-                
-                //Open quote
+
+                //Special Cases
+                //Open or close the quote
                 if (tokenStr === "\"") {
                     quoteIsOpen = !quoteIsOpen;
-                    //newToken = new Token(bestTokenString, bestTokenDescription, bestTokenStartIndex, bestTokenEndIndex);
-                    //checkingToken = "";
-                    //bestTokenString = "";
-
-                    //IDEAS
-                    //change the dictionary to be only characters, then change it back?
-                    //checnge tokens from id to char?
                 }
                 //Open comment
                 else if (tokenStr === "/*") {
                     commentIsOpen = true;
                     checkingToken = "";
-                    //throw all all tokens until comment is closed?
-                    //separate else loop (or function) that just looks for ending comments)
                 }
+                //Close comment
                 else if (tokenStr === "*/") {
                     commentIsOpen = false;
                     checkingToken = "";
@@ -144,14 +138,14 @@ function lex() {
 
 
                 //done with search for now
-                break;
                 matchFound = true;
+                break;
             }
         }
 
-        // if (!matchFound) {
-        //     putDebug("    unknown...");
-        // }
+        if (!matchFound) {
+            putDebug("    unknown...");
+        }
 
 
 
@@ -162,11 +156,12 @@ function lex() {
             putDebug("    separator found"      +"("+address(sourceIndex)+")");
             
             //create Token object
-            //if (//bestTokenString !== "" && 
-                //bestTokenString !== "\n" &&
-                //bestTokenString !== " " && //will only work as a token inside quote
-                //bestTokenString !== "*/" ) {
-            if (!commentIsOpen && bestTokenString !== "") {
+            if (!matchFound) {
+                //separator with no match means unknown CharacterData
+                putMessage("ERROR, unknown character");
+                return sourceString;
+            }
+            else if (!commentIsOpen && bestTokenString !== "") {
                 newToken = new Token(bestTokenString, bestTokenDescription, bestTokenStartIndex, bestTokenEndIndex);
             }
 
@@ -175,11 +170,11 @@ function lex() {
             bestTokenString = "";
             bestTokenDescription = "";
 
-            //go fully backwards (sourceIndex) to where we ended off
+            //Go backwards (sourceIndex) to where we ended off
             if (commentIsOpen) {
-                //dont go backwards
-                //fixes space in comments issue
+                //No need to go backwards
             }
+            //Start at end of last token
             else if (sourceIndex[CHAR] > bestTokenEndIndex[CHAR]+1) {
                 numberOfStepsBack = sourceIndex[CHAR] - bestTokenEndIndex[CHAR];
                 
@@ -187,14 +182,14 @@ function lex() {
                 sourceStringIndex -= numberOfStepsBack;
                 currentChar = sourceString[sourceStringIndex];
             }
+            //Start at end of separtor
             else if (sourceIndex[CHAR] == bestTokenEndIndex[CHAR]+1) {
                 bestTokenEndIndex[CHAR] = sourceIndex[CHAR];
             }
-            //test case: inta = 0
-            //start again at end of best token
-            //sourceIndex = bestTokenEndIndex;
-            bestTokenStartIndex = bestTokenEndIndex;
 
+            //Restart for next token
+            bestTokenStartIndex = bestTokenEndIndex;
+            matchFound = false;
         }
 
 
