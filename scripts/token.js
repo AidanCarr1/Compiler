@@ -17,9 +17,11 @@ class Token {
         tokenIndex ++;
 
         //print Token Message
-        putMessage("TOKEN [ '" + str + "' ] " + description + "  " +
-            address(startIndex) + "-" +
-            address(endIndex));
+        var message = "TOKEN [ '" + str + "' ] " + description + " at " + address(startIndex);
+        if (startIndex[LINE] < endIndex[LINE] || startIndex[CHAR] < endIndex[CHAR]) {
+            message += "-" + address(endIndex);
+        }
+        putMessage(message);
     }
 }
     

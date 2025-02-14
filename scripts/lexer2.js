@@ -9,28 +9,16 @@ Globals:
 Language Order:
     keywords:   int string boolean while if false true print
     id:         a b c d e f g h i j k l m n o p q r s t u v w x y z
-    symbol:     == != " " ( ) { } /*
+    symbol:     == != = " ( ) { } + */ /*
     digit:      0 1 2 3 4 5 6 7 8 9 
     char:       a b c d e f g h i j k l m n o p q r s t u v w x y z [space]
 
-Keywords:
-    { } print ( ) 
-    =
-    while if
-    " " ( ) 
-    int string boolean
-    char:   a b c d e f ... z [space]
-    == !=
-    false true
-    +
-    /* 
 */
 
 
-
 //Acceptable Lex arrays
-mainDictionary =  ["int",           "string",        "boolean",       "while", "if", "false", "true", "print", "a",  "b",  "c",  "d",  "e",  "f",  "g",  "h",  "i",  "j",  "k",  "l",  "m",  "n",  "o",  "p",  "q",  "r",  "s",  "t",  "u",  "v",  "w",  "x",  "y",  "z", "+",        "=",          "==",       "!=",         "\"",    "(",                ")",                 "{",            "}",             "/*",           "*/",            "$",    "0",     "1",     "2",      "3",    "4",     "5",     "6",     "7",     "8",     "9"];
-definitions = ["VARIABLE TYPE", "VARIABLE TYPE", "VARIABLE TYPE", "WHILE", "IF", "FALSE", "TRUE", "PRINT", "ID", "ID", "ID", "ID", "ID", "ID", "ID", "ID", "ID", "ID", "ID", "ID", "ID", "ID", "ID", "ID", "ID", "ID", "ID", "ID", "ID", "ID", "ID", "ID", "ID", "ID", "ADDITION", "ASSIGNMENT", "EQUALITY", "INEQUALITY", "QUOTE", "OPEN PARENTHESIS", "CLOSE PARENTHESIS", "OPEN BRACKET", "CLOSE BRACKET", "OPEN COMMENT", "CLOSE COMMENT", "EOP", "DIGIT", "DIGIT", "DIGIT", "DIGIT", "DIGIT", "DIGIT", "DIGIT", "DIGIT", "DIGIT", "DIGIT"];
+mainDictionary = ["int",           "string",        "boolean",       "while", "if", "false", "true", "print", "a",  "b",  "c",  "d",  "e",  "f",  "g",  "h",  "i",  "j",  "k",  "l",  "m",  "n",  "o",  "p",  "q",  "r",  "s",  "t",  "u",  "v",  "w",  "x",  "y",  "z", "+",        "=",          "==",       "!=",         "\"",        "(",                ")",                 "{",            "}",             "/*",           "*/",            "$",    "0",     "1",     "2",      "3",    "4",     "5",     "6",     "7",     "8",     "9"];
+definitions =    ["VARIABLE TYPE", "VARIABLE TYPE", "VARIABLE TYPE", "WHILE", "IF", "FALSE", "TRUE", "PRINT", "ID", "ID", "ID", "ID", "ID", "ID", "ID", "ID", "ID", "ID", "ID", "ID", "ID", "ID", "ID", "ID", "ID", "ID", "ID", "ID", "ID", "ID", "ID", "ID", "ID", "ID", "ADDITION", "ASSIGNMENT", "EQUALITY", "INEQUALITY", "QUOTATION", "OPEN PARENTHESIS", "CLOSE PARENTHESIS", "OPEN BRACKET", "CLOSE BRACKET", "OPEN COMMENT", "CLOSE COMMENT", "EOP", "DIGIT", "DIGIT", "DIGIT", "DIGIT", "DIGIT", "DIGIT", "DIGIT", "DIGIT", "DIGIT", "DIGIT"];
 
 chars = [" ", "a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z", "\""];
 charsDefinition = Array(27).fill("CHAR");
@@ -38,53 +26,54 @@ charsDefinition.push("QUOTATION");
 
 currentDictionary = mainDictionary;
 
+
 function lex() {
-    // show/hide my comments
+    //Show/hide my comments
     debug = false;
     loops = 0; //for debugging purposes
 
-    // Grab the "raw" source code. (force a separator to the end)
+    //Grab the "raw" source code. (force a separator to the end)
     var sourceString = document.getElementById("taSourceCode").value + " ";
 
-    //where in source code are we
+    //Where in source code are we
     sourceStringIndex = 0;
     sourceIndex = [1,1];  //start at 1:1
-
     bestTokenStartIndex = [1,1];
     bestTokenEndIndex = [1,1];
 
-    //token strings
+    //Token strings
     checkingToken = "";
     bestTokenString = "";
     bestTokenDescription = "";
 
-    //token switches open/close
+    //Token switches open/close
     quoteIsOpen = false;
     commentIsOpen = false;
     matchFound = false;
 
-    //loop through source text to find all tokens
+    //Loop through source text to find all tokens
     while (sourceStringIndex < sourceString.length && loops < 5000) {
 
-        //look at the next character
+        //Look at the next character
         currentChar = sourceString[sourceStringIndex];
         checkingToken += currentChar;
 
         putDebug("----"+address(sourceIndex)+"----");
         //putDebug("    cT:"+checkingToken+" bT:"+bestTokenString);
         
-        //change dictionary based on quote/comment state
+        //Change dictionary based on quote/comment state
         if (quoteIsOpen) {
-
             //we are only looking for characters! (and final quote)
             currentDictionary = chars;
             currentDefinitions = charsDefinition;
         }
+        //Ignore all characters, but look for a close comment
         else if (commentIsOpen) {
             if (checkingToken === "*" || checkingToken === "*/") {
                 putDebug("--almost closed--");
             }
             else if (checkingToken === "**") {
+                //allow /***/
                 checkingToken = "*";
             }
             else {
@@ -96,16 +85,16 @@ function lex() {
             currentDefinitions = definitions;
         }
 
-        //check every possible lex in our (current) dictionary
+        //Check every possible lex in our (current) dictionary
         for (i = 0; i < currentDictionary.length; i ++) {
 
             tokenStr = currentDictionary[i];
             description = currentDefinitions[i];
 
-            //does the highlighed token match?
+            //Does the highlighed token match?
             if (checkingToken === tokenStr) {
                 
-                //match found
+                //Match found
                 putDebug("    Match: "+tokenStr+", "+description);
                 bestTokenString = tokenStr;
                 bestTokenDescription = description;
@@ -136,17 +125,14 @@ function lex() {
                     bestTokenString = "";
                 }
 
-
                 //done with search for now
                 matchFound = true;
                 break;
             }
         }
-
-        if (!matchFound) {
-            //putDebug("    unknown...");
-        }
-
+        // if (!matchFound) {
+        //     putDebug("    unknown...");
+        // }
 
 
         //If a separator has been found
@@ -155,20 +141,20 @@ function lex() {
             putDebug("    separator found"      +"("+address(sourceIndex)+")");
             
             //Create Token object
-            //separtor
+            //Separator
             if ((checkingToken === " " && !quoteIsOpen) || checkingToken === "\n") {
                 //just a separator, do nothing
                 putDebug("sep");
             }
-            //just a comment or blank space
+            //Comment or blank space
             else if (commentIsOpen) {
                 //What happens in a comment, stays in a comment
                 putDebug("skip token, comment open");
             }
-            //no match found means unknown char
+            //No match found, unknown char
             else if (!matchFound) {
-                //separator with no match means unknown char
-                putMessage("ERROR [ unknown character ]  "+address(bestTokenStartIndex));
+                bestTokenStartIndex[CHAR] ++;
+                putMessage("ERROR [ Unknown Character ] "+address(bestTokenStartIndex));
                 return sourceString;
             }
             else /*if (!commentIsOpen && bestTokenString !== "") */{
@@ -181,6 +167,7 @@ function lex() {
             bestTokenDescription = "";
 
             //Go backwards (sourceIndex) to where we ended off
+            //Keep going forward if inside a comment
             if (commentIsOpen) {
                 //No need to go backwards
             }
@@ -203,26 +190,40 @@ function lex() {
         }
 
 
-
         //Move index
-        //new source line
+        //New source line
         if (currentChar === "\n") {
             sourceIndex[LINE] = sourceIndex[LINE] + 1;
             sourceIndex[CHAR] = 1; //start at :1
         }
-        //same source line
+        //Same source line
         else {
             sourceIndex[CHAR] = sourceIndex[CHAR] + 1;
         }
-        //next source char
+        //Next source string char
         sourceStringIndex ++;
 
+        //for debugging
         loops ++;
         //putDebug("                                "+loops);
+    }
+    
+
+    //Errors
+    //No EOP
+    if (true/*tokenStr !== "$"*/) {
+        putMessage("ERROR [ Missing EOP ]  "+address(bestTokenEndIndex));
 
     }
+    //Comment open
+    if (commentIsOpen) {
+        putMessage("ERROR [ Unclosed Comment ]  "+address(bestTokenEndIndex));
+    }
+    //Quote open
+    if (quoteIsOpen) {
+        putMessage("ERROR [ Unclosed Quote ]  "+address(bestTokenEndIndex));
+    }
 
-    
     //return a list of tokens
     return sourceString;
 }
