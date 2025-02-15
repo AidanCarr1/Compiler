@@ -1,7 +1,7 @@
-/* token class */
+/* warning class */
 
     
-class Token {
+class Warning {
 
     constructor(str, description, startIndex, endIndex) { 
                     
@@ -12,12 +12,12 @@ class Token {
         this.endIndex = endIndex.slice();
 
 
-        //new TOKEN constructed!
-        this.tid = tokenIndex; //token ID
-        tokenIndex ++;
+        //new WARNING constructed!
+        this.wid = warningIndex; //warning ID
+        warningIndex ++;
 
-        //print TOKEN Message
-        var message = "TOKEN [ '" + str + "' ] " + description + " at " + address(startIndex);
+        //print WARNING Message
+        var message = "WARNING [ '" + str + "' ] " + description + " at " + address(startIndex);
         if (startIndex[LINE] < endIndex[LINE] || startIndex[CHAR] < endIndex[CHAR]) {
             message += "-" + address(endIndex);
         }

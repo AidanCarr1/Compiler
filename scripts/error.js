@@ -1,7 +1,7 @@
-/* token class */
+/* error class */
 
     
-class Token {
+class Error {
 
     constructor(str, description, startIndex, endIndex) { 
                     
@@ -12,12 +12,12 @@ class Token {
         this.endIndex = endIndex.slice();
 
 
-        //new TOKEN constructed!
-        this.tid = tokenIndex; //token ID
-        tokenIndex ++;
+        //new ERROR constructed!
+        this.eid = errorIndex; //error ID
+        errorIndex ++;
 
-        //print TOKEN Message
-        var message = "TOKEN [ '" + str + "' ] " + description + " at " + address(startIndex);
+        //print ERROR Message
+        var message = "ERROR [ '" + str + "' ] " + description + " at " + address(startIndex);
         if (startIndex[LINE] < endIndex[LINE] || startIndex[CHAR] < endIndex[CHAR]) {
             message += "-" + address(endIndex);
         }
