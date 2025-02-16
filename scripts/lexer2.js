@@ -82,7 +82,7 @@ function lex() {
             }
         }
         else {
-            
+
             currentDictionary = mainDictionary;
             currentDefinitions = definitions;
             putDebug("Dictionary: MAIN");
@@ -156,9 +156,13 @@ function lex() {
             }
             //No match found, unknown char
             else if (!matchFound) {
+                //TO DO
+                //this isnt actually the correct index
                 bestTokenStartIndex[CHAR] ++;
-                //FIX this, create error object
-                putMessage("ERROR [ Unknown Character ] "+address(bestTokenStartIndex));
+
+                //Create error object
+                newError = new ErrorCompiler("UNKNOWN CHARACTER", bestTokenStartIndex);
+                //putMessage("ERROR [ Unknown Character ] "+address(bestTokenStartIndex));
                 return sourceString;
             }
             else /*if (!commentIsOpen && bestTokenString !== "") */{
