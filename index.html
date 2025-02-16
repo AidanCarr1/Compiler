@@ -8,7 +8,7 @@
 <body onload="init();">
     <h1>Aidan's Com<strong>pie</strong>ler Project</h1>
     <p>
-        it's like the food
+        pie becuse its like the food
     </p>
 
     <!--
@@ -28,7 +28,11 @@ x = "hello world"
 print ( x )
 } $</textarea>
         <br>
-        <input type="button" id="btnCompile" value="Compile" onclick="btnCompile_click();"/>
+        Verbose Mode is <input type="button" id="btnVerbose" value="OFF" onclick="btnVerbose_click();"/>
+        <br>
+        <strong>
+            <input type="button" id="btnCompile" value="Compile" onclick="btnCompile_click();"/>
+        </strong>
         <br>
         <textarea id="taOutput" cols="64" rows="25" readonly></textarea>
     </div>
@@ -42,6 +46,8 @@ print ( x )
     <!-- Client-side code down here, per the YSlow advice. 
     // (http://developer.yahoo.com/performance/rules.html#js_bottom) -->
     <script type="text/javascript" src="scripts/token.js"></script>	
+    <script type="text/javascript" src="scripts/error.js"></script>
+    <script type="text/javascript" src="scripts/warning.js"></script>
 
     <script type="text/javascript" src="scripts/utils.js"></script>	
     <!--<script type="text/javascript" src="scripts/lexer.js"></script>-->
@@ -55,18 +61,25 @@ print ( x )
     var currentToken = "";
     var errorCount = 0;
     var EOF = "$";
-    var debug = true;
+    var debug = false;
 
     function init() {
         // Clear the message box.
         document.getElementById("taOutput").value = `
-                    )  
-                   (  \`  
-                )   ) ( 
-               __..---..__
-           ,-='  /  |  \\  \`=-.
-          :--..___________..--;
-           \\.,_____________,./`;
+
+
+
+
+
+
+
+                               )  
+                              (  \`  
+                          )   ) ( 
+                          __..---..__
+                      ,-='  /  |  \\  \`=-.
+                     :--..___________..--;
+                      \\.,_____________,./`;
         //Pie credit: https://ascii.co.uk/art/pie
 
         // Set the initial values for our globals.
@@ -91,13 +104,28 @@ print ( x )
         // ...later
         //parse();
     }
+
+    function btnVerbose_click() {        
+        // This is a toggleable button
+        // Verbose mode on or off
+        // On, turns on debug feautres, printing a more in-depth compiler output
+        //value = document.getElementById("btnVerbose").value;
+        if (document.getElementById("btnVerbose").value === "OFF") {
+            document.getElementById("btnVerbose").value = "ON";
+            debug = true;
+        }
+        else {
+            document.getElementById("btnVerbose").value = "OFF";
+            debug = false;
+        }
+    }
     
     function putMessage(msg) {
         document.getElementById("taOutput").value += msg + "\n";
     }
     function putDebug(msg) {
         if (debug) {
-            putMessage(msg);
+            putMessage("    "+msg);
         }
     }
     

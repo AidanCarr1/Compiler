@@ -3,13 +3,13 @@
     
 class Warning {
 
-    constructor(str, description, startIndex, endIndex) { 
+    constructor(str, index) { 
                     
         //set variables
         this.str = str;
-        this.description = description;
-        this.startIndex = startIndex.slice();
-        this.endIndex = endIndex.slice();
+        //this.step = step;
+        this.index = index.slice();
+        //this.endIndex = endIndex.slice();
 
 
         //new WARNING constructed!
@@ -17,7 +17,7 @@ class Warning {
         warningIndex ++;
 
         //print WARNING Message
-        var message = "WARNING [ '" + str + "' ] " + description + " at " + address(startIndex);
+        var message = "WARNING [ '" + str + "' ] " + step + " at " + address(startIndex);
         if (startIndex[LINE] < endIndex[LINE] || startIndex[CHAR] < endIndex[CHAR]) {
             message += "-" + address(endIndex);
         }

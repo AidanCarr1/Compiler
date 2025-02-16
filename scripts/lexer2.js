@@ -29,7 +29,7 @@ currentDictionary = mainDictionary;
 
 function lex() {
     //Show/hide my comments
-    debug = false;
+    //debug = false;
     loops = 0; //for debugging purposes
 
     //Grab the "raw" source code. (force a separator to the end)
@@ -58,7 +58,7 @@ function lex() {
         currentChar = sourceString[sourceStringIndex];
         checkingToken += currentChar;
 
-        putDebug("----"+address(sourceIndex)+"----");
+        putDebug("-"+address(sourceIndex)+"-");
         //putDebug("    cT:"+checkingToken+" bT:"+bestTokenString);
         
         //Change dictionary based on quote/comment state
@@ -66,11 +66,12 @@ function lex() {
             //we are only looking for characters! (and final quote)
             currentDictionary = chars;
             currentDefinitions = charsDefinition;
+            putDebug("Dictionary: CHARS");
         }
         //Ignore all characters, but look for a close comment
         else if (commentIsOpen) {
             if (checkingToken === "*" || checkingToken === "*/") {
-                putDebug("--almost closed--");
+                putDebug("Comment almost closed");
             }
             else if (checkingToken === "**") {
                 //allow /***/
@@ -81,8 +82,10 @@ function lex() {
             }
         }
         else {
+            
             currentDictionary = mainDictionary;
             currentDefinitions = definitions;
+            putDebug("Dictionary: MAIN");
         }
 
         //Check every possible lex in our (current) dictionary
@@ -95,7 +98,7 @@ function lex() {
             if (checkingToken === tokenStr) {
                 
                 //Match found
-                putDebug("    Match: "+tokenStr+", "+description);
+                putDebug("Match [ '"+tokenStr+"' ] "+description);
                 bestTokenString = tokenStr;
                 bestTokenDescription = description;
 
@@ -138,22 +141,23 @@ function lex() {
         //If a separator has been found
         if ((currentChar === " " && !quoteIsOpen) || 
             currentChar === "\n" ) {
-            putDebug("    separator found"      +"("+address(sourceIndex)+")");
+            putDebug("Separator found"); // + "("+address(sourceIndex)+")");
             
             //Create Token object
             //Separator
             if ((checkingToken === " " && !quoteIsOpen) || checkingToken === "\n") {
                 //just a separator, do nothing
-                putDebug("sep");
+                putDebug("Skip token, separator");
             }
             //Comment or blank space
             else if (commentIsOpen) {
                 //What happens in a comment, stays in a comment
-                putDebug("skip token, comment open");
+                putDebug("Skip token, comment is open");
             }
             //No match found, unknown char
             else if (!matchFound) {
                 bestTokenStartIndex[CHAR] ++;
+                //FIX this, create error object
                 putMessage("ERROR [ Unknown Character ] "+address(bestTokenStartIndex));
                 return sourceString;
             }
@@ -212,11 +216,13 @@ function lex() {
     //Errors
     //No EOP
     if (true/*tokenStr !== "$"*/) {
+        newToken = new ErrorCompiler("Missing EOP", );
         putMessage("ERROR [ Missing EOP ]  "+address(bestTokenEndIndex));
 
     }
     //Comment open
     if (commentIsOpen) {
+        newWarning = new Warning("Unclose Comment", bestTokenEndIndex)
         putMessage("ERROR [ Unclosed Comment ]  "+address(bestTokenEndIndex));
     }
     //Quote open

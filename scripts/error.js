@@ -1,13 +1,13 @@
 /* error class */
 
-    
-class Error {
+//because Error is a keyword    
+class ErrorCompiler {
 
-    constructor(str, description, startIndex, endIndex) { 
+    constructor(str, startIndex, endIndex) { 
                     
         //set variables
         this.str = str;
-        this.description = description;
+        //this.step = step;
         this.startIndex = startIndex.slice();
         this.endIndex = endIndex.slice();
 
@@ -17,7 +17,7 @@ class Error {
         errorIndex ++;
 
         //print ERROR Message
-        var message = "ERROR [ '" + str + "' ] " + description + " at " + address(startIndex);
+        var message = "ERROR [ '" + str + "' ] " + step + " at " + address(startIndex);
         if (startIndex[LINE] < endIndex[LINE] || startIndex[CHAR] < endIndex[CHAR]) {
             message += "-" + address(endIndex);
         }
