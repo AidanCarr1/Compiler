@@ -20,9 +20,10 @@ Language Order:
 mainDictionary = ["int",           "string",        "boolean",       "while", "if", "false", "true", "print", "a",  "b",  "c",  "d",  "e",  "f",  "g",  "h",  "i",  "j",  "k",  "l",  "m",  "n",  "o",  "p",  "q",  "r",  "s",  "t",  "u",  "v",  "w",  "x",  "y",  "z", "+",        "=",          "==",       "!=",         "\"",        "(",                ")",                 "{",            "}",             "/*",           "*/",            "$",    "0",     "1",     "2",      "3",    "4",     "5",     "6",     "7",     "8",     "9"];
 definitions =    ["VARIABLE TYPE", "VARIABLE TYPE", "VARIABLE TYPE", "WHILE", "IF", "FALSE", "TRUE", "PRINT", "ID", "ID", "ID", "ID", "ID", "ID", "ID", "ID", "ID", "ID", "ID", "ID", "ID", "ID", "ID", "ID", "ID", "ID", "ID", "ID", "ID", "ID", "ID", "ID", "ID", "ID", "ADDITION", "ASSIGNMENT", "EQUALITY", "INEQUALITY", "QUOTATION", "OPEN PARENTHESIS", "CLOSE PARENTHESIS", "OPEN BRACKET", "CLOSE BRACKET", "OPEN COMMENT", "CLOSE COMMENT", "EOP", "DIGIT", "DIGIT", "DIGIT", "DIGIT", "DIGIT", "DIGIT", "DIGIT", "DIGIT", "DIGIT", "DIGIT"];
 
-chars = [" ", "a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z", "\""];
+chars = [" ", "a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z", "\"", "\n"];
 charsDefinition = Array(27).fill("CHAR");
 charsDefinition.push("QUOTATION");
+charsDefinition.push("NEW LINE BAD");
 
 currentDictionary = mainDictionary;
 
@@ -141,17 +142,13 @@ function lex() {
 
         //If a separator has been found
         if ((currentChar === " " && !quoteIsOpen) || 
-            currentChar === "\n") {
+            currentChar === "\n" /*||
+            currentChar === "$"*/) {
             putDebug("Separator found"); // + "("+address(sourceIndex)+")");
             
-            //Create Token object
+            //Create Token object, check for errors
             //Separator
-            if (quoteIsOpen && bestTokenString === "\n" && currentChar === "\n") {
-                newError = new ErrorCompiler("UNFINISHED STRING", bestTokenStartIndex);
-                //putMessage("ERROR [ Unknown Character ] "+address(bestTokenStartIndex));
-                return sourceString;
-            }
-            else if ((checkingToken === " " && !quoteIsOpen) || checkingToken === "\n") {
+            if ((checkingToken === " " && !quoteIsOpen) || checkingToken === "\n") {
                 //just a separator, do nothing
                 putDebug("Skip token, separator");
             }
@@ -212,6 +209,11 @@ function lex() {
         if (currentChar === "\n") {
             sourceIndex[LINE] = sourceIndex[LINE] + 1;
             sourceIndex[CHAR] = 1; //start at :1
+            //No new lines when inside a quote!
+            if (quoteIsOpen) {
+                newError = new ErrorCompiler("NEW LINE BEFORE STRING TERMINATION", bestTokenStartIndex);
+                return sourceString;
+            }
         }
         //Same source line
         else {
