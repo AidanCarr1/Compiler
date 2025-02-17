@@ -35,6 +35,7 @@ function lex() {
 
     //Grab the "raw" source code. (force a separator to the end)
     var sourceString = document.getElementById("taSourceCode").value + " ";
+    sourceString = sourceString.replaceAll("\t", " "); //treat tabs like spaces
 
     //Where in source code are we
     sourceStringIndex = 0;
@@ -148,7 +149,8 @@ function lex() {
             
             //Create Token object, check for errors
             //Separator
-            if ((checkingToken === " " && !quoteIsOpen) || checkingToken === "\n") {
+            if ((checkingToken === " " && !quoteIsOpen) || 
+                checkingToken === "\n") {
                 //just a separator, do nothing
                 putDebug("Skip token, separator");
             }

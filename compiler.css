@@ -27,3 +27,12 @@ h2
 	font-weight: normal;
 	font-style: normal;	
 }
+
+/* Change tab to 4 spaces, actually lets do 1
+https://stackoverflow.com/questions/3379091/is-it-possible-to-change-width-of-tab-symbol-in-textarea */
+textarea,
+pre {
+    -moz-tab-size : 1;
+      -o-tab-size : 1;
+         tab-size : 1;
+}
