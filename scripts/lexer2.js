@@ -34,7 +34,7 @@ function lex() {
     loops = 0; //for debugging purposes
 
     //Grab the "raw" source code. (force a separator to the end)
-    var sourceString = document.getElementById("taSourceCode").value + " ";
+    var sourceString = document.getElementById("taSourceCode").value + "\n";
     sourceString = sourceString.replaceAll("\t", " "); //treat tabs like spaces
 
     //Where in source code are we
@@ -143,8 +143,8 @@ function lex() {
 
         //If a separator has been found
         if ((currentChar === " " && !quoteIsOpen) || 
-            currentChar === "\n" ||
-            currentChar === "$") {
+            currentChar === "\n" /*||
+            currentChar === "$"*/) {
             putDebug("Separator found"); // + "("+address(sourceIndex)+")");
             
             //Create Token object, check for errors
@@ -242,8 +242,8 @@ function lex() {
 
     //Comment open
     if (commentIsOpen) {
-        newWarning = new Warning("REACHED EOP WITH UNCLOSED COMMENT", bestTokenEndIndex);
-        warningCount ++;
+        newError = new ErrorCompiler("REACHED EOP WITH UNCLOSED COMMENT", bestTokenEndIndex);
+        errorCount ++;
                 
         //putMessage("ERROR [ Unclosed Comment ]  "+address(bestTokenEndIndex));
     }
