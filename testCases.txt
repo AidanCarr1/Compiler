@@ -80,3 +80,13 @@ print ("hello test"             )
 $
 
 /***/ {intaa=9}$
+
+
+{
+string x
+x = "hello world
+print ( "no")
+}$
+{stringz
+z = "real as rain"
+}$
