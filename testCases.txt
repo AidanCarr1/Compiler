@@ -126,3 +126,7 @@ print(y)
 	print (a)
 	print(  "a" )
 }	$
+
+
+this one doesnt work yet, fix it
+{/*/*This is */ "a test" *//*}$

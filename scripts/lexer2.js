@@ -143,8 +143,8 @@ function lex() {
 
         //If a separator has been found
         if ((currentChar === " " && !quoteIsOpen) || 
-            currentChar === "\n" /*||
-            currentChar === "$"*/) {
+            currentChar === "\n" ||
+            currentChar === "$") {
             putDebug("Separator found"); // + "("+address(sourceIndex)+")");
             
             //Create Token object, check for errors
@@ -170,6 +170,7 @@ function lex() {
                 //TODO use current dicitonry, unknwon Charcter or token...
 
                 newError = new ErrorCompiler("UNKNOWN CHARACTER", bestTokenStartIndex);
+                errorCount ++;
                 //putMessage("ERROR [ Unknown Character ] "+address(bestTokenStartIndex));
                 return sourceString;
             }
@@ -214,7 +215,13 @@ function lex() {
             //No new lines when inside a quote!
             if (quoteIsOpen) {
                 newError = new ErrorCompiler("NEW LINE BEFORE STRING TERMINATION", bestTokenStartIndex);
+                errorCount ++;
+                quoteIsOpen = false;
+                
                 return sourceString;
+                    //Let the lexer go on as if there was and added quote?
+                    //Still an error, so parse will not activate
+                    //But one error is good enough
             }
         }
         //Same source line
@@ -235,19 +242,25 @@ function lex() {
 
     //Comment open
     if (commentIsOpen) {
-        newWarning = new Warning("REACHED EOP WITH UNCLOSED QUOTE", bestTokenEndIndex)
+        newWarning = new Warning("REACHED EOP WITH UNCLOSED COMMENT", bestTokenEndIndex);
+        warningCount ++;
+                
         //putMessage("ERROR [ Unclosed Comment ]  "+address(bestTokenEndIndex));
     }
 
     //Quote open
     else if (quoteIsOpen) {
         newError = new ErrorCompiler("REACHED EOP WITH UNCLOSED QUOTE", bestTokenEndIndex);
+        errorCount ++;
+                
         //putMessage("ERROR [ Unclosed Quote ]  "+address(bestTokenEndIndex));
     }
 
     //No EOP
     else if (finalToken.str !== "$") {
-        newError = new ErrorCompiler("MISSING EOP SYMBOL $", bestTokenEndIndex);
+        newWarning = new Warning("MISSING EOP SYMBOL $", bestTokenEndIndex);
+        warningCount ++;
+                
         //putMessage("ERROR [ Missing EOP ]  "+address(bestTokenEndIndex));
     }
 
