@@ -85,6 +85,7 @@ function lex() {
 
             currentDictionary = mainDictionary;
             currentDefinitions = definitions;
+            //todo, maybe have a string variable, dictionary name (prevDictionaryName too), easier here and printing
             putDebug("Dictionary: MAIN");
         }
 
@@ -140,12 +141,17 @@ function lex() {
 
         //If a separator has been found
         if ((currentChar === " " && !quoteIsOpen) || 
-            currentChar === "\n" ) {
+            currentChar === "\n") {
             putDebug("Separator found"); // + "("+address(sourceIndex)+")");
             
             //Create Token object
             //Separator
-            if ((checkingToken === " " && !quoteIsOpen) || checkingToken === "\n") {
+            if (quoteIsOpen && bestTokenString === "\n" && currentChar === "\n") {
+                newError = new ErrorCompiler("UNFINISHED STRING", bestTokenStartIndex);
+                //putMessage("ERROR [ Unknown Character ] "+address(bestTokenStartIndex));
+                return sourceString;
+            }
+            else if ((checkingToken === " " && !quoteIsOpen) || checkingToken === "\n") {
                 //just a separator, do nothing
                 putDebug("Skip token, separator");
             }
@@ -154,6 +160,7 @@ function lex() {
                 //What happens in a comment, stays in a comment
                 putDebug("Skip token, comment is open");
             }
+            
             //No match found, unknown char
             else if (!matchFound) {
                 //TO DO
@@ -161,6 +168,8 @@ function lex() {
                 bestTokenStartIndex[CHAR] ++;
 
                 //Create error object
+                //TODO use current dicitonry, unknwon Charcter or token...
+
                 newError = new ErrorCompiler("UNKNOWN CHARACTER", bestTokenStartIndex);
                 //putMessage("ERROR [ Unknown Character ] "+address(bestTokenStartIndex));
                 return sourceString;
@@ -217,24 +226,24 @@ function lex() {
     }
     
 
-    //Mutually Exclusive Errors
+    //Mutually Exclusive EOP Errors
     finalToken = tokenStream[tokenIndex-1];
 
     //Comment open
     if (commentIsOpen) {
-        newWarning = new Warning("Unclosed Comment", bestTokenEndIndex)
+        newWarning = new Warning("REACHED EOP WITH UNCLOSED QUOTE", bestTokenEndIndex)
         //putMessage("ERROR [ Unclosed Comment ]  "+address(bestTokenEndIndex));
     }
 
     //Quote open
     else if (quoteIsOpen) {
-        newError = new ErrorCompiler("Unclosed Quote", bestTokenEndIndex);
+        newError = new ErrorCompiler("REACHED EOP WITH UNCLOSED QUOTE", bestTokenEndIndex);
         //putMessage("ERROR [ Unclosed Quote ]  "+address(bestTokenEndIndex));
     }
 
     //No EOP
     else if (finalToken.str !== "$") {
-        newError = new ErrorCompiler("Missing EOP", bestTokenEndIndex);
+        newError = new ErrorCompiler("MISSING EOP SYMBOL $", bestTokenEndIndex);
         //putMessage("ERROR [ Missing EOP ]  "+address(bestTokenEndIndex));
     }
 

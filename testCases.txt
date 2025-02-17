@@ -90,3 +90,20 @@ print ( "no")
 {stringz
 z = "real as rain"
 }$
+
+
+{
+print(a!/*hi*/=0)
+*/
+}$
+
+
+print ("hello
+int a
+
+
+{
+string x
+x = "hello world
+print ( x )
+} $
