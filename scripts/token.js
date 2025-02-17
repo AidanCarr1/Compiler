@@ -14,6 +14,7 @@ class Token {
 
         //new TOKEN constructed!
         this.tid = tokenIndex; //token ID
+        tokenStream[tokenIndex] = this;
         tokenIndex ++;
 
         //print TOKEN Message

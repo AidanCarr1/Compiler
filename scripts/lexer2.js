@@ -217,21 +217,25 @@ function lex() {
     }
     
 
-    //Errors
-    //No EOP
-    if (true/*tokenStr !== "$"*/) {
-        newToken = new ErrorCompiler("Missing EOP", );
-        putMessage("ERROR [ Missing EOP ]  "+address(bestTokenEndIndex));
+    //Mutually Exclusive Errors
+    finalToken = tokenStream[tokenIndex-1];
 
-    }
     //Comment open
     if (commentIsOpen) {
-        newWarning = new Warning("Unclose Comment", bestTokenEndIndex)
-        putMessage("ERROR [ Unclosed Comment ]  "+address(bestTokenEndIndex));
+        newWarning = new Warning("Unclosed Comment", bestTokenEndIndex)
+        //putMessage("ERROR [ Unclosed Comment ]  "+address(bestTokenEndIndex));
     }
+
     //Quote open
-    if (quoteIsOpen) {
-        putMessage("ERROR [ Unclosed Quote ]  "+address(bestTokenEndIndex));
+    else if (quoteIsOpen) {
+        newError = new ErrorCompiler("Unclosed Quote", bestTokenEndIndex);
+        //putMessage("ERROR [ Unclosed Quote ]  "+address(bestTokenEndIndex));
+    }
+
+    //No EOP
+    else if (finalToken.str !== "$") {
+        newError = new ErrorCompiler("Missing EOP", bestTokenEndIndex);
+        //putMessage("ERROR [ Missing EOP ]  "+address(bestTokenEndIndex));
     }
 
     //return a list of tokens
