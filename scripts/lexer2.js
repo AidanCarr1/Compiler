@@ -17,7 +17,7 @@ Language Order:
 
 //Acceptable Lex arrays
 mainDictionary = ["int",           "string",        "boolean",       "while", "if", "false", "true", "print", "a",  "b",  "c",  "d",  "e",  "f",  "g",  "h",  "i",  "j",  "k",  "l",  "m",  "n",  "o",  "p",  "q",  "r",  "s",  "t",  "u",  "v",  "w",  "x",  "y",  "z", "+",        "=",          "==",       "!=",         "\"",        "(",                ")",                 "{",            "}",             "/*",           "*/",            "$",    "0",     "1",     "2",      "3",    "4",     "5",     "6",     "7",     "8",     "9"];
-definitions =    ["VARIABLE TYPE", "VARIABLE TYPE", "VARIABLE TYPE", "WHILE", "IF", "FALSE", "TRUE", "PRINT", "ID", "ID", "ID", "ID", "ID", "ID", "ID", "ID", "ID", "ID", "ID", "ID", "ID", "ID", "ID", "ID", "ID", "ID", "ID", "ID", "ID", "ID", "ID", "ID", "ID", "ID", "ADDITION", "ASSIGNMENT", "EQUALITY", "INEQUALITY", "QUOTATION", "OPEN PARENTHESIS", "CLOSE PARENTHESIS", "OPEN BRACKET", "CLOSE BRACKET", "OPEN COMMENT", "CLOSE COMMENT", "EOP", "DIGIT", "DIGIT", "DIGIT", "DIGIT", "DIGIT", "DIGIT", "DIGIT", "DIGIT", "DIGIT", "DIGIT"];
+definitions =    ["VARIABLE TYPE", "VARIABLE TYPE", "VARIABLE TYPE", "WHILE", "IF", "FALSE", "TRUE", "PRINT", "ID", "ID", "ID", "ID", "ID", "ID", "ID", "ID", "ID", "ID", "ID", "ID", "ID", "ID", "ID", "ID", "ID", "ID", "ID", "ID", "ID", "ID", "ID", "ID", "ID", "ID", "ADDITION", "ASSIGNMENT", "EQUALITY", "INEQUALITY", "QUOTATION", "OPEN PARENTHESIS", "CLOSE PARENTHESIS", "OPEN BRACE", "CLOSE BRACE", "OPEN COMMENT", "CLOSE COMMENT", "EOP", "DIGIT", "DIGIT", "DIGIT", "DIGIT", "DIGIT", "DIGIT", "DIGIT", "DIGIT", "DIGIT", "DIGIT"];
 
 chars = [" ", "a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z", "\"", "\n"];
 charsDefinition = Array(27).fill("CHAR");
@@ -25,6 +25,8 @@ charsDefinition.push("QUOTATION");
 charsDefinition.push("NEW LINE BAD");
 
 currentDictionary = mainDictionary;
+currentDictionaryName = "MAIN";
+previousDictionaryName = "MAIN";
 
 
 function lex(programString) {
@@ -67,7 +69,14 @@ function lex(programString) {
             //we are only looking for characters! (and final quote)
             currentDictionary = chars;
             currentDefinitions = charsDefinition;
-            putDebug("Dictionary: CHARS");
+
+            //Did the dictionary change?
+            currentDictionaryName = "CHARS";
+            if (currentDictionaryName != previousDictionaryName) {
+                putDebug("Dictionary switched to CHARS");
+            }
+            previousDictionaryName = "CHARS";  
+
         }
         //Ignore all characters, but look for a close comment
         else if (commentIsOpen) {
@@ -86,8 +95,13 @@ function lex(programString) {
 
             currentDictionary = mainDictionary;
             currentDefinitions = definitions;
-            //todo, maybe have a string variable, dictionary name (prevDictionaryName too), easier here and printing
-            putDebug("Dictionary: MAIN");
+
+            //Did the dictionary change?
+            currentDictionaryName = "MAIN";
+            if (currentDictionaryName != previousDictionaryName) {
+                putDebug("Dictionary switched to MAIN");
+            }
+            previousDictionaryName = "MAIN";            
         }
 
         //Check every possible lex in our (current) dictionary

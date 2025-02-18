@@ -15,7 +15,7 @@ class ErrorCompiler {
         errorCount ++;
 
         //print ERROR Message
-        var message = "ERROR [ " + str + " ]" + " at " + address(index);
+        var message = "! ERROR [ " + str + " ]" + " at " + address(index);
         putMessage(message);
     }
 }

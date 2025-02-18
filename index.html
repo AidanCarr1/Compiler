@@ -22,16 +22,9 @@ O ::== + | -
         <img style="float:right;" src="images/CompilerPhases.png" alt="Compiler Phases diagram" />
     </div>   --> 
     <div>
-        <textarea id="taSourceCode" cols="64" rows="10">{}$
-{{{{{{}}}}}}$
-{{{{{{}}} /* comments are ignored */ }}}}$
-{ /* comments are still ignored */ int @}$
-{
-    int a
-    a = a
-    string b
-    a=b
-}$</textarea>
+        <textarea id="taSourceCode" cols="64" rows="10">{ int a }$ {int b}
+$ {int c}   $
+{int d}$</textarea>
         <br>
         Verbose Mode is <input type="button" id="btnVerbose" value="OFF" onclick="btnVerbose_click();"/>
         <br>
@@ -107,6 +100,7 @@ O ::== + | -
         
         //Separate the user generated source code into programs
         programs = getPrograms();
+        programs = addSpacing(programs);
 
         //Run process one by one
         for (var i = 0; i < programs.length; i++) {
@@ -169,6 +163,29 @@ O ::== + | -
         var finalProgram = programs[programs.length-1];
         if (finalProgram.replaceAll("\n","").replaceAll(" ", "") === "") {
             removeFinalProgram = programs.pop();
+        }
+        return programs;
+    }
+
+    function addSpacing(programs) {
+        for (var i = 1; i < programs.length; i++) {
+            //get previous program spacing
+            var previousProgram = programs[i-1];
+            
+            var spacingString = "";
+            for (var char in previousProgram) {
+                //putDebug(char);
+                if (previousProgram[char] === "\n"){
+                    spacingString += "\n";
+                }
+                else {
+                    spacingString += " ";
+                }
+            }
+
+            //add it to the beginning of current program
+            programs[i] = spacingString + programs[i];
+            putDebug("%"+programs[i]+"%");
         }
         return programs;
     }

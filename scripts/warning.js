@@ -15,7 +15,7 @@ class Warning {
         warningCount ++;
 
         //print WARNING Message
-        var message = "WARNING [ " + str + " ]" + " at " + address(index);
+        var message = "! WARNING [ " + str + " ]" + " at " + address(index);
         putMessage(message);
     }
 }
