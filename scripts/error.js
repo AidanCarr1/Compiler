@@ -11,8 +11,8 @@ class ErrorCompiler {
 
 
         //new ERROR constructed!
-        this.eid = errorIndex; //error ID
-        errorIndex ++;
+        this.eid = errorCount; //error ID
+        errorCount ++;
 
         //print ERROR Message
         var message = "ERROR [ " + str + " ]" + " at " + address(index);

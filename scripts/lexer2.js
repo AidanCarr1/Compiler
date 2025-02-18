@@ -4,7 +4,6 @@ Globals:
     tokens = "";
     tokenIndex = 0;
     currentToken = ' ';
-    errorCount = 0;  
 
 Language Order:
     keywords:   int string boolean while if false true print
@@ -170,7 +169,6 @@ function lex(programString) {
                 //TODO use current dicitonry, unknwon Charcter or token...
 
                 newError = new ErrorCompiler("UNKNOWN CHARACTER", bestTokenStartIndex);
-                errorCount ++;
                 //putMessage("ERROR [ Unknown Character ] "+address(bestTokenStartIndex));
                 return sourceString;
             }
@@ -215,7 +213,6 @@ function lex(programString) {
             //No new lines when inside a quote!
             if (quoteIsOpen) {
                 newError = new ErrorCompiler("NEW LINE BEFORE STRING TERMINATION", bestTokenStartIndex);
-                errorCount ++;
                 quoteIsOpen = false;
                 
                 return sourceString;
@@ -243,7 +240,6 @@ function lex(programString) {
     //Comment open
     if (commentIsOpen) {
         newError = new ErrorCompiler("REACHED EOP WITH UNCLOSED COMMENT", bestTokenEndIndex);
-        errorCount ++;
                 
         //putMessage("ERROR [ Unclosed Comment ]  "+address(bestTokenEndIndex));
     }
@@ -251,7 +247,6 @@ function lex(programString) {
     //Quote open
     else if (quoteIsOpen) {
         newError = new ErrorCompiler("REACHED EOP WITH UNCLOSED QUOTE", bestTokenEndIndex);
-        errorCount ++;
                 
         //putMessage("ERROR [ Unclosed Quote ]  "+address(bestTokenEndIndex));
     }
@@ -259,7 +254,6 @@ function lex(programString) {
     //No EOP
     else if (finalToken.str !== "$") {
         newWarning = new Warning("MISSING EOP SYMBOL $", bestTokenEndIndex);
-        warningCount ++;
                 
         //putMessage("ERROR [ Missing EOP ]  "+address(bestTokenEndIndex));
     }

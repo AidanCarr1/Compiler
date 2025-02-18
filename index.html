@@ -63,10 +63,10 @@ O ::== + | -
     const CHAR = 1;
     var tokenStream = [];
     var tokenIndex = 0;
-    var errorIndex = 0;
-    var warningIndex = 0;
-    var currentToken = "";
+    //var errorIndex = 0;
+    var warningCount = 0;
     var errorCount = 0;
+    var currentToken = "";
     var EOF = "$";
     var debug = false;
 
@@ -110,11 +110,16 @@ O ::== + | -
 
         //Run process one by one
         for (var i = 0; i < programs.length; i++) {
-            putMessage("Program #"+ (i+1) +": ");
+            putMessage("~~~ Program #"+ (i+1) +" ~~~");
 
             //Lex
-            tokens = lex(programs[i]);
-            putMessage("Lex returned [" + tokens + "]");
+            var isLexSuccessful = lex(programs[i]);
+            //Message
+            putMessage("Lex complete with " + warningCount +" warning(s) and "+ errorCount+" error(s)");
+            putMessage("");
+            //Reset errors
+            warningCount = 0;
+            errorCount = 0;
         }
         // . . . and parse!
         // ...later

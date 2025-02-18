@@ -11,8 +11,8 @@ class Warning {
 
 
         //new WARNING constructed!
-        this.wid = warningIndex; //warning ID
-        warningIndex ++;
+        this.wid = warningCount; //warning ID
+        warningCount ++;
 
         //print WARNING Message
         var message = "WARNING [ " + str + " ]" + " at " + address(index);
