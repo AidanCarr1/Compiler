@@ -28,13 +28,13 @@ charsDefinition.push("NEW LINE BAD");
 currentDictionary = mainDictionary;
 
 
-function lex() {
+function lex(programString) {
     //Show/hide my comments
     //debug = false;
     loops = 0; //for debugging purposes
 
     //Grab the "raw" source code. (force a separator to the end)
-    var sourceString = document.getElementById("taSourceCode").value + "\n";
+    var sourceString = programString + "\n";
     sourceString = sourceString.replaceAll("\t", " "); //treat tabs like spaces
 
     //Where in source code are we

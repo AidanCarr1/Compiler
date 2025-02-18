@@ -22,14 +22,16 @@ O ::== + | -
         <img style="float:right;" src="images/CompilerPhases.png" alt="Compiler Phases diagram" />
     </div>   --> 
     <div>
-        <textarea id="taSourceCode" cols="64" rows="10">{
-string   x
-x = "hello 
-string y
-y = "world
-print (x)
-print(y)
-} $</textarea>
+        <textarea id="taSourceCode" cols="64" rows="10">{}$
+{{{{{{}}}}}}$
+{{{{{{}}} /* comments are ignored */ }}}}$
+{ /* comments are still ignored */ int @}$
+{
+    int a
+    a = a
+    string b
+    a=b
+}$</textarea>
         <br>
         Verbose Mode is <input type="button" id="btnVerbose" value="OFF" onclick="btnVerbose_click();"/>
         <br>
@@ -102,9 +104,18 @@ print(y)
         init();
         document.getElementById("taOutput").value = "";
         putMessage("Compilation Started!");
-        // Grab the tokens from the lexer . . .
-        tokens = lex();
-        putMessage("Lex returned [" + tokens + "]");
+        
+        //Separate the user generated source code into programs
+        programs = getPrograms();
+
+        //Run process one by one
+        for (var i = 0; i < programs.length; i++) {
+            putMessage("Program #"+ (i+1) +": ");
+
+            //Lex
+            tokens = lex(programs[i]);
+            putMessage("Lex returned [" + tokens + "]");
+        }
         // . . . and parse!
         // ...later
         //parse();
@@ -134,6 +145,23 @@ print(y)
         }
     }
     
+    function getPrograms() {
+        //Grab the "raw" source code. (force a separator to the end)
+        var sourceString = document.getElementById("taSourceCode").value;// + "\n";
+        //sourceString = sourceString.replaceAll("\t", " "); //treat tabs like spaces
+        
+        //Split source string into separate programs
+        var programs = sourceString.split("$");  
+        for (var i = 0; i < programs.length; i++) {
+            //Add $ where they rightfully belong (all but the last index)
+            if (i != programs.length-1) {
+                programs[i] = programs[i] + "$"
+            }
+            putDebug("<<"+ programs[i]+">>");
+        }  
+
+        return programs;
+    }
     /*
     function parse() {
         putMessage("Parsing [" + tokens + "]");
