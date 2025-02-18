@@ -110,7 +110,7 @@ O ::== + | -
 
         //Run process one by one
         for (var i = 0; i < programs.length; i++) {
-            putMessage("~~~ Program #"+ (i+1) +" ~~~");
+            putMessage("~~~~~ Program #"+ (i+1) +" ~~~~~");
 
             //Lex
             var isLexSuccessful = lex(programs[i]);
@@ -165,6 +165,11 @@ O ::== + | -
             putDebug("<<"+ programs[i]+">>");
         }  
 
+        //Get rid of a possible empty final program
+        var finalProgram = programs[programs.length-1];
+        if (finalProgram.replaceAll("\n","").replaceAll(" ", "") === "") {
+            removeFinalProgram = programs.pop();
+        }
         return programs;
     }
     /*

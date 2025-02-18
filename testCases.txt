@@ -129,8 +129,8 @@ print(y)
 
 
 
+STOLEN USE CASES
 {/*/*This is */ "a test" *//*}$
-
 
 
 {}$
@@ -143,3 +143,10 @@ print(y)
   string b
   a=b
 }$
+
+
+{/* Comment!!!*/ ()
+print=whileif"teststring"
+intstringbooleanfalse
+true
+==!=+ a 0123456789}$
