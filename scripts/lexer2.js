@@ -1,10 +1,5 @@
 /* lexer2.js  
 
-Globals:
-    tokens = "";
-    tokenIndex = 0;
-    currentToken = ' ';
-
 Language Order:
     keywords:   int string boolean while if false true print
     id:         a b c d e f g h i j k l m n o p q r s t u v w x y z
@@ -31,7 +26,6 @@ previousDictionaryName = "MAIN";
 
 function lex(programString) {
     //Show/hide my comments
-    //debug = false;
     loops = 0; //for debugging purposes
 
     //Grab the "raw" source code. (force a separator to the end)
@@ -76,8 +70,8 @@ function lex(programString) {
                 putDebug("Dictionary switched to CHARS");
             }
             previousDictionaryName = "CHARS";  
-
         }
+
         //Ignore all characters, but look for a close comment
         else if (commentIsOpen) {
             if (checkingToken === "*" || checkingToken === "*/") {
@@ -91,8 +85,9 @@ function lex(programString) {
                 checkingToken = "";
             }
         }
-        else {
 
+        //Normal old dictionary
+        else {
             currentDictionary = mainDictionary;
             currentDefinitions = definitions;
 
@@ -126,7 +121,6 @@ function lex(programString) {
                 //COPY current index to end index 
                 bestTokenEndIndex = sourceIndex.slice();
 
-
                 //Special Cases
                 //Open or close the quote
                 if (tokenStr === "\"") {
@@ -144,49 +138,49 @@ function lex(programString) {
                     bestTokenString = "";
                 }
 
-                //done with search for now
+                //Done with search for now
                 matchFound = true;
                 break;
             }
         }
-        // if (!matchFound) {
-        //     putDebug("    unknown...");
-        // }
 
 
         //If a separator has been found
         if ((currentChar === " " && !quoteIsOpen) || 
-            currentChar === "\n" /*||
-            currentChar === "$"*/) {
+            currentChar === "\n") {
             putDebug("Separator found"); // + "("+address(sourceIndex)+")");
             
             //Create Token object, check for errors
+            
             //Separator
             if ((checkingToken === " " && !quoteIsOpen) || 
                 checkingToken === "\n") {
-                //just a separator, do nothing
+                //Just a separator, do nothing
                 putDebug("Skip token, separator");
             }
+            
             //Comment or blank space
             else if (commentIsOpen) {
                 //What happens in a comment, stays in a comment
                 putDebug("Skip token, comment is open");
             }
             
-            //No match found, unknown char
+            //No match found, unknown char/token
             else if (!matchFound) {
-                //TO DO
-                //this isnt actually the correct index
                 bestTokenStartIndex[CHAR] ++;
 
-                //Create error object
-                //TODO use current dicitonry, unknwon Charcter or token...
-
-                newError = new ErrorCompiler("UNKNOWN CHARACTER", bestTokenStartIndex);
-                //putMessage("ERROR [ Unknown Character ] "+address(bestTokenStartIndex));
+                //Display error based on the dictionary
+                if (quoteIsOpen) {
+                    newError = new ErrorCompiler("UNKNOWN CHARACTER", bestTokenStartIndex);
+                }
+                else {
+                    newError = new ErrorCompiler("UNRECOGNIZED TOKEN", bestTokenStartIndex);
+                }
                 return sourceString;
             }
-            else /*if (!commentIsOpen && bestTokenString !== "") */{
+
+            //All good!
+            else {
                 newToken = new Token(bestTokenString, bestTokenDescription, bestTokenStartIndex, bestTokenEndIndex);
             }
 
@@ -249,7 +243,7 @@ function lex(programString) {
     
 
     //Mutually Exclusive EOP Errors
-    finalToken = tokenStream[tokenIndex-1];
+    finalToken = tokenStream[tokenCount-1];
 
     //Comment open
     if (commentIsOpen) {

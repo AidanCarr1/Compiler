@@ -13,9 +13,9 @@ class Token {
 
 
         //new TOKEN constructed!
-        this.tid = tokenIndex; //token ID
-        tokenStream[tokenIndex] = this;
-        tokenIndex ++;
+        this.tid = tokenCount; //token ID
+        tokenStream[tokenCount] = this;
+        tokenCount ++;
 
         //print TOKEN Message
         var message = "TOKEN [ '" + str + "' ] " + description + " at " + address(startIndex);

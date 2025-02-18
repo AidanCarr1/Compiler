@@ -150,3 +150,8 @@ print=whileif"teststring"
 intstringbooleanfalse
 true
 ==!=+ a 0123456789}$
+
+
+{ int a }$ {int b}
+$ {int c}   $
+{int d}$
