@@ -5,20 +5,21 @@ var onDocumentLoad = function() {
 */
 //var _Lexer = TSC.Lexer;
 // Global variables
+// Tokens
 var tokens = "";
 var tokenIndex = 0;
-const LINE = 0;
-const CHAR = 1;
 var tokenStream = [];
 var tokenCount = 0;
+var currentToken = "";
+// Error and Warning
 var warningCount = 0;
 var errorCount = 0;
-var currentToken = "";
-var EOF = "$";
+// UI Controls
 var debug = false;
-/*
-    LEX
-*/
+// User Program Index
+const LINE = 0;
+const CHAR = 1;
+// LEX
 // Lex Dictionary Arrays
 var mainDictionary = ["int", "string", "boolean", "while", "if", "false", "true", "print", "a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z", "+", "=", "==", "!=", "\"", "(", ")", "{", "}", "/*", "*/", "$", "0", "1", "2", "3", "4", "5", "6", "7", "8", "9"];
 var definitions = ["VARIABLE TYPE", "VARIABLE TYPE", "VARIABLE TYPE", "WHILE", "IF", "FALSE", "TRUE", "PRINT", "ID", "ID", "ID", "ID", "ID", "ID", "ID", "ID", "ID", "ID", "ID", "ID", "ID", "ID", "ID", "ID", "ID", "ID", "ID", "ID", "ID", "ID", "ID", "ID", "ID", "ID", "ADDITION", "ASSIGNMENT", "EQUALITY", "INEQUALITY", "QUOTATION", "OPEN PARENTHESIS", "CLOSE PARENTHESIS", "OPEN BRACE", "CLOSE BRACE", "OPEN COMMENT", "CLOSE COMMENT", "EOP", "DIGIT", "DIGIT", "DIGIT", "DIGIT", "DIGIT", "DIGIT", "DIGIT", "DIGIT", "DIGIT", "DIGIT"];

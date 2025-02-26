@@ -1,7 +1,8 @@
-/* parser.js
+/*  Parser
+    Project 2
 
-
-
+    Using Recursive Descent Parsing
+    and a Concrete Syntax Tree
 */
 var Compiler;
 (function (Compiler) {
