@@ -1,49 +1,114 @@
 /* --------  
-   Utils.js
+   Utils.ts
 
    Utility functions.
    -------- */
 
-   function trim(str)      // Use a regular expression to remove leading and trailing spaces.
-   {
-       return str.replace(/^\s+ | \s+$/g, "");
-       /* 
-       Huh?  Take a breath.  Here we go:
-       - The "|" separates this into two expressions, as in A or B.
-       - "^\s+" matches a sequence of one or more whitespace characters at the beginning of a string.
-       - "\s+$" is the same thing, but at the end of the string.
-       - "g" makes is global, so we get all the whitespace.
-       - "" is nothing, which is what we replace the whitespace with.
-       */
-       
-   }
-   
-   function rot13(str)     // An easy-to understand implementation of the famous and common Rot13 obfuscator.
-   {                       // You can do this in three lines with a complex regular experssion, but I'd have
-       var retVal = "";    // trouble explaining it in the future.  There's a lot to be said for obvious code.
-       for (var i in str)
-       {
-           var ch = str[i];
-           var code = 0;
-           if ("abcedfghijklmABCDEFGHIJKLM".indexOf(ch) >= 0)
-           {            
-               code = str.charCodeAt(i) + 13;  // It's okay to use 13.  It's not a magic number, it's called rot13.
-               retVal = retVal + String.fromCharCode(code);
-           }
-           else if ("nopqrstuvwxyzNOPQRSTUVWXYZ".indexOf(ch) >= 0)
-           {
-               code = str.charCodeAt(i) - 13;  // It's okay to use 13.  See above.
-               retVal = retVal + String.fromCharCode(code);
-           }
-           else
-           {
-               retVal = retVal + ch;
-           }
-       }
-       return retVal;
-   }
-   
-   function address(index) {
-       return ""+index[LINE] + ":" + index[CHAR];
-   }
-   
+namespace Compiler {
+    export class Utils {
+
+        public static trim(str)      // Use a regular expression to remove leading and trailing spaces.
+        {
+            return str.replace(/^\s+ | \s+$/g, "");
+            /* 
+            Huh?  Take a breath.  Here we go:
+            - The "|" separates this into two expressions, as in A or B.
+            - "^\s+" matches a sequence of one or more whitespace characters at the beginning of a string.
+            - "\s+$" is the same thing, but at the end of the string.
+            - "g" makes is global, so we get all the whitespace.
+            - "" is nothing, which is what we replace the whitespace with.
+            */
+            
+        }
+        
+        public static rot13(str)     // An easy-to understand implementation of the famous and common Rot13 obfuscator.
+        {                       // You can do this in three lines with a complex regular experssion, but I'd have
+            var retVal = "";    // trouble explaining it in the future.  There's a lot to be said for obvious code.
+            for (var i in str)
+            {
+                var ch = str[i];
+                var code = 0;
+                if ("abcedfghijklmABCDEFGHIJKLM".indexOf(ch) >= 0)
+                {            
+                    code = str.charCodeAt(i) + 13;  // It's okay to use 13.  It's not a magic number, it's called rot13.
+                    retVal = retVal + String.fromCharCode(code);
+                }
+                else if ("nopqrstuvwxyzNOPQRSTUVWXYZ".indexOf(ch) >= 0)
+                {
+                    code = str.charCodeAt(i) - 13;  // It's okay to use 13.  See above.
+                    retVal = retVal + String.fromCharCode(code);
+                }
+                else
+                {
+                    retVal = retVal + ch;
+                }
+            }
+            return retVal;
+        }
+
+
+        public static putMessage(msg) {
+            (<HTMLInputElement> document.getElementById("taOutput")).value += msg + "\n";
+        }
+        public static putDebug(msg) {
+            if (debug) {
+                this.putMessage("    "+msg);
+            }
+        }
+
+
+
+        
+        public static address(index) {
+            return ""+index[LINE] + ":" + index[CHAR];
+        }
+
+
+        //FIX. splits by $ even if $ is inside a quote
+        public static getPrograms() {
+            //Grab the "raw" source code. (force a separator to the end)
+            var sourceString = (<HTMLInputElement> document.getElementById("taSourceCode")).value;
+            
+            //Split source string into separate programs
+            var programs = sourceString.split("$");  
+            for (var i = 0; i < programs.length; i++) {
+                //Add $ where they rightfully belong (all but the last "separated program")
+                if (i != programs.length-1) {
+                    programs[i] = programs[i] + "$"
+                }
+                this.putDebug("<<"+ programs[i]+">>");
+            }  
+
+            //Get rid of a possible empty final program
+            var finalProgram = programs[programs.length-1];
+            //via Google AI: replace ALL '/n's with '' and replace ALL ' 's with ''
+            if (finalProgram.replace(/\r?\n/g, "").replace(/ /g, "") === "") {
+                var removeFinalProgram = programs.pop();
+            }
+            return programs;
+        }
+
+
+        public static addSpacing(programs) {
+            for (var i = 1; i < programs.length; i++) {
+                //get previous program spacing
+                var previousProgram = programs[i-1];
+                var spacingString = "";
+
+                //count the length of previous program
+                for (var char in previousProgram) {
+                    if (previousProgram[char] === "\n"){
+                        spacingString += "\n";
+                    }
+                    else {
+                        spacingString += " ";
+                    }
+                }
+
+                //add sapces to the beginning of current program
+                programs[i] = spacingString + programs[i];
+            }
+            return programs;
+        }
+    }
+}
