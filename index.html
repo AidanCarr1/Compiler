@@ -3,22 +3,31 @@
 <head>
     <title>ComPIEler</title>
     <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+    <meta name="Aidan Carr" content="Alan G. Labouseur" />
     <link rel="stylesheet" type="text/css" href="dist/styles/compiler.css" />
+    <link rel="icon" type="image/x-icon" href="dist/images/pie.png">
 </head>
 <body onload="Compiler.Control.init();">
-    <h1>Aidan's Com<strong>pie</strong>ler Project</h1>
-    <p>
-        pie because it's like the food
-    </p>
+
+    <div id="header">
+        <img id="icon" src="dist/images/pie.png">
+        <h1 id="title"> Aidan's Com<strong>pie</strong>ler Project</h1>
+    </div>
+    <ul>
+        <li>Compiler Course <a href="https://www.labouseur.com/courses/compilers/">Website</a></li>
+        <li>Projects: <a href="https://www.labouseur.com/courses/compilers/project1.pdf">1</a>, 
+            <a href="https://www.labouseur.com/courses/compilers/project2.pdf">2</a>, 
+            <a href="https://www.labouseur.com/courses/compilers/project3.pdf">3</a>, 
+            <a href="https://www.labouseur.com/courses/compilers/project4.pdf">4</a> </li>
+    </ul>
+
 
     <div>
         <textarea id="taSourceCode" cols="64" rows="10"></textarea>
         <br>
         Verbose Mode is <input type="button" id="btnVerbose" value="OFF" onclick="Compiler.Control.btnVerbose_click();"/>
         <br>
-        <strong>
-            <input type="button" id="btnCompile" value="Compile" onclick="Compiler.Control.btnCompile_click();"/>
-        </strong>
+        <input type="button" id="btnCompile" value="Compile" onclick="Compiler.Control.btnCompile_click();"/>
         <br>
         <textarea id="taOutput" cols="64" rows="25" readonly></textarea>
     </div>
