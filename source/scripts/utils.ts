@@ -81,8 +81,7 @@ namespace Compiler {
 
             //Get rid of a possible empty final program
             var finalProgram = programs[programs.length-1];
-            //via Google AI: replace ALL '/n's with '' and replace ALL ' 's with ''
-            if (finalProgram.replace(/\r?\n/g, "").replace(/ /g, "") === "") {
+            if (finalProgram.replaceAll("\n", "").replaceAll(" ", "") === "") {
                 var removeFinalProgram = programs.pop();
             }
             return programs;

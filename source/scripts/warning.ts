@@ -1,22 +1,24 @@
 /* warning class */
 
-    
-class Warning {
+namespace Compiler {
+    export class Warning {
 
-    constructor(str, index) { 
-                    
-        //set variables
-        this.str = str;
-        this.index = index.slice();
+        constructor(public str,
+                    public index,
+                    public wid?) { 
+                        
+            //set variables
+            this.str = str;
+            this.index = index.slice();
 
 
-        //new WARNING constructed!
-        this.wid = warningCount; //warning ID
-        warningCount ++;
+            //new WARNING constructed!
+            this.wid = warningCount; //warning ID
+            warningCount ++;
 
-        //print WARNING Message
-        var message = "! WARNING [ " + str + " ]" + " at " + address(index);
-        putMessage(message);
+            //print WARNING Message
+            var message = "! WARNING [ " + str + " ]" + " at " + Utils.address(index);
+            Utils.putMessage(message);
+        }
     }
 }
-    
