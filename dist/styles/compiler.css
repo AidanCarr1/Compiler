@@ -1,8 +1,8 @@
 /* compiler.css */
-/*
+
 body
 {
-	background-color: #909193;
+	background-color: #909193;	/* The bottom color of background.jpg. */
 	background-image: url(images/background.jpg);
 	background-repeat: repeat-x;
 	font-family: Helvetica, Verdana, Arial, sans-serif;
@@ -27,30 +27,12 @@ h2
 	font-weight: normal;
 	font-style: normal;	
 }
-*/
-h1{
-	font-weight: bold;
-	text-align: center;
-}
-#btnCompile{
-	width:200px;
-	text-align: center;
-}
-.output{
-	float:right;
-	margin:;
 
-}
-.source{
-	float:left;
-	display: inline-block;
-	width:100%;
-}
-#taSourceCode, #taOutput{
-	width:48%;
-	margin: 10px;
-	height:400px;
-}
-#taOutput{
-	float:right;
+/* Change tab to 4 spaces, actually lets do 1
+https://stackoverflow.com/questions/3379091/is-it-possible-to-change-width-of-tab-symbol-in-textarea */
+textarea,
+pre {
+    -moz-tab-size : 1;
+      -o-tab-size : 1;
+         tab-size : 1;
 }

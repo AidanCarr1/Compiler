@@ -23,6 +23,8 @@
         <textarea id="taOutput" cols="64" rows="25" readonly></textarea>
     </div>
 
+    <script type="text/javascript" src="scripts/gloabls.js"></script>
+
     <script type="text/javascript" src="scripts/token.js"></script>	
     <script type="text/javascript" src="scripts/error.js"></script>
     <script type="text/javascript" src="scripts/warning.js"></script>
@@ -31,17 +33,7 @@
     <!--<script type="text/javascript" src="scripts/lexer.js"></script>-->
     <script type="text/javascript" src="scripts/lexer2.js"></script>	
     <script type="text/javascript">
-    // Global variables
-    const LINE = 0;
-    const CHAR = 1;
-    var tokenStream = [];
-    var tokenCount = 0;
-    //var errorIndex = 0;
-    var warningCount = 0;
-    var errorCount = 0;
-    var currentToken = "";
-    var EOF = "$";
-    var debug = false;
+    
 
     
     function init() {
@@ -122,6 +114,7 @@
     }
     
 
+    //FIX. splits by $ even if $ is inside a quote
     function getPrograms() {
         //Grab the "raw" source code. (force a separator to the end)
         var sourceString = document.getElementById("taSourceCode").value;
@@ -138,7 +131,7 @@
 
         //Get rid of a possible empty final program
         var finalProgram = programs[programs.length-1];
-        if (finalProgram.replaceAll("\n","").replaceAll(" ", "") === "") {
+        if (finalProgram.replaceAll("\n", "").replaceAll(" ", "") === "") {
             removeFinalProgram = programs.pop();
         }
         return programs;
