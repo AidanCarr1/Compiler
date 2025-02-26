@@ -93,19 +93,21 @@ namespace Compiler {
         }
 
         public static parseType() {
-            
+            this.match("VARIABLE TYPE");
         }
 
+        //INCOMPLETE - check with space and char dictionary
         public static parseChar() {
-            
+            this.match("CHAR");
         }
 
+        //INCOMPLETE - check with space and char dictionary
         public static parseSpace() {
-            
+            this.match("SPACE CHAR");
         }
 
         public static parseDigit() {
-            
+            this.match("DIGIT");
         }
 
         public static parseBoolOp() {
@@ -115,8 +117,9 @@ namespace Compiler {
         public static parseBoolVal() {
             
         }
+
         public static parseIntOp() {
-            
+            this.match("ADDITION");
         }
 
 
