@@ -13,17 +13,16 @@
         <img id="icon" src="dist/images/pie.png">
         <h1 id="title"> Aidan's Com<strong>pie</strong>ler Project</h1>
     </div>
-    <ul>
-        <li>Compiler Course <a href="https://www.labouseur.com/courses/compilers/">Website</a></li>
-        <li>Projects: <a href="https://www.labouseur.com/courses/compilers/project1.pdf">1</a>, 
-            <a href="https://www.labouseur.com/courses/compilers/project2.pdf">2</a>, 
-            <a href="https://www.labouseur.com/courses/compilers/project3.pdf">3</a>, 
-            <a href="https://www.labouseur.com/courses/compilers/project4.pdf">4</a> </li>
-    </ul>
-
+    <br>
 
     <div>
-        <textarea id="taSourceCode" cols="64" rows="10"></textarea>
+        <p>User Program</p>
+        <textarea id="taSourceCode" cols="64" rows="10">{
+inta
+stringz
+a = 7
+z = "real "
+}$</textarea>
         <br>
         Verbose Mode is <input type="button" id="btnVerbose" value="OFF" onclick="Compiler.Control.btnVerbose_click();"/>
         <br>
@@ -32,6 +31,15 @@
         <textarea id="taOutput" cols="64" rows="25" readonly></textarea>
     </div>
 
+
+    <ul>
+        <li>Compiler Course <a href="https://www.labouseur.com/courses/compilers/">Website</a></li>
+        <li>Projects: <a href="https://www.labouseur.com/courses/compilers/project1.pdf">1</a>, 
+            <a href="https://www.labouseur.com/courses/compilers/project2.pdf">2</a>, 
+            <a href="https://www.labouseur.com/courses/compilers/project3.pdf">3</a>, 
+            <a href="https://www.labouseur.com/courses/compilers/project4.pdf">4</a> </li>
+        <li>Our <a href="https://www.labouseur.com/courses/compilers/grammar.pdf">Grammar</a></li>
+    </ul>
 
     <!-- Globals and Utils -->
     <script type="text/javascript" src="dist/scripts/globals.js"></script>
@@ -45,6 +53,9 @@
     <!-- LEX -->
     <script type="text/javascript" src="dist/scripts/lexer.js"></script>
     
+    <!-- PARSE -->
+    <script type="text/javascript" src="dist/scripts/parser.js"></script>
+
     <!-- INDEX control -->
     <script type="text/javascript" src="dist/scripts/control.js"></script>
 

@@ -4,13 +4,13 @@ var Compiler;
         static init() {
             // Clear the message box.
             document.getElementById("taOutput").value = `\n\n\n\n\n\n\n
-                                   )  
-                                  (  \`  
+                                )  
+                               (  \`  
                               )   ) ( 
-                              __..---..__
-                          ,-='  /  |  \\  \`=-.
-                         :--..___________..--;
-                          \\.,_____________,./`;
+                           __..---..__
+                       ,-='  /  |  \\  \`=-.
+                      :--..___________..--;
+                       \\.,_____________,./`;
             //Pie credit: https://ascii.co.uk/art/pie
             // Set the initial values for our globals.
             tokens = "";
