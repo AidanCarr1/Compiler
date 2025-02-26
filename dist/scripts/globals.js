@@ -3,11 +3,32 @@ var onDocumentLoad = function() {
     TSOS.Control.hostInit();
 };
 */
-var _Lexer = TSC.Lexer;
+//var _Lexer = TSC.Lexer;
 // Global variables
 var tokens = "";
 var tokenIndex = 0;
-var currentToken = "";
+const LINE = 0;
+const CHAR = 1;
+var tokenStream = [];
+var tokenCount = 0;
+var warningCount = 0;
 var errorCount = 0;
+var currentToken = "";
 var EOF = "$";
+var debug = false;
+/*
+    LEX
+*/
+var _Lexer;
+// Lex Dictionary Arrays
+var mainDictionary = ["int", "string", "boolean", "while", "if", "false", "true", "print", "a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z", "+", "=", "==", "!=", "\"", "(", ")", "{", "}", "/*", "*/", "$", "0", "1", "2", "3", "4", "5", "6", "7", "8", "9"];
+var definitions = ["VARIABLE TYPE", "VARIABLE TYPE", "VARIABLE TYPE", "WHILE", "IF", "FALSE", "TRUE", "PRINT", "ID", "ID", "ID", "ID", "ID", "ID", "ID", "ID", "ID", "ID", "ID", "ID", "ID", "ID", "ID", "ID", "ID", "ID", "ID", "ID", "ID", "ID", "ID", "ID", "ID", "ID", "ADDITION", "ASSIGNMENT", "EQUALITY", "INEQUALITY", "QUOTATION", "OPEN PARENTHESIS", "CLOSE PARENTHESIS", "OPEN BRACE", "CLOSE BRACE", "OPEN COMMENT", "CLOSE COMMENT", "EOP", "DIGIT", "DIGIT", "DIGIT", "DIGIT", "DIGIT", "DIGIT", "DIGIT", "DIGIT", "DIGIT", "DIGIT"];
+var chars = [" ", "a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z", "\"", "\n"];
+var charsDefinition = Array(27).fill("CHAR");
+charsDefinition.push("QUOTATION");
+charsDefinition.push("NEW LINE BAD");
+var currentDictionary = mainDictionary;
+var currentDefinitions = definitions;
+var currentDictionaryName = "MAIN";
+var previousDictionaryName = "MAIN";
 //# sourceMappingURL=globals.js.map

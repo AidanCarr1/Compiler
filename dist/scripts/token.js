@@ -1,0 +1,30 @@
+/* token class */
+var Compiler;
+(function (Compiler) {
+    class Token {
+        constructor(str, description, startIndex, endIndex, tid) {
+            this.str = str;
+            this.description = description;
+            this.startIndex = startIndex;
+            this.endIndex = endIndex;
+            this.tid = tid;
+            //set variables
+            this.str = str;
+            this.description = description;
+            this.startIndex = startIndex.slice();
+            this.endIndex = endIndex.slice();
+            //new TOKEN constructed!
+            this.tid = tokenCount; //token ID
+            tokenStream[tokenCount] = this;
+            tokenCount++;
+            //print TOKEN Message
+            var message = "TOKEN [ '" + str + "' ] " + description + " at " + Compiler.Utils.address(startIndex);
+            if (startIndex[LINE] < endIndex[LINE] || startIndex[CHAR] < endIndex[CHAR]) {
+                message += "-" + Compiler.Utils.address(endIndex);
+            }
+            Compiler.Utils.putMessage(message);
+        }
+    }
+    Compiler.Token = Token;
+})(Compiler || (Compiler = {}));
+//# sourceMappingURL=token.js.map

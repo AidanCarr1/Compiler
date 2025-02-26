@@ -3,8 +3,8 @@
 
    Utility functions.
    -------- */
-var TSC;
-(function (TSC) {
+var Compiler;
+(function (Compiler) {
     class Utils {
         static trim(str) {
             return str.replace(/^\s+ | \s+$/g, "");
@@ -36,7 +36,57 @@ var TSC;
             }
             return retVal;
         }
+        static putMessage(msg) {
+            document.getElementById("taOutput").value += msg + "\n";
+        }
+        static putDebug(msg) {
+            if (debug) {
+                this.putMessage("    " + msg);
+            }
+        }
+        static address(index) {
+            return "" + index[LINE] + ":" + index[CHAR];
+        }
+        //FIX. splits by $ even if $ is inside a quote
+        static getPrograms() {
+            //Grab the "raw" source code. (force a separator to the end)
+            var sourceString = document.getElementById("taSourceCode").value;
+            //Split source string into separate programs
+            var programs = sourceString.split("$");
+            for (var i = 0; i < programs.length; i++) {
+                //Add $ where they rightfully belong (all but the last "separated program")
+                if (i != programs.length - 1) {
+                    programs[i] = programs[i] + "$";
+                }
+                this.putDebug("<<" + programs[i] + ">>");
+            }
+            //Get rid of a possible empty final program
+            var finalProgram = programs[programs.length - 1];
+            if (finalProgram.replaceAll("\n", "").replaceAll(" ", "") === "") {
+                var removeFinalProgram = programs.pop();
+            }
+            return programs;
+        }
+        static addSpacing(programs) {
+            for (var i = 1; i < programs.length; i++) {
+                //get previous program spacing
+                var previousProgram = programs[i - 1];
+                var spacingString = "";
+                //count the length of previous program
+                for (var char in previousProgram) {
+                    if (previousProgram[char] === "\n") {
+                        spacingString += "\n";
+                    }
+                    else {
+                        spacingString += " ";
+                    }
+                }
+                //add sapces to the beginning of current program
+                programs[i] = spacingString + programs[i];
+            }
+            return programs;
+        }
     }
-    TSC.Utils = Utils;
-})(TSC || (TSC = {}));
+    Compiler.Utils = Utils;
+})(Compiler || (Compiler = {}));
 //# sourceMappingURL=utils.js.map
