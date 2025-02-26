@@ -15,7 +15,7 @@ var Compiler;
             errorCount++;
             //print ERROR Message
             var message = "! ERROR [ " + str + " ]" + " at " + Compiler.Utils.address(index);
-            Compiler.Utils.putMessage(message);
+            Compiler.Control.putMessage(message);
         }
     }
     Compiler.ErrorCompiler = ErrorCompiler;

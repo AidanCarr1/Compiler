@@ -19,7 +19,7 @@ namespace Compiler {
 
             //print ERROR Message
             var message = "! ERROR [ " + str + " ]" + " at " + Utils.address(index);
-            Utils.putMessage(message);
+            Control.putMessage(message);
         }
     }
 }

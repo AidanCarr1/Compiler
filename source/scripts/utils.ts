@@ -46,18 +46,6 @@ namespace Compiler {
             return retVal;
         }
 
-
-        public static putMessage(msg) {
-            (<HTMLInputElement> document.getElementById("taOutput")).value += msg + "\n";
-        }
-        public static putDebug(msg) {
-            if (debug) {
-                this.putMessage("    "+msg);
-            }
-        }
-
-
-
         
         public static address(index) {
             return ""+index[LINE] + ":" + index[CHAR];
@@ -76,7 +64,7 @@ namespace Compiler {
                 if (i != programs.length-1) {
                     programs[i] = programs[i] + "$"
                 }
-                this.putDebug("<<"+ programs[i]+">>");
+                Control.putDebug("<<"+ programs[i]+">>");
             }  
 
             //Get rid of a possible empty final program

@@ -2,8 +2,6 @@ namespace Compiler {
     export class Control {
 
 
-
-
         public static init() {
             // Clear the message box.
             (<HTMLInputElement> document.getElementById("taOutput")).value = `\n\n\n\n\n\n\n
@@ -31,8 +29,8 @@ namespace Compiler {
             
             this.init();
             (<HTMLInputElement> document.getElementById("taOutput")).value = "";
-            Utils.putMessage("Compilation Started!");
-            Utils.putMessage("");
+            this.putMessage("Compilation Started!");
+            this.putMessage("");
             
             //Separate the user generated source code into programs
             var programs = Utils.getPrograms();
@@ -41,12 +39,12 @@ namespace Compiler {
     
             //Run process one by one
             for (var i = 0; i < programs.length; i++) {
-                Utils.putMessage("~~~~~ Program #"+ (i+1) +" ~~~~~");
+                this.putMessage("~~~~~ Program #"+ (i+1) +" ~~~~~");
     
                 //Lex
                 var isLexSuccessful = Lexer.lex(programs[i]);
-                Utils.putMessage("Lex complete with " + warningCount +" warning(s) and "+ errorCount+" error(s)");
-                Utils.putMessage("");
+                this.putMessage("Lex complete with " + warningCount +" warning(s) and "+ errorCount+" error(s)");
+                this.putMessage("");
     
                 //Reset errors
                 warningCount = 0;
@@ -68,6 +66,16 @@ namespace Compiler {
             else {
                 (<HTMLInputElement> document.getElementById("btnVerbose")).value = "OFF";
                 debug = false;
+            }
+        }
+
+
+        public static putMessage(msg) {
+            (<HTMLInputElement> document.getElementById("taOutput")).value += msg + "\n";
+        }
+        public static putDebug(msg) {
+            if (debug) {
+                this.putMessage("    "+msg);
             }
         }
     }

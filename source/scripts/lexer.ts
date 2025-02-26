@@ -44,7 +44,7 @@ namespace Compiler {
                 var currentChar = sourceString[sourceStringIndex];
                 checkingToken += currentChar;
 
-                Utils.putDebug("-"+Utils.address(sourceIndex)+"-");
+                Control.putDebug("-"+Utils.address(sourceIndex)+"-");
                 //putDebug("    cT:"+checkingToken+" bT:"+bestTokenString);
                 
                 //Change dictionary based on quote/comment state
@@ -56,7 +56,7 @@ namespace Compiler {
                     //Did the dictionary change?
                     currentDictionaryName = "CHARS";
                     if (currentDictionaryName != previousDictionaryName) {
-                        Utils.putDebug("Dictionary switched to CHARS");
+                        Control.putDebug("Dictionary switched to CHARS");
                     }
                     previousDictionaryName = "CHARS";  
                 }
@@ -64,7 +64,7 @@ namespace Compiler {
                 //Ignore all characters, but look for a close comment
                 else if (commentIsOpen) {
                     if (checkingToken === "*" || checkingToken === "*/") {
-                        Utils.putDebug("Comment almost closed");
+                        Control.putDebug("Comment almost closed");
                     }
                     else if (checkingToken === "**") {
                         //allow /***/
@@ -83,7 +83,7 @@ namespace Compiler {
                     //Did the dictionary change?
                     currentDictionaryName = "MAIN";
                     if (currentDictionaryName != previousDictionaryName) {
-                        Utils.putDebug("Dictionary switched to MAIN");
+                        Control.putDebug("Dictionary switched to MAIN");
                     }
                     previousDictionaryName = "MAIN";            
                 }
@@ -98,7 +98,7 @@ namespace Compiler {
                     if (checkingToken === tokenStr) {
                         
                         //Match found
-                        Utils.putDebug("Match [ '"+tokenStr+"' ] "+description);
+                        Control.putDebug("Match [ '"+tokenStr+"' ] "+description);
                         bestTokenString = tokenStr;
                         bestTokenDescription = description;
 
@@ -137,7 +137,7 @@ namespace Compiler {
                 //If a separator has been found
                 if ((currentChar === " " && !quoteIsOpen) || 
                     currentChar === "\n") {
-                        Utils.putDebug("Separator found"); // + "("+address(sourceIndex)+")");
+                        Control.putDebug("Separator found"); // + "("+address(sourceIndex)+")");
                     
                     //Create Token object, check for errors
                     
@@ -145,13 +145,13 @@ namespace Compiler {
                     if ((checkingToken === " " && !quoteIsOpen) || 
                         checkingToken === "\n") {
                         //Just a separator, do nothing
-                        Utils.putDebug("Skip token, separator");
+                        Control.putDebug("Skip token, separator");
                     }
                     
                     //Comment or blank space
                     else if (commentIsOpen) {
                         //What happens in a comment, stays in a comment
-                        Utils.putDebug("Skip token, comment is open");
+                        Control.putDebug("Skip token, comment is open");
                     }
                     
                     //No match found, unknown char/token

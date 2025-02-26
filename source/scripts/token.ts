@@ -26,7 +26,7 @@ namespace Compiler {
             if (startIndex[LINE] < endIndex[LINE] || startIndex[CHAR] < endIndex[CHAR]) {
                 message += "-" + Utils.address(endIndex);
             }
-            Utils.putMessage(message);
+            Control.putMessage(message);
         }
     }
 }

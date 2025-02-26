@@ -18,7 +18,7 @@ namespace Compiler {
 
             //print WARNING Message
             var message = "! WARNING [ " + str + " ]" + " at " + Utils.address(index);
-            Utils.putMessage(message);
+            Control.putMessage(message);
         }
     }
 }

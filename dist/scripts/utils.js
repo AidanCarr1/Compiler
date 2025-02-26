@@ -36,14 +36,6 @@ var Compiler;
             }
             return retVal;
         }
-        static putMessage(msg) {
-            document.getElementById("taOutput").value += msg + "\n";
-        }
-        static putDebug(msg) {
-            if (debug) {
-                this.putMessage("    " + msg);
-            }
-        }
         static address(index) {
             return "" + index[LINE] + ":" + index[CHAR];
         }
@@ -58,7 +50,7 @@ var Compiler;
                 if (i != programs.length - 1) {
                     programs[i] = programs[i] + "$";
                 }
-                this.putDebug("<<" + programs[i] + ">>");
+                Compiler.Control.putDebug("<<" + programs[i] + ">>");
             }
             //Get rid of a possible empty final program
             var finalProgram = programs[programs.length - 1];

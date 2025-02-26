@@ -35,7 +35,7 @@ var Compiler;
                 //Look at the next character
                 var currentChar = sourceString[sourceStringIndex];
                 checkingToken += currentChar;
-                Compiler.Utils.putDebug("-" + Compiler.Utils.address(sourceIndex) + "-");
+                Compiler.Control.putDebug("-" + Compiler.Utils.address(sourceIndex) + "-");
                 //putDebug("    cT:"+checkingToken+" bT:"+bestTokenString);
                 //Change dictionary based on quote/comment state
                 if (quoteIsOpen) {
@@ -45,14 +45,14 @@ var Compiler;
                     //Did the dictionary change?
                     currentDictionaryName = "CHARS";
                     if (currentDictionaryName != previousDictionaryName) {
-                        Compiler.Utils.putDebug("Dictionary switched to CHARS");
+                        Compiler.Control.putDebug("Dictionary switched to CHARS");
                     }
                     previousDictionaryName = "CHARS";
                 }
                 //Ignore all characters, but look for a close comment
                 else if (commentIsOpen) {
                     if (checkingToken === "*" || checkingToken === "*/") {
-                        Compiler.Utils.putDebug("Comment almost closed");
+                        Compiler.Control.putDebug("Comment almost closed");
                     }
                     else if (checkingToken === "**") {
                         //allow /***/
@@ -69,7 +69,7 @@ var Compiler;
                     //Did the dictionary change?
                     currentDictionaryName = "MAIN";
                     if (currentDictionaryName != previousDictionaryName) {
-                        Compiler.Utils.putDebug("Dictionary switched to MAIN");
+                        Compiler.Control.putDebug("Dictionary switched to MAIN");
                     }
                     previousDictionaryName = "MAIN";
                 }
@@ -80,7 +80,7 @@ var Compiler;
                     //Does the highlighed token match?
                     if (checkingToken === tokenStr) {
                         //Match found
-                        Compiler.Utils.putDebug("Match [ '" + tokenStr + "' ] " + description);
+                        Compiler.Control.putDebug("Match [ '" + tokenStr + "' ] " + description);
                         bestTokenString = tokenStr;
                         bestTokenDescription = description;
                         //keep track of best token index
@@ -114,18 +114,18 @@ var Compiler;
                 //If a separator has been found
                 if ((currentChar === " " && !quoteIsOpen) ||
                     currentChar === "\n") {
-                    Compiler.Utils.putDebug("Separator found"); // + "("+address(sourceIndex)+")");
+                    Compiler.Control.putDebug("Separator found"); // + "("+address(sourceIndex)+")");
                     //Create Token object, check for errors
                     //Separator
                     if ((checkingToken === " " && !quoteIsOpen) ||
                         checkingToken === "\n") {
                         //Just a separator, do nothing
-                        Compiler.Utils.putDebug("Skip token, separator");
+                        Compiler.Control.putDebug("Skip token, separator");
                     }
                     //Comment or blank space
                     else if (commentIsOpen) {
                         //What happens in a comment, stays in a comment
-                        Compiler.Utils.putDebug("Skip token, comment is open");
+                        Compiler.Control.putDebug("Skip token, comment is open");
                     }
                     //No match found, unknown char/token
                     else if (!matchFound) {

@@ -14,7 +14,7 @@ var Compiler;
             warningCount++;
             //print WARNING Message
             var message = "! WARNING [ " + str + " ]" + " at " + Compiler.Utils.address(index);
-            Compiler.Utils.putMessage(message);
+            Compiler.Control.putMessage(message);
         }
     }
     Compiler.Warning = Warning;

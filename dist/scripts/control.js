@@ -24,19 +24,19 @@ var Compiler;
             // Note the <input> element's event handler: onclick="btnCompile_click();
             this.init();
             document.getElementById("taOutput").value = "";
-            Compiler.Utils.putMessage("Compilation Started!");
-            Compiler.Utils.putMessage("");
+            this.putMessage("Compilation Started!");
+            this.putMessage("");
             //Separate the user generated source code into programs
             var programs = Compiler.Utils.getPrograms();
             //Add more spacing to each program so indexing reveals correct numbers to the user
             programs = Compiler.Utils.addSpacing(programs);
             //Run process one by one
             for (var i = 0; i < programs.length; i++) {
-                Compiler.Utils.putMessage("~~~~~ Program #" + (i + 1) + " ~~~~~");
+                this.putMessage("~~~~~ Program #" + (i + 1) + " ~~~~~");
                 //Lex
                 var isLexSuccessful = Compiler.Lexer.lex(programs[i]);
-                Compiler.Utils.putMessage("Lex complete with " + warningCount + " warning(s) and " + errorCount + " error(s)");
-                Compiler.Utils.putMessage("");
+                this.putMessage("Lex complete with " + warningCount + " warning(s) and " + errorCount + " error(s)");
+                this.putMessage("");
                 //Reset errors
                 warningCount = 0;
                 errorCount = 0;
@@ -54,6 +54,14 @@ var Compiler;
             else {
                 document.getElementById("btnVerbose").value = "OFF";
                 debug = false;
+            }
+        }
+        static putMessage(msg) {
+            document.getElementById("taOutput").value += msg + "\n";
+        }
+        static putDebug(msg) {
+            if (debug) {
+                this.putMessage("    " + msg);
             }
         }
     }

@@ -22,7 +22,7 @@ var Compiler;
             if (startIndex[LINE] < endIndex[LINE] || startIndex[CHAR] < endIndex[CHAR]) {
                 message += "-" + Compiler.Utils.address(endIndex);
             }
-            Compiler.Utils.putMessage(message);
+            Compiler.Control.putMessage(message);
         }
     }
     Compiler.Token = Token;
