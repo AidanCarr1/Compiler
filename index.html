@@ -5,7 +5,7 @@
     <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
     <link rel="stylesheet" type="text/css" href="dist/styles/compiler.css" />
 </head>
-<body onload="init();">
+<body onload="Compiler.Control.init();">
     <h1>Aidan's Com<strong>pie</strong>ler Project</h1>
     <p>
         pie because it's like the food
@@ -14,100 +14,30 @@
     <div>
         <textarea id="taSourceCode" cols="64" rows="10"></textarea>
         <br>
-        Verbose Mode is <input type="button" id="btnVerbose" value="OFF" onclick="btnVerbose_click();"/>
+        Verbose Mode is <input type="button" id="btnVerbose" value="OFF" onclick="Compiler.Control.btnVerbose_click();"/>
         <br>
         <strong>
-            <input type="button" id="btnCompile" value="Compile" onclick="btnCompile_click();"/>
+            <input type="button" id="btnCompile" value="Compile" onclick="Compiler.Control.btnCompile_click();"/>
         </strong>
         <br>
         <textarea id="taOutput" cols="64" rows="25" readonly></textarea>
     </div>
 
-    <script type="text/javascript" src="dist/scripts/globals.js"></script>
 
+    <!-- Globals and Utils -->
+    <script type="text/javascript" src="dist/scripts/globals.js"></script>
+    <script type="text/javascript" src="dist/scripts/utils.js"></script>	
+
+    <!-- Token, Error, and Warning Classes -->
     <script type="text/javascript" src="dist/scripts/token.js"></script>	
     <script type="text/javascript" src="dist/scripts/error.js"></script>
     <script type="text/javascript" src="dist/scripts/warning.js"></script>
 
-    <script type="text/javascript" src="dist/scripts/utils.js"></script>	
-    <!--<script type="text/javascript" src="scripts/lexer.js"></script>-->
-    <script type="text/javascript" src="dist/scripts/lexer.js"></script>	
-    <script type="text/javascript">
+    <!-- LEX -->
+    <script type="text/javascript" src="dist/scripts/lexer.js"></script>
     
+    <!-- INDEX control -->
+    <script type="text/javascript" src="dist/scripts/control.js"></script>
 
-    
-    function init() {
-        // Clear the message box.
-        document.getElementById("taOutput").value = `\n\n\n\n\n\n\n
-                               )  
-                              (  \`  
-                          )   ) ( 
-                          __..---..__
-                      ,-='  /  |  \\  \`=-.
-                     :--..___________..--;
-                      \\.,_____________,./`;
-        //Pie credit: https://ascii.co.uk/art/pie
-
-        // Set the initial values for our globals.
-        tokens = "";
-        tokenCount = 0;
-        currentToken = ' ';
-        errorCount = 0;        
-    }
-
-    
-    function btnCompile_click() {        
-        // This is executed as a result of the usr pressing the 
-        // "compile" button between the two text areas, above.  
-        // Note the <input> element's event handler: onclick="btnCompile_click();
-        
-        init();
-        document.getElementById("taOutput").value = "";
-        putMessage("Compilation Started!");
-        putMessage("");
-        
-        //Separate the user generated source code into programs
-        programs = getPrograms();
-        //Add more spacing to each program so indexing reveals correct numbers to the user
-        programs = addSpacing(programs);
-
-        //Run process one by one
-        for (var i = 0; i < programs.length; i++) {
-            putMessage("~~~~~ Program #"+ (i+1) +" ~~~~~");
-
-            //Lex
-            var isLexSuccessful = lex(programs[i]);
-            putMessage("Lex complete with " + warningCount +" warning(s) and "+ errorCount+" error(s)");
-            putMessage("");
-
-            //Reset errors
-            warningCount = 0;
-            errorCount = 0;
-            tokenCount = 0;
-
-            //Parse... later
-        }
-    }
-
-
-    function btnVerbose_click() {        
-        // Toggleable button: Verbose mode on or off
-        // On, turns on debug feautres, printing a more in-depth compiler output
-        if (document.getElementById("btnVerbose").value === "OFF") {
-            document.getElementById("btnVerbose").value = "ON";
-            debug = true;
-        }
-        else {
-            document.getElementById("btnVerbose").value = "OFF";
-            debug = false;
-        }
-    }
-    
-
-    
-    
-
-    
-    </script>
 </body>
 </html>
