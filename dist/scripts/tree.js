@@ -4,28 +4,40 @@
 var Compiler;
 (function (Compiler) {
     class Tree {
+        //New Tree
         constructor(root, current) {
             this.root = root;
             this.current = current;
             //Simple tree structure, remember first and recent
             this.root = null;
-            this.current = null;
+            this.current = null; //Attributes are updated later
         }
         //Add new Node into the tree somewhere
-        addNode(kind, label) {
+        addNode(label, isLeaf) {
             var newNode = new Compiler.Node();
             newNode.name = label;
             //First node, root node
             if (this.root == null) {
                 this.root = newNode;
             }
-            //WORK IN PROGRESS, copied pseudocode
+            //newNode is current's child
             else {
                 newNode.parent = this.current;
                 newNode.parent.addChild(newNode);
             }
-            if (kind == "branch") {
+            //Move current pointer down the tree (unless its a leaf node)
+            if (!isLeaf) {
                 this.current = newNode;
+            }
+        }
+        //Up the tree
+        moveUp() {
+            if (this.current.parent != null) {
+                this.current = this.current.parent;
+            }
+            else {
+                //Cannot go past the root,
+                //do not move current pointer
             }
         }
     }

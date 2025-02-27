@@ -4,16 +4,17 @@
 var Compiler;
 (function (Compiler) {
     class Node {
+        //New Node
         constructor(name, parent, children) {
             this.name = name;
             this.parent = parent;
             this.children = children;
             //Node knows itself, parent, children
-            this.name = name;
-            this.parent = parent; //maybe make these null
+            this.name = null;
+            this.parent = null; //Attributes are updated later
             this.children = [];
         }
-        //Add another to the list of children
+        //Add node to end of the array of children
         addChild(childNode) {
             this.children.push(childNode);
         }
