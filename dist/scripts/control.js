@@ -1,3 +1,6 @@
+/*  Control class
+    To modify and interact with HTML and I/O
+*/
 var Compiler;
 (function (Compiler) {
     class Control {
@@ -34,6 +37,7 @@ var Compiler;
             for (var i = 0; i < programs.length; i++) {
                 this.putMessage("~~~~~ Program #" + (i + 1) + " ~~~~~");
                 //Lex
+                this.putMessage("~~~~~ LEX ~~~~~");
                 var isLexSuccessful = Compiler.Lexer.lex(programs[i]);
                 this.putMessage("Lex complete with " + warningCount + " warning(s) and " + errorCount + " error(s)");
                 this.putMessage("");
@@ -41,7 +45,11 @@ var Compiler;
                 warningCount = 0;
                 errorCount = 0;
                 tokenCount = 0;
-                //Parse... later
+                //Parse
+                if (isLexSuccessful) {
+                    this.putMessage("~~~~~ PARSE ~~~~~");
+                    //var isParseSuccessful = Parser.parse()
+                }
             }
         }
         static btnVerbose_click() {

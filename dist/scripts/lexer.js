@@ -132,10 +132,12 @@ var Compiler;
                         bestTokenStartIndex[CHAR]++;
                         //Display error based on the dictionary
                         if (quoteIsOpen) {
-                            var newError = new Compiler.ErrorCompiler("UNKNOWN CHARACTER", bestTokenStartIndex);
+                            var newError = new Compiler.ErrorCompiler("UNKNOWN CHARACTER '" + checkingToken[0] + "'", bestTokenStartIndex);
+                            return false;
                         }
                         else {
-                            var newError = new Compiler.ErrorCompiler("UNRECOGNIZED TOKEN", bestTokenStartIndex);
+                            var newError = new Compiler.ErrorCompiler("UNRECOGNIZED TOKEN '" + checkingToken[0] + "'", bestTokenStartIndex);
+                            return false;
                         }
                         return sourceString;
                     }
@@ -176,7 +178,7 @@ var Compiler;
                     if (quoteIsOpen) {
                         newError = new Compiler.ErrorCompiler("NEW LINE BEFORE STRING TERMINATION", bestTokenStartIndex);
                         quoteIsOpen = false;
-                        return sourceString;
+                        return false;
                         //Let the lexer go on as if there was and added quote?
                         //Still an error, so parse will not activate
                         //But one error is good enough
@@ -197,16 +199,19 @@ var Compiler;
             //Comment open
             if (commentIsOpen) {
                 var newError = new Compiler.ErrorCompiler("REACHED EOP WITH UNCLOSED COMMENT", bestTokenEndIndex);
+                return false;
                 //putMessage("ERROR [ Unclosed Comment ]  "+address(bestTokenEndIndex));
             }
             //Quote open
             else if (quoteIsOpen) {
                 var newError = new Compiler.ErrorCompiler("REACHED EOP WITH UNCLOSED QUOTE", bestTokenEndIndex);
+                return false;
                 //putMessage("ERROR [ Unclosed Quote ]  "+address(bestTokenEndIndex));
             }
             //No EOP
             else if (finalToken.str !== "$") {
                 var newWarning = new Compiler.Warning("MISSING EOP SYMBOL $", bestTokenEndIndex);
+                return false;
                 //putMessage("ERROR [ Missing EOP ]  "+address(bestTokenEndIndex));
             }
             //return a list of tokens

@@ -1,3 +1,7 @@
+/*  Control class
+    To modify and interact with HTML and I/O
+*/
+
 namespace Compiler {
     export class Control {
 
@@ -42,6 +46,7 @@ namespace Compiler {
                 this.putMessage("~~~~~ Program #"+ (i+1) +" ~~~~~");
     
                 //Lex
+                this.putMessage("~~~~~ LEX ~~~~~");
                 var isLexSuccessful = Lexer.lex(programs[i]);
                 this.putMessage("Lex complete with " + warningCount +" warning(s) and "+ errorCount+" error(s)");
                 this.putMessage("");
@@ -51,7 +56,11 @@ namespace Compiler {
                 errorCount = 0;
                 tokenCount = 0;
     
-                //Parse... later
+                //Parse
+                if (isLexSuccessful) {
+                    this.putMessage("~~~~~ PARSE ~~~~~");
+                    //var isParseSuccessful = Parser.parse()
+                }
             }
         }
     
