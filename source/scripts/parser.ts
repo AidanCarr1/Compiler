@@ -117,8 +117,8 @@ namespace Compiler {
         public static parseVarDecl() {
             Control.putParseMessage("parseVarDecl()");
             
-            this.parseType();
-            this.parseId();
+            this.match("VARIABLE TYPE");
+            this.match("ID");
         }
 
         public static parseWhileStatement() {
@@ -158,7 +158,7 @@ namespace Compiler {
                     break;
         
                 case "ID":
-                    this.parseId();
+                    this.match("ID");
                     break;
                 
                 default:
@@ -199,28 +199,43 @@ namespace Compiler {
                 case "OPEN PARENTHESIS":
                     this.match("OPEN PARENTHESIS");
                     this.parseExpr();
-                    this.parseIntOp();
+                    this.parseBoolOp();
                     this.parseExpr();
                     this.match("CLOSE PARENTHESIS");
                     break;
                 
                 case "TRUE":
                 case "FALSE":
-                    this.parseBoolVal();
+                    this.match("BOOLEAN VALUE");
 
                 default:
                     //Error?
             }
         }
 
-        public static parseId() {
-            Control.putParseMessage("parseId()");
+        public static parseCharList() {
+            Control.putParseMessage("parseCharList()");
+            
+            if (parseToken.description === "CHAR") {
+                this.match("CHAR");
+                this.parseCharList();
+            }
+            else {
+                //End of char list
+            }
+        }
+        
+        public static parseBoolOp() {
+            Control.putParseMessage("parseBoolOp()");
             
             
         }
 
-        public static parseCharList() {
-            Control.putParseMessage("parseCharList()");
+/*
+        public static parseId() {
+            Control.putParseMessage("parseId()");
+            
+            this.match("ID");
             
         }
 
@@ -250,11 +265,7 @@ namespace Compiler {
             this.match("DIGIT");
         }
 
-        public static parseBoolOp() {
-            Control.putParseMessage("parseBoolOp()");
-            
-            
-        }
+        
 
         public static parseBoolVal() {
             Control.putParseMessage("parseBoolVal()");
@@ -267,7 +278,7 @@ namespace Compiler {
             
             this.match("ADDITION");
         }
-
+*/
 
 
         public static match(str?, strList?) {

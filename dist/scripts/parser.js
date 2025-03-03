@@ -90,8 +90,8 @@ var Compiler;
         }
         static parseVarDecl() {
             Compiler.Control.putParseMessage("parseVarDecl()");
-            this.parseType();
-            this.parseId();
+            this.match("VARIABLE TYPE");
+            this.match("ID");
         }
         static parseWhileStatement() {
             Compiler.Control.putParseMessage("parseWhileStatement()");
@@ -121,7 +121,7 @@ var Compiler;
                     this.parseBooleanExpr();
                     break;
                 case "ID":
-                    this.parseId();
+                    this.match("ID");
                     break;
                 default:
                 //Empty expr 
@@ -152,51 +152,78 @@ var Compiler;
                 case "OPEN PARENTHESIS":
                     this.match("OPEN PARENTHESIS");
                     this.parseExpr();
-                    this.parseIntOp();
+                    this.parseBoolOp();
                     this.parseExpr();
                     this.match("CLOSE PARENTHESIS");
                     break;
                 case "TRUE":
                 case "FALSE":
-                    this.parseBoolVal();
+                    this.match("BOOLEAN VALUE");
                 default:
                 //Error?
             }
         }
-        static parseId() {
-            Compiler.Control.putParseMessage("parseId()");
-        }
         static parseCharList() {
             Compiler.Control.putParseMessage("parseCharList()");
-        }
-        static parseType() {
-            Compiler.Control.putParseMessage("parseType()");
-            this.match("VARIABLE TYPE");
-        }
-        //INCOMPLETE - check with space and char dictionary
-        static parseChar() {
-            Compiler.Control.putParseMessage("parseChar()");
-            this.match("CHAR");
-        }
-        //INCOMPLETE - check with space and char dictionary
-        static parseSpace() {
-            Compiler.Control.putParseMessage("parseSpace()");
-            this.match("SPACE CHAR");
-        }
-        static parseDigit() {
-            Compiler.Control.putParseMessage("parseDigit()");
-            this.match("DIGIT");
+            if (parseToken.description === "CHAR") {
+                this.match("CHAR");
+                this.parseCharList();
+            }
+            else {
+                //End of char list
+            }
         }
         static parseBoolOp() {
             Compiler.Control.putParseMessage("parseBoolOp()");
         }
-        static parseBoolVal() {
-            Compiler.Control.putParseMessage("parseBoolVal()");
-        }
-        static parseIntOp() {
-            Compiler.Control.putParseMessage("parseIntOp()");
-            this.match("ADDITION");
-        }
+        /*
+                public static parseId() {
+                    Control.putParseMessage("parseId()");
+                    
+                    this.match("ID");
+                    
+                }
+        
+                public static parseType() {
+                    Control.putParseMessage("parseType()");
+                    
+                    this.match("VARIABLE TYPE");
+                }
+        
+                //INCOMPLETE - check with space and char dictionary
+                public static parseChar() {
+                    Control.putParseMessage("parseChar()");
+                    
+                    this.match("CHAR");
+                }
+        
+                //INCOMPLETE - check with space and char dictionary
+                public static parseSpace() {
+                    Control.putParseMessage("parseSpace()");
+                    
+                    this.match("SPACE CHAR");
+                }
+        
+                public static parseDigit() {
+                    Control.putParseMessage("parseDigit()");
+                    
+                    this.match("DIGIT");
+                }
+        
+                
+        
+                public static parseBoolVal() {
+                    Control.putParseMessage("parseBoolVal()");
+                    
+                    
+                }
+        
+                public static parseIntOp() {
+                    Control.putParseMessage("parseIntOp()");
+                    
+                    this.match("ADDITION");
+                }
+        */
         static match(str, strList) {
             //Match found
             if (parseToken.description === str) {
