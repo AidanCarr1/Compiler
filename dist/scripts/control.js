@@ -6,14 +6,14 @@ var Compiler;
     class Control {
         static init() {
             // Clear the message box.
-            document.getElementById("taOutput").value = `\n\n\n\n\n\n\n
-                                )  
-                               (  \`  
-                              )   ) ( 
-                           __..---..__
-                       ,-='  /  |  \\  \`=-.
-                      :--..___________..--;
-                       \\.,_____________,./`;
+            document.getElementById("taOutput").innerHTML = `<p></p><p></p><p></p>
+<p>>                                )  </p>
+<p>>                               (  \`  </p>
+<p>>                              )   ) ( </p>
+<p>>                           __..---..__</p>
+<p>>                       ,-='  /  |  \\  \`=-.</p>
+<p>>                      :--..___________..--;</p>
+<p>>                       \\.,_____________,./</p>`;
             //Pie credit: https://ascii.co.uk/art/pie
             // Set the initial values for our globals.
             tokens = "";
@@ -26,30 +26,35 @@ var Compiler;
             // "compile" button between the two text areas, above.  
             // Note the <input> element's event handler: onclick="btnCompile_click();
             this.init();
-            document.getElementById("taOutput").value = "";
-            this.putMessage("Compilation Started!");
-            this.putMessage("");
+            document.getElementById("taOutput").innerHTML = "";
+            //this.putMessage("Compilation Started!");
+            //this.putLine(3);
             //Separate the user generated source code into programs
             var programs = Compiler.Utils.getPrograms();
             //Add more spacing to each program so indexing reveals correct numbers to the user
             programs = Compiler.Utils.addSpacing(programs);
             //Run process one by one
             for (var i = 0; i < programs.length; i++) {
-                this.putMessage("~~~~~ Program #" + (i + 1) + " ~~~~~");
+                this.putHeader1("PROGRAM #" + (i + 1));
+                this.putLine();
                 //Lex
-                this.putMessage("~~~~~ LEX ~~~~~");
+                this.putMessage("Begin LEX");
                 var isLexSuccessful = Compiler.Lexer.lex(programs[i]);
                 this.putMessage("Lex complete with " + warningCount + " warning(s) and " + errorCount + " error(s)");
-                this.putMessage("");
+                this.putLine();
                 //Reset errors
                 warningCount = 0;
                 errorCount = 0;
                 tokenCount = 0;
                 //Parse
                 if (isLexSuccessful) {
-                    this.putMessage("~~~~~ PARSE ~~~~~");
+                    this.putMessage("Begin PARSE");
                     //var isParseSuccessful = Parser.parse()
+                    //this.putMessage("Parse complete with " + warningCount +" warning(s) and "+ errorCount+" error(s)");
+                    this.putLine();
                 }
+                //Next Program
+                this.putLine(3);
             }
         }
         static btnVerbose_click() {
@@ -65,12 +70,24 @@ var Compiler;
             }
         }
         static putMessage(msg) {
-            document.getElementById("taOutput").value += msg + "\n";
+            document.getElementById("taOutput").innerHTML += "<p>" + msg + "</p>";
         }
         static putDebug(msg) {
             if (debug) {
-                this.putMessage("    " + msg);
+                this.putMessage("<mark class='debug'>>> " + msg + "</mark>");
             }
+        }
+        static putHeader1(msg) {
+            document.getElementById("taOutput").innerHTML += "<h1>" + msg + "</h1>";
+        }
+        static putHeader2(msg) {
+            document.getElementById("taOutput").innerHTML += "<h2>" + msg + "</h2>";
+        }
+        static putLine(numOfLines) {
+            if (!numOfLines) {
+                numOfLines = 1;
+            }
+            document.getElementById("taOutput").innerHTML += "<br>".repeat(numOfLines);
         }
     }
     Compiler.Control = Control;

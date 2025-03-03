@@ -18,10 +18,14 @@ var Compiler;
             tokenStream[tokenCount] = this;
             tokenCount++;
             //print TOKEN Message
-            var message = "TOKEN [ '" + str + "' ] " + description + " at " + Compiler.Utils.address(startIndex);
+            var message = "<mark class='label'>TOKEN </mark>";
+            message += "<mark class='bracket'>[ '" + str + "' ]</mark> ";
+            message += "<mark class='info'>" + description + " </mark>";
+            message += "<mark class='address'> at " + Compiler.Utils.address(startIndex);
             if (startIndex[LINE] < endIndex[LINE] || startIndex[CHAR] < endIndex[CHAR]) {
                 message += "-" + Compiler.Utils.address(endIndex);
             }
+            message += "</mark>";
             Compiler.Control.putMessage(message);
         }
     }

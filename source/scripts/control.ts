@@ -8,14 +8,14 @@ namespace Compiler {
 
         public static init() {
             // Clear the message box.
-            (<HTMLInputElement> document.getElementById("taOutput")).value = `\n\n\n\n\n\n\n
-                                )  
-                               (  \`  
-                              )   ) ( 
-                           __..---..__
-                       ,-='  /  |  \\  \`=-.
-                      :--..___________..--;
-                       \\.,_____________,./`;
+            (<HTMLInputElement> document.getElementById("taOutput")).innerHTML = `<p></p><p></p><p></p>
+<p>>                                )  </p>
+<p>>                               (  \`  </p>
+<p>>                              )   ) ( </p>
+<p>>                           __..---..__</p>
+<p>>                       ,-='  /  |  \\  \`=-.</p>
+<p>>                      :--..___________..--;</p>
+<p>>                       \\.,_____________,./</p>`;
             //Pie credit: https://ascii.co.uk/art/pie
     
             // Set the initial values for our globals.
@@ -32,9 +32,9 @@ namespace Compiler {
             // Note the <input> element's event handler: onclick="btnCompile_click();
             
             this.init();
-            (<HTMLInputElement> document.getElementById("taOutput")).value = "";
-            this.putMessage("Compilation Started!");
-            this.putMessage("");
+            (<HTMLInputElement> document.getElementById("taOutput")).innerHTML = "";
+            //this.putMessage("Compilation Started!");
+            //this.putLine(3);
             
             //Separate the user generated source code into programs
             var programs = Utils.getPrograms();
@@ -43,13 +43,14 @@ namespace Compiler {
     
             //Run process one by one
             for (var i = 0; i < programs.length; i++) {
-                this.putMessage("~~~~~ Program #"+ (i+1) +" ~~~~~");
+                this.putHeader1("PROGRAM #"+ (i+1));
+                this.putLine();
     
                 //Lex
-                this.putMessage("~~~~~ LEX ~~~~~");
+                this.putMessage("Begin LEX");
                 var isLexSuccessful = Lexer.lex(programs[i]);
                 this.putMessage("Lex complete with " + warningCount +" warning(s) and "+ errorCount+" error(s)");
-                this.putMessage("");
+                this.putLine();
     
                 //Reset errors
                 warningCount = 0;
@@ -58,9 +59,14 @@ namespace Compiler {
     
                 //Parse
                 if (isLexSuccessful) {
-                    this.putMessage("~~~~~ PARSE ~~~~~");
+                    this.putMessage("Begin PARSE");
                     //var isParseSuccessful = Parser.parse()
+                    //this.putMessage("Parse complete with " + warningCount +" warning(s) and "+ errorCount+" error(s)");
+                    this.putLine();
                 }
+
+                //Next Program
+                this.putLine(3);
             }
         }
     
@@ -80,12 +86,24 @@ namespace Compiler {
 
 
         public static putMessage(msg) {
-            (<HTMLInputElement> document.getElementById("taOutput")).value += msg + "\n";
+            (<HTMLInputElement> document.getElementById("taOutput")).innerHTML += "<p>"+msg + "</p>";
         }
         public static putDebug(msg) {
             if (debug) {
-                this.putMessage("    "+msg);
+                this.putMessage("<mark class='debug'>>> "+msg+"</mark>");
             }
+        }
+        public static putHeader1(msg) {
+            (<HTMLInputElement> document.getElementById("taOutput")).innerHTML += "<h1>"+msg + "</h1>";
+        }
+        public static putHeader2(msg) {
+            (<HTMLInputElement> document.getElementById("taOutput")).innerHTML += "<h2>"+msg + "</h2>";
+        }
+        public static putLine(numOfLines?) {
+            if (!numOfLines){
+                numOfLines = 1;
+            }
+            (<HTMLInputElement> document.getElementById("taOutput")).innerHTML += "<br>".repeat(numOfLines);
         }
     }
 }
