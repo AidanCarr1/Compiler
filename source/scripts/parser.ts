@@ -38,49 +38,60 @@ namespace Compiler {
             this.match("CLOSE BRACE");
         }
 
-        //INCOMPLETE
         public static parseStatementList() {
             Control.putParseMessage("parseStatementList()");
             
             //Acceptable tokens
-            if (["PRINT", "ID", "VARIABLE TYPE", "WHILE", "IF", "OPEN BRACKET"].includes(parseToken.description)) {
-                this.parseStatement();
-                this.parseStatementList();
-            }
-            else {
-                //do nothing
-                //Final statement
+            switch (parseToken.description) {
+                
+                case "PRINT":
+                case "ID":
+                case "VARIABLE TYPE":
+                case "WHILE":
+                case "IF":
+                case "OPEN BRACE":
+                    this.parseStatement();
+                    this.parseStatementList();
+                
+                default:
+                    //Do nothing
+                    //Final statement
             }
         }
 
-        //INCOMPLETE
         public static parseStatement() {
             Control.putParseMessage("parseStatement()");
             
             //Acceptable tokens
             switch (parseToken.description) {
+                
                 case "PRINT":
                     this.parsePrintStatement();
                     break;
+                
                 case "ID":
                     this.parseAssignmentStatement();
                     break;
+                
                 case "VARIABLE TYPE":
                     this.parseVarDecl();
                     break;
+                
                 case "WHILE":
                     this.parseWhileStatement();
                     break;
+                
                 case "IF":
                     this.parseIfStatement();
                     break;
-                case "OPEN BRACKET":
+                
+                case "OPEN BRACE":
                     this.parseBlock();
                     break;
+                
                 default:
                     //error
-            }
-            
+            }    
         }
 
         public static parsePrintStatement() {
@@ -123,12 +134,33 @@ namespace Compiler {
             this.parseBlock();
         }
 
-        //INCOMPLETE
         public static parseExpr() {
             Control.putParseMessage("parseExpr()");
-            //TEMPORARY!!!!!!
-            this.match("ID");
             
+            //Acceptable tokens
+            switch (parseToken.description) {
+                
+                case "DIGIT":
+                    this.parseIntExpr();
+                    break;
+
+                case "QUOTATION":
+                    this.parseStringExpr();
+                    break;
+
+                case "OPEN PARENTHESIS":
+                case "TRUE":
+                case "FALSE":
+                    this.parseBooleanExpr();
+                    break;
+        
+                case "ID":
+                    this.parseId();
+                    break;
+                
+                default:
+                    //error  
+            }          
         }
 
         //INCOMPLETE
@@ -223,7 +255,7 @@ namespace Compiler {
                 warningCount += 10;
                 errorCount += 100;
                 //Print fail
-                Control.putMessage("Expected: ['"+str+"'] found: ['"+parseToken.description+"']");
+                Control.putMessage("Found: ['"+parseToken.description+"'] Expected: ['"+str+"'] at "+Utils.address(parseToken.startIndex));
             }
         }
 

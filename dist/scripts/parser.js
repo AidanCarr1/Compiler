@@ -29,20 +29,23 @@ var Compiler;
             this.parseStatementList();
             this.match("CLOSE BRACE");
         }
-        //INCOMPLETE
         static parseStatementList() {
             Compiler.Control.putParseMessage("parseStatementList()");
             //Acceptable tokens
-            if (["PRINT", "ID", "VARIABLE TYPE", "WHILE", "IF", "OPEN BRACKET"].includes(parseToken.description)) {
-                this.parseStatement();
-                this.parseStatementList();
-            }
-            else {
-                //do nothing
+            switch (parseToken.description) {
+                case "PRINT":
+                case "ID":
+                case "VARIABLE TYPE":
+                case "WHILE":
+                case "IF":
+                case "OPEN BRACE":
+                    this.parseStatement();
+                    this.parseStatementList();
+                default:
+                //Do nothing
                 //Final statement
             }
         }
-        //INCOMPLETE
         static parseStatement() {
             Compiler.Control.putParseMessage("parseStatement()");
             //Acceptable tokens
@@ -62,7 +65,7 @@ var Compiler;
                 case "IF":
                     this.parseIfStatement();
                     break;
-                case "OPEN BRACKET":
+                case "OPEN BRACE":
                     this.parseBlock();
                     break;
                 default:
@@ -99,11 +102,27 @@ var Compiler;
             this.parseBooleanExpr();
             this.parseBlock();
         }
-        //INCOMPLETE
         static parseExpr() {
             Compiler.Control.putParseMessage("parseExpr()");
-            //TEMPORARY!!!!!!
-            this.match("ID");
+            //Acceptable tokens
+            switch (parseToken.description) {
+                case "DIGIT":
+                    this.parseIntExpr();
+                    break;
+                case "QUOTATION":
+                    this.parseStringExpr();
+                    break;
+                case "OPEN PARENTHESIS":
+                case "TRUE":
+                case "FALSE":
+                    this.parseBooleanExpr();
+                    break;
+                case "ID":
+                    this.parseId();
+                    break;
+                default:
+                //error  
+            }
         }
         //INCOMPLETE
         static parseIntExpr() {
@@ -166,7 +185,7 @@ var Compiler;
                 warningCount += 10;
                 errorCount += 100;
                 //Print fail
-                Compiler.Control.putMessage("Expected: ['" + str + "'] found: ['" + parseToken.description + "']");
+                Compiler.Control.putMessage("Found: ['" + parseToken.description + "'] Expected: ['" + str + "'] at " + Compiler.Utils.address(parseToken.startIndex));
             }
         }
     }
