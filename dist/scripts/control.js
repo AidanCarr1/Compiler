@@ -6,14 +6,14 @@ var Compiler;
     class Control {
         static init() {
             // Clear the message box.
-            document.getElementById("taOutput").innerHTML = `<p></p><p></p><p></p>
-<p>>                                )  </p>
-<p>>                               (  \`  </p>
-<p>>                              )   ) ( </p>
-<p>>                           __..---..__</p>
-<p>>                       ,-='  /  |  \\  \`=-.</p>
-<p>>                      :--..___________..--;</p>
-<p>>                       \\.,_____________,./</p>`;
+            document.getElementById("taOutput").innerHTML = `<pre class='centered'>\n\n\n\n\n\n
+<mark style="color:lightgray">                                )  
+                               (  \`  
+                              )   ) (  </mark> <mark style="color:orange">
+                           __..---..__
+                       ,-='  <mark style="color:darkorange">/  |  \\ </mark> \`=-.
+                      :--..___________..--</mark><mark style="color:gray">;
+                       \\.,_____________,./ </mark></pre>`;
             //Pie credit: https://ascii.co.uk/art/pie
             // Set the initial values for our globals.
             tokens = "";

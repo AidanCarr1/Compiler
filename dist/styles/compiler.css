@@ -60,6 +60,9 @@ textarea, pre {
 	overflow-y:auto;
 	margin-top: 10px;
 }
+#taOuput #centered {
+	text-align: center;
+}
 #taOutput p {
 	margin-bottom: 2px;
 	margin-top: 0px;

@@ -8,14 +8,14 @@ namespace Compiler {
 
         public static init() {
             // Clear the message box.
-            (<HTMLInputElement> document.getElementById("taOutput")).innerHTML = `<p></p><p></p><p></p>
-<p>>                                )  </p>
-<p>>                               (  \`  </p>
-<p>>                              )   ) ( </p>
-<p>>                           __..---..__</p>
-<p>>                       ,-='  /  |  \\  \`=-.</p>
-<p>>                      :--..___________..--;</p>
-<p>>                       \\.,_____________,./</p>`;
+            (<HTMLInputElement> document.getElementById("taOutput")).innerHTML = `<pre class='centered'>\n\n\n\n\n\n
+<mark style="color:lightgray">                                )  
+                               (  \`  
+                              )   ) (  </mark> <mark style="color:orange">
+                           __..---..__
+                       ,-='  <mark style="color:darkorange">/  |  \\ </mark> \`=-.
+                      :--..___________..--</mark><mark style="color:gray">;
+                       \\.,_____________,./ </mark></pre>`;
             //Pie credit: https://ascii.co.uk/art/pie
     
             // Set the initial values for our globals.
@@ -60,7 +60,7 @@ namespace Compiler {
                 if (isLexSuccessful) {
                     this.putLine();
                     this.putMessage("Begin PARSE");
-                    var isParseSuccessful = Parser.parse()
+                    var isParseSuccessful = Parser.parse();
                     //this.putMessage("Parse complete with " + warningCount +" warning(s) and "+ errorCount+" error(s)");
                     this.putMessage("PARSE complete with " + warningCount +" warning(s) and "+ errorCount+" error(s)");
                 }
