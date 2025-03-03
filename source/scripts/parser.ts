@@ -34,7 +34,7 @@ namespace Compiler {
             Control.putParseMessage("parseBlock()");
             
             this.match("OPEN BRACE");
-            //this.parseStatementList();
+            this.parseStatementList();
             this.match("CLOSE BRACE");
         }
 
@@ -42,17 +42,44 @@ namespace Compiler {
         public static parseStatementList() {
             Control.putParseMessage("parseStatementList()");
             
-            //if (token in print, assignment, vardec...)
+            //Acceptable tokens
+            if (["PRINT", "ID", "VARIABLE TYPE", "WHILE", "IF", "OPEN BRACKET"].includes(parseToken.description)) {
                 this.parseStatement();
                 this.parseStatementList();
-            //else
+            }
+            else {
                 //do nothing
                 //Final statement
+            }
         }
 
         //INCOMPLETE
         public static parseStatement() {
             Control.putParseMessage("parseStatement()");
+            
+            //Acceptable tokens
+            switch (parseToken.description) {
+                case "PRINT":
+                    this.parsePrintStatement();
+                    break;
+                case "ID":
+                    this.parseAssignmentStatement();
+                    break;
+                case "VARIABLE TYPE":
+                    this.parseVarDecl();
+                    break;
+                case "WHILE":
+                    this.parseWhileStatement();
+                    break;
+                case "IF":
+                    this.parseIfStatement();
+                    break;
+                case "OPEN BRACKET":
+                    this.parseBlock();
+                    break;
+                default:
+                    //error
+            }
             
         }
 
@@ -99,7 +126,8 @@ namespace Compiler {
         //INCOMPLETE
         public static parseExpr() {
             Control.putParseMessage("parseExpr()");
-            
+            //TEMPORARY!!!!!!
+            this.match("ID");
             
         }
 

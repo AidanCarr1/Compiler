@@ -26,22 +26,48 @@ var Compiler;
         static parseBlock() {
             Compiler.Control.putParseMessage("parseBlock()");
             this.match("OPEN BRACE");
-            //this.parseStatementList();
+            this.parseStatementList();
             this.match("CLOSE BRACE");
         }
         //INCOMPLETE
         static parseStatementList() {
             Compiler.Control.putParseMessage("parseStatementList()");
-            //if (token in print, assignment, vardec...)
-            this.parseStatement();
-            this.parseStatementList();
-            //else
-            //do nothing
-            //Final statement
+            //Acceptable tokens
+            if (["PRINT", "ID", "VARIABLE TYPE", "WHILE", "IF", "OPEN BRACKET"].includes(parseToken.description)) {
+                this.parseStatement();
+                this.parseStatementList();
+            }
+            else {
+                //do nothing
+                //Final statement
+            }
         }
         //INCOMPLETE
         static parseStatement() {
             Compiler.Control.putParseMessage("parseStatement()");
+            //Acceptable tokens
+            switch (parseToken.description) {
+                case "PRINT":
+                    this.parsePrintStatement();
+                    break;
+                case "ID":
+                    this.parseAssignmentStatement();
+                    break;
+                case "VARIABLE TYPE":
+                    this.parseVarDecl();
+                    break;
+                case "WHILE":
+                    this.parseWhileStatement();
+                    break;
+                case "IF":
+                    this.parseIfStatement();
+                    break;
+                case "OPEN BRACKET":
+                    this.parseBlock();
+                    break;
+                default:
+                //error
+            }
         }
         static parsePrintStatement() {
             Compiler.Control.putParseMessage("parsePrintStatement()");
@@ -76,6 +102,8 @@ var Compiler;
         //INCOMPLETE
         static parseExpr() {
             Compiler.Control.putParseMessage("parseExpr()");
+            //TEMPORARY!!!!!!
+            this.match("ID");
         }
         //INCOMPLETE
         static parseIntExpr() {
