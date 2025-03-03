@@ -41,6 +41,7 @@ var Compiler;
                 case "OPEN BRACE":
                     this.parseStatement();
                     this.parseStatementList();
+                    break;
                 default:
                 //Do nothing
                 //Final statement
@@ -69,7 +70,9 @@ var Compiler;
                     this.parseBlock();
                     break;
                 default:
-                //error
+                    Compiler.Control.putMessage("How did we get here?");
+                //Should not be possible    
+                //No statement found
             }
         }
         static parsePrintStatement() {
@@ -121,12 +124,18 @@ var Compiler;
                     this.parseId();
                     break;
                 default:
-                //error  
+                //Empty expr 
+                //Or error 
             }
         }
-        //INCOMPLETE
         static parseIntExpr() {
             Compiler.Control.putParseMessage("parseIntExpr()");
+            this.match("DIGIT");
+            //num + ...
+            if (parseToken.description === "ADDITION") {
+                this.match("ADDITION");
+                this.parseExpr();
+            }
         }
         static parseStringExpr() {
             Compiler.Control.putParseMessage("parseStringExpr()");
@@ -136,6 +145,23 @@ var Compiler;
         }
         static parseBooleanExpr() {
             Compiler.Control.putParseMessage("parseBooleanExpr()");
+            //CHECK CODE
+            //how do i want to handle error i guess..
+            //Acceptable tokens
+            switch (parseToken.description) {
+                case "OPEN PARENTHESIS":
+                    this.match("OPEN PARENTHESIS");
+                    this.parseExpr();
+                    this.parseIntOp();
+                    this.parseExpr();
+                    this.match("CLOSE PARENTHESIS");
+                    break;
+                case "TRUE":
+                case "FALSE":
+                    this.parseBoolVal();
+                default:
+                //Error?
+            }
         }
         static parseId() {
             Compiler.Control.putParseMessage("parseId()");

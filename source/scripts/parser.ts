@@ -52,7 +52,8 @@ namespace Compiler {
                 case "OPEN BRACE":
                     this.parseStatement();
                     this.parseStatementList();
-                
+                    break;
+
                 default:
                     //Do nothing
                     //Final statement
@@ -90,7 +91,9 @@ namespace Compiler {
                     break;
                 
                 default:
-                    //error
+                    Control.putMessage("How did we get here?");
+                    //Should not be possible    
+                    //No statement found
             }    
         }
 
@@ -159,14 +162,20 @@ namespace Compiler {
                     break;
                 
                 default:
-                    //error  
+                    //Empty expr 
+                    //Or error 
             }          
         }
 
-        //INCOMPLETE
         public static parseIntExpr() {
             Control.putParseMessage("parseIntExpr()");
             
+            this.match("DIGIT");
+            //num + ...
+            if (parseToken.description === "ADDITION") {
+                this.match("ADDITION");
+                this.parseExpr();
+            }
             
         }
 
@@ -181,6 +190,27 @@ namespace Compiler {
         public static parseBooleanExpr() {
             Control.putParseMessage("parseBooleanExpr()");
             
+            //CHECK CODE
+            //how do i want to handle error i guess..
+
+            //Acceptable tokens
+            switch (parseToken.description) {
+                
+                case "OPEN PARENTHESIS":
+                    this.match("OPEN PARENTHESIS");
+                    this.parseExpr();
+                    this.parseIntOp();
+                    this.parseExpr();
+                    this.match("CLOSE PARENTHESIS");
+                    break;
+                
+                case "TRUE":
+                case "FALSE":
+                    this.parseBoolVal();
+
+                default:
+                    //Error?
+            }
         }
 
         public static parseId() {
