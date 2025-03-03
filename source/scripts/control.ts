@@ -49,7 +49,7 @@ namespace Compiler {
                 //Lex
                 this.putMessage("Begin LEX");
                 var isLexSuccessful = Lexer.lex(programs[i]);
-                this.putMessage("Lex complete with " + warningCount +" warning(s) and "+ errorCount+" error(s)");
+                this.putMessage("LEX complete with " + warningCount +" warning(s) and "+ errorCount+" error(s)");
     
                 //Reset errors
                 warningCount = 0;
@@ -60,14 +60,21 @@ namespace Compiler {
                 if (isLexSuccessful) {
                     this.putLine();
                     this.putMessage("Begin PARSE");
-                    //var isParseSuccessful = Parser.parse()
+                    var isParseSuccessful = Parser.parse()
                     //this.putMessage("Parse complete with " + warningCount +" warning(s) and "+ errorCount+" error(s)");
-                    
+                    this.putMessage("PARSE complete with " + warningCount +" warning(s) and "+ errorCount+" error(s)");
+                }
+                else {
+                    this.putLine();
+                    this.putMessage("PARSE Skipped");
                 }
 
                 //Next Program
                 this.putLine(2);
             }
+
+            //All programs are done
+            this.putHeader1("END");
         }
     
     
@@ -86,7 +93,8 @@ namespace Compiler {
 
 
         public static putMessage(msg) {
-            (<HTMLInputElement> document.getElementById("taOutput")).innerHTML += "<p>"+msg + "</p>";
+            (<HTMLInputElement> document.getElementById("taOutput")).innerHTML 
+            += "<p>"+msg + "</p>";
         }
         public static putDebug(msg) {
             if (debug) {
@@ -94,16 +102,24 @@ namespace Compiler {
             }
         }
         public static putHeader1(msg) {
-            (<HTMLInputElement> document.getElementById("taOutput")).innerHTML += "<h1>"+msg + "</h1>";
+            (<HTMLInputElement> document.getElementById("taOutput")).innerHTML 
+            += "<h1>"+msg + "</h1>";
         }
         public static putHeader2(msg) {
-            (<HTMLInputElement> document.getElementById("taOutput")).innerHTML += "<h2>"+msg + "</h2>";
+            (<HTMLInputElement> document.getElementById("taOutput")).innerHTML 
+            += "<h2>"+msg + "</h2>";
         }
         public static putLine(numOfLines?) {
             if (!numOfLines){
                 numOfLines = 1;
             }
-            (<HTMLInputElement> document.getElementById("taOutput")).innerHTML += "<br>".repeat(numOfLines);
+            (<HTMLInputElement> document.getElementById("taOutput")).innerHTML 
+            += "<br>".repeat(numOfLines);
         }
+        public static putParseMessage(msg) {
+            (<HTMLInputElement> document.getElementById("taOutput")).innerHTML 
+            += "<p><mark class='label'>PARSE</mark> <mark class='info'>"+msg+"</mark></p>";
+        }
+
     }
 }

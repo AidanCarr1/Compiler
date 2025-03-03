@@ -7,20 +7,31 @@
 var Compiler;
 (function (Compiler) {
     class Parser {
+        static parse() {
+            Compiler.Control.putParseMessage("parse()");
+            //Set the token stream
+            parseToken = tokenStream[0];
+            parseTokenIndex = 0;
+            Compiler.Control.putDebug(parseToken.str + " " + parseToken.description);
+            //Dive in and start:
+            this.parseProgram();
+            //We made it back safely!
+            return true;
+        }
         static parseProgram() {
-            Compiler.Control.putMessage("PARSE: parseProgram()");
+            Compiler.Control.putParseMessage("parseProgram()");
             this.parseBlock();
             this.match("EOP");
         }
         static parseBlock() {
-            Compiler.Control.putMessage("PARSE: parseBlock()");
+            Compiler.Control.putParseMessage("parseBlock()");
             this.match("OPEN BRACE");
-            this.parseStatementList();
+            //this.parseStatementList();
             this.match("CLOSE BRACE");
         }
         //INCOMPLETE
         static parseStatementList() {
-            Compiler.Control.putMessage("PARSE: parseStatementList()");
+            Compiler.Control.putParseMessage("parseStatementList()");
             //if (token in print, assignment, vardec...)
             this.parseStatement();
             this.parseStatementList();
@@ -30,90 +41,105 @@ var Compiler;
         }
         //INCOMPLETE
         static parseStatement() {
-            Compiler.Control.putMessage("PARSE: parseStatement()");
+            Compiler.Control.putParseMessage("parseStatement()");
         }
         static parsePrintStatement() {
-            Compiler.Control.putMessage("PARSE: parsePrintStatement()");
+            Compiler.Control.putParseMessage("parsePrintStatement()");
             this.match("PRINT");
             this.match("OPEN PARENTHESIS");
             this.parseExpr();
             this.match("CLOSE PARENTHESIS");
         }
         static parseAssignmentStatement() {
-            Compiler.Control.putMessage("PARSE: parseAssignmentStatement()");
+            Compiler.Control.putParseMessage("parseAssignmentStatement()");
             this.match("ID");
             this.match("ASSIGNMENT");
             this.parseExpr();
         }
         static parseVarDecl() {
-            Compiler.Control.putMessage("PARSE: parseVarDecl()");
+            Compiler.Control.putParseMessage("parseVarDecl()");
             this.parseType();
             this.parseId();
         }
         static parseWhileStatement() {
-            Compiler.Control.putMessage("PARSE: parseWhileStatement()");
+            Compiler.Control.putParseMessage("parseWhileStatement()");
             this.match("WHILE");
             this.parseBooleanExpr();
             this.parseBlock();
         }
         static parseIfStatement() {
-            Compiler.Control.putMessage("PARSE: parseIfStatement()");
+            Compiler.Control.putParseMessage("parseIfStatement()");
             this.match("IF");
             this.parseBooleanExpr();
             this.parseBlock();
         }
         //INCOMPLETE
         static parseExpr() {
-            Compiler.Control.putMessage("PARSE: parseExpr()");
+            Compiler.Control.putParseMessage("parseExpr()");
         }
         //INCOMPLETE
         static parseIntExpr() {
-            Compiler.Control.putMessage("PARSE: parseIntExpr()");
+            Compiler.Control.putParseMessage("parseIntExpr()");
         }
         static parseStringExpr() {
-            Compiler.Control.putMessage("PARSE: parseStringExpr()");
+            Compiler.Control.putParseMessage("parseStringExpr()");
             this.match("QUOTATION");
             this.parseCharList();
             this.match("QUOTATION");
         }
         static parseBooleanExpr() {
-            Compiler.Control.putMessage("PARSE: parseBooleanExpr()");
+            Compiler.Control.putParseMessage("parseBooleanExpr()");
         }
         static parseId() {
-            Compiler.Control.putMessage("PARSE: parseId()");
+            Compiler.Control.putParseMessage("parseId()");
         }
         static parseCharList() {
-            Compiler.Control.putMessage("PARSE: parseCharList()");
+            Compiler.Control.putParseMessage("parseCharList()");
         }
         static parseType() {
-            Compiler.Control.putMessage("PARSE: parseType()");
+            Compiler.Control.putParseMessage("parseType()");
             this.match("VARIABLE TYPE");
         }
         //INCOMPLETE - check with space and char dictionary
         static parseChar() {
-            Compiler.Control.putMessage("PARSE: parseChar()");
+            Compiler.Control.putParseMessage("parseChar()");
             this.match("CHAR");
         }
         //INCOMPLETE - check with space and char dictionary
         static parseSpace() {
-            Compiler.Control.putMessage("PARSE: parseSpace()");
+            Compiler.Control.putParseMessage("parseSpace()");
             this.match("SPACE CHAR");
         }
         static parseDigit() {
-            Compiler.Control.putMessage("PARSE: parseDigit()");
+            Compiler.Control.putParseMessage("parseDigit()");
             this.match("DIGIT");
         }
         static parseBoolOp() {
-            Compiler.Control.putMessage("PARSE: parseBoolOp()");
+            Compiler.Control.putParseMessage("parseBoolOp()");
         }
         static parseBoolVal() {
-            Compiler.Control.putMessage("PARSE: parseBoolVal()");
+            Compiler.Control.putParseMessage("parseBoolVal()");
         }
         static parseIntOp() {
-            Compiler.Control.putMessage("PARSE: parseIntOp()");
+            Compiler.Control.putParseMessage("parseIntOp()");
             this.match("ADDITION");
         }
         static match(str, strList) {
+            //Match found
+            if (parseToken.description === str) {
+                //Print success
+                Compiler.Control.putMessage(str);
+                //Next token
+                parseTokenIndex++;
+                parseToken = tokenStream[parseTokenIndex];
+            }
+            //Match not found
+            else {
+                warningCount += 10;
+                errorCount += 100;
+                //Print fail
+                Compiler.Control.putMessage("Expected: ['" + str + "'] found: ['" + parseToken.description + "']");
+            }
         }
     }
     Compiler.Parser = Parser;

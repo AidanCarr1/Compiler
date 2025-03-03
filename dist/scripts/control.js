@@ -40,7 +40,7 @@ var Compiler;
                 //Lex
                 this.putMessage("Begin LEX");
                 var isLexSuccessful = Compiler.Lexer.lex(programs[i]);
-                this.putMessage("Lex complete with " + warningCount + " warning(s) and " + errorCount + " error(s)");
+                this.putMessage("LEX complete with " + warningCount + " warning(s) and " + errorCount + " error(s)");
                 //Reset errors
                 warningCount = 0;
                 errorCount = 0;
@@ -49,12 +49,19 @@ var Compiler;
                 if (isLexSuccessful) {
                     this.putLine();
                     this.putMessage("Begin PARSE");
-                    //var isParseSuccessful = Parser.parse()
+                    var isParseSuccessful = Compiler.Parser.parse();
                     //this.putMessage("Parse complete with " + warningCount +" warning(s) and "+ errorCount+" error(s)");
+                    this.putMessage("PARSE complete with " + warningCount + " warning(s) and " + errorCount + " error(s)");
+                }
+                else {
+                    this.putLine();
+                    this.putMessage("PARSE Skipped");
                 }
                 //Next Program
                 this.putLine(2);
             }
+            //All programs are done
+            this.putHeader1("END");
         }
         static btnVerbose_click() {
             // Toggleable button: Verbose mode on or off
@@ -69,7 +76,8 @@ var Compiler;
             }
         }
         static putMessage(msg) {
-            document.getElementById("taOutput").innerHTML += "<p>" + msg + "</p>";
+            document.getElementById("taOutput").innerHTML
+                += "<p>" + msg + "</p>";
         }
         static putDebug(msg) {
             if (debug) {
@@ -77,16 +85,23 @@ var Compiler;
             }
         }
         static putHeader1(msg) {
-            document.getElementById("taOutput").innerHTML += "<h1>" + msg + "</h1>";
+            document.getElementById("taOutput").innerHTML
+                += "<h1>" + msg + "</h1>";
         }
         static putHeader2(msg) {
-            document.getElementById("taOutput").innerHTML += "<h2>" + msg + "</h2>";
+            document.getElementById("taOutput").innerHTML
+                += "<h2>" + msg + "</h2>";
         }
         static putLine(numOfLines) {
             if (!numOfLines) {
                 numOfLines = 1;
             }
-            document.getElementById("taOutput").innerHTML += "<br>".repeat(numOfLines);
+            document.getElementById("taOutput").innerHTML
+                += "<br>".repeat(numOfLines);
+        }
+        static putParseMessage(msg) {
+            document.getElementById("taOutput").innerHTML
+                += "<p><mark class='label'>PARSE</mark> <mark class='info'>" + msg + "</mark></p>";
         }
     }
     Compiler.Control = Control;

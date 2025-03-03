@@ -41,3 +41,8 @@ var currentDictionary = mainDictionary;
 var currentDefinitions = definitions; 
 var currentDictionaryName = "MAIN";
 var previousDictionaryName = "MAIN";
+
+
+// PARSE
+var parseToken = null;
+var parseTokenIndex = 0;
