@@ -13,7 +13,9 @@ var Compiler;
             this.wid = warningCount; //warning ID
             warningCount++;
             //print WARNING Message
-            var message = "! WARNING [ " + str + " ]" + " at " + Compiler.Utils.address(index);
+            var message = "<mark class='warning'>WARNING";
+            message += " [ " + str + " ]</mark> ";
+            message += "<mark class='address'> at " + Compiler.Utils.address(index) + "</mark>";
             Compiler.Control.putMessage(message);
         }
     }

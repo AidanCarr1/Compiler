@@ -17,7 +17,10 @@ namespace Compiler {
             warningCount ++;
 
             //print WARNING Message
-            var message = "! WARNING [ " + str + " ]" + " at " + Utils.address(index);
+            var message = "<mark class='warning'>WARNING";
+            message += " [ " + str + " ]</mark> ";
+            message += "<mark class='address'> at " + Utils.address(index) + "</mark>";
+
             Control.putMessage(message);
         }
     }

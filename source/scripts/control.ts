@@ -50,7 +50,6 @@ namespace Compiler {
                 this.putMessage("Begin LEX");
                 var isLexSuccessful = Lexer.lex(programs[i]);
                 this.putMessage("Lex complete with " + warningCount +" warning(s) and "+ errorCount+" error(s)");
-                this.putLine();
     
                 //Reset errors
                 warningCount = 0;
@@ -59,14 +58,15 @@ namespace Compiler {
     
                 //Parse
                 if (isLexSuccessful) {
+                    this.putLine();
                     this.putMessage("Begin PARSE");
                     //var isParseSuccessful = Parser.parse()
                     //this.putMessage("Parse complete with " + warningCount +" warning(s) and "+ errorCount+" error(s)");
-                    this.putLine();
+                    
                 }
 
                 //Next Program
-                this.putLine(3);
+                this.putLine(2);
             }
         }
     

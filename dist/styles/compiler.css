@@ -107,3 +107,6 @@ textarea, pre {
 #taOutput .error {
 	color:red;
 }
+#taOutput .warning {
+	color:rgb(255, 175, 0);
+}

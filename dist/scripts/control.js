@@ -41,20 +41,19 @@ var Compiler;
                 this.putMessage("Begin LEX");
                 var isLexSuccessful = Compiler.Lexer.lex(programs[i]);
                 this.putMessage("Lex complete with " + warningCount + " warning(s) and " + errorCount + " error(s)");
-                this.putLine();
                 //Reset errors
                 warningCount = 0;
                 errorCount = 0;
                 tokenCount = 0;
                 //Parse
                 if (isLexSuccessful) {
+                    this.putLine();
                     this.putMessage("Begin PARSE");
                     //var isParseSuccessful = Parser.parse()
                     //this.putMessage("Parse complete with " + warningCount +" warning(s) and "+ errorCount+" error(s)");
-                    this.putLine();
                 }
                 //Next Program
-                this.putLine(3);
+                this.putLine(2);
             }
         }
         static btnVerbose_click() {

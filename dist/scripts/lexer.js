@@ -211,8 +211,8 @@ var Compiler;
             //No EOP
             else if (finalToken.str !== "$") {
                 var newWarning = new Compiler.Warning("MISSING EOP SYMBOL $", bestTokenEndIndex);
-                return false;
-                //putMessage("ERROR [ Missing EOP ]  "+address(bestTokenEndIndex));
+                //Add an EOP marker to the end
+                var newToken = new Compiler.Token("$", "EOP", bestTokenEndIndex, bestTokenEndIndex);
             }
             //return a list of tokens
             return sourceString;
