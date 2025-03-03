@@ -27,6 +27,7 @@ namespace Compiler {
             message += "<mark class='info'>" + description + " </mark>";
             message += "<mark class='address'> at " + Utils.address(startIndex);
 
+            //Multi-character TOKEN
             if (startIndex[LINE] < endIndex[LINE] || startIndex[CHAR] < endIndex[CHAR]) {
                 message += "-" + Utils.address(endIndex);
             }

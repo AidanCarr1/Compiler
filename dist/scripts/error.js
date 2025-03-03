@@ -14,7 +14,9 @@ var Compiler;
             this.eid = errorCount; //error ID
             errorCount++;
             //print ERROR Message
-            var message = "! ERROR [ " + str + " ]" + " at " + Compiler.Utils.address(index);
+            var message = "<mark class='error'>ERROR";
+            message += " [ " + str + " ]</mark> ";
+            message += "<mark class='address'> at " + Compiler.Utils.address(index) + "</mark>";
             Compiler.Control.putMessage(message);
         }
     }

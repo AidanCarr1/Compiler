@@ -104,3 +104,6 @@ textarea, pre {
 #taOutput .debug {
 	color:gray;
 }
+#taOutput .error {
+	color:red;
+}

@@ -18,7 +18,10 @@ namespace Compiler {
             errorCount ++;
 
             //print ERROR Message
-            var message = "! ERROR [ " + str + " ]" + " at " + Utils.address(index);
+            var message = "<mark class='error'>ERROR";
+            message += " [ " + str + " ]</mark> ";
+            message += "<mark class='address'> at " + Utils.address(index) + "</mark>";
+
             Control.putMessage(message);
         }
     }
