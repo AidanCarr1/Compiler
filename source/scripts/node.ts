@@ -6,18 +6,18 @@ namespace Compiler {
     export class Node {
 
         //New Node
-        constructor(public name?, 
-            public parent?, 
+        constructor(public name: String, 
+            public parent?: Node, 
             public children?) { 
 
             //Node knows itself, parent, children
-            this.name;
+            this.name = name;
             this.parent;       //Attributes are updated later
             this.children = [];
         }
 
         //Add node to end of the array of children
-        public addChild(childNode) {
+        public addChild(childNode: Node) {
             this.children.push(childNode);
         }
     }

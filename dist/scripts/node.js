@@ -10,7 +10,7 @@ var Compiler;
             this.parent = parent;
             this.children = children;
             //Node knows itself, parent, children
-            this.name;
+            this.name = name;
             this.parent; //Attributes are updated later
             this.children = [];
         }
