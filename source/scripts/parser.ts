@@ -355,12 +355,15 @@ namespace Compiler {
                 parseTokenIndex ++;
                 parseToken = tokenStream[parseTokenIndex];
             }
+
             //Match not found
             else {
-                warningCount += 10;
-                errorCount += 100;
-                //Print fail
-                Control.putMessage("Found: ['"+parseToken.description+"'] Expected: ['"+goalDescription+"'] at "+Utils.address(parseToken.startIndex));
+                //Track the FIRST Error
+                if (errorCount <= 0) {
+                    //errorCount += 1;
+                    var newError = new ErrorCompiler("Found: '"+parseToken.description+"' Expected: '"+goalDescription+"'", Utils.address(parseToken.startIndex));
+                    //Control.putMessage("Found: ['"+parseToken.description+"'] Expected: ['"+goalDescription+"'] at "+Utils.address(parseToken.startIndex));
+                }                
             }
         }
 

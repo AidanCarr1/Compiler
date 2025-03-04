@@ -61,6 +61,7 @@ namespace Compiler {
                     this.putLine();
                     this.putMessage("Begin PARSE");
 
+                    _CST.reset();
                     var isParseSuccessful = Parser.parse();
 
                     //this.putMessage("Parse complete with " + warningCount +" warning(s) and "+ errorCount+" error(s)");
@@ -71,9 +72,11 @@ namespace Compiler {
                     this.putMessage("PARSE Skipped");
                 }
 
-                //if (isParseSuccessful) {
+                if (isParseSuccessful) {
+                    Control.putLine();
+                    Control.putMessage("Concrete Syntax Tree");
                     _CST.printTree();
-                //}
+                }
 
                 //Next Program
                 this.putLine(2);
@@ -123,8 +126,10 @@ namespace Compiler {
             += "<br>".repeat(numOfLines);
         }
         public static putParseMessage(msg) {
-            (<HTMLInputElement> document.getElementById("taOutput")).innerHTML 
-            += "<p><mark class='label'>PARSE</mark> <mark class='info'>"+msg+"</mark></p>";
+            if (errorCount <= 0) {
+                (<HTMLInputElement> document.getElementById("taOutput")).innerHTML 
+                += "<p><mark class='label'>PARSE</mark> <mark class='info'>"+msg+"</mark></p>";
+            }
         }
 
     }

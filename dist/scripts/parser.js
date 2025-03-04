@@ -280,10 +280,12 @@ var Compiler;
             }
             //Match not found
             else {
-                warningCount += 10;
-                errorCount += 100;
-                //Print fail
-                Compiler.Control.putMessage("Found: ['" + parseToken.description + "'] Expected: ['" + goalDescription + "'] at " + Compiler.Utils.address(parseToken.startIndex));
+                //Track the FIRST Error
+                if (errorCount <= 0) {
+                    //errorCount += 1;
+                    var newError = new Compiler.ErrorCompiler("Found: '" + parseToken.description + "' Expected: '" + goalDescription + "'", Compiler.Utils.address(parseToken.startIndex));
+                    //Control.putMessage("Found: ['"+parseToken.description+"'] Expected: ['"+goalDescription+"'] at "+Utils.address(parseToken.startIndex));
+                }
             }
         }
     }

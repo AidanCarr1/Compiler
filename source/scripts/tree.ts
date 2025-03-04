@@ -49,6 +49,17 @@ namespace Compiler {
                 //Cannot go past the root,
                 //do not move current pointer
             } 
+
+            //FIX IDEA
+            //There exists empty Char lists and Statement lists
+            //they are not declared as leaf nodes, but the final one ends up being a leaf node
+            //maybe I delete these - Nodes declared as branch but turn out to be leaf
+        }
+
+        //New tree
+        public reset() {
+            this.root = null;
+            this.current = null;
         }
 
 
@@ -74,7 +85,7 @@ namespace Compiler {
             }
             else {
                 // There are children, so note these interior/branch nodes and ...
-                traversalResult += "|" + node.name + "| <br>";
+                traversalResult += "&lt;" + node.name + "&gt; <br>";
                 // .. recursively expand them.
                 for (var i = 0; i < node.children.length; i++) {
                     this.expand(node.children[i], depth + 1);

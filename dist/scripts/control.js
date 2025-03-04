@@ -49,6 +49,7 @@ var Compiler;
                 if (isLexSuccessful) {
                     this.putLine();
                     this.putMessage("Begin PARSE");
+                    _CST.reset();
                     var isParseSuccessful = Compiler.Parser.parse();
                     //this.putMessage("Parse complete with " + warningCount +" warning(s) and "+ errorCount+" error(s)");
                     this.putMessage("PARSE complete with " + warningCount + " warning(s) and " + errorCount + " error(s)");
@@ -57,9 +58,11 @@ var Compiler;
                     this.putLine();
                     this.putMessage("PARSE Skipped");
                 }
-                //if (isParseSuccessful) {
-                _CST.printTree();
-                //}
+                if (isParseSuccessful) {
+                    Control.putLine();
+                    Control.putMessage("Concrete Syntax Tree");
+                    _CST.printTree();
+                }
                 //Next Program
                 this.putLine(2);
             }
@@ -103,8 +106,10 @@ var Compiler;
                 += "<br>".repeat(numOfLines);
         }
         static putParseMessage(msg) {
-            document.getElementById("taOutput").innerHTML
-                += "<p><mark class='label'>PARSE</mark> <mark class='info'>" + msg + "</mark></p>";
+            if (errorCount <= 0) {
+                document.getElementById("taOutput").innerHTML
+                    += "<p><mark class='label'>PARSE</mark> <mark class='info'>" + msg + "</mark></p>";
+            }
         }
     }
     Compiler.Control = Control;
