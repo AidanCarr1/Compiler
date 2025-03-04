@@ -18,9 +18,7 @@ namespace Compiler {
 
         //Add new Node into the tree somewhere
         public addNode(nodeName: String, isLeaf?) {
-
             var newNode = new Node(nodeName);
-            //Control.putDebug("label="+nodeName+". name="+newNode.name);
 
             //First node, root node
             if (this.root == null) {
@@ -51,6 +49,37 @@ namespace Compiler {
                 //Cannot go past the root,
                 //do not move current pointer
             } 
+        }
+
+
+        public printTree() {
+            //Start with blank slate
+            traversalResult = "";
+
+            this.expand(this.root, 0);
+            Control.putMessage(traversalResult);
+        }
+
+        private expand(node: Node, depth) {
+            
+            for (var i = 0; i < depth; i++) {
+                traversalResult += "-";
+            }
+
+            // If there are no children (i.e., leaf nodes)...
+            if (!node.children || node.children.length === 0) {
+                // ... note the leaf node.
+                traversalResult += "[" + node.name + "]";
+                traversalResult += "<br>";
+            }
+            else {
+                // There are children, so note these interior/branch nodes and ...
+                traversalResult += "|" + node.name + "| <br>";
+                // .. recursively expand them.
+                for (var i = 0; i < node.children.length; i++) {
+                    this.expand(node.children[i], depth + 1);
+                }
+            }
         }
 
     }

@@ -71,6 +71,10 @@ namespace Compiler {
                     this.putMessage("PARSE Skipped");
                 }
 
+                //if (isParseSuccessful) {
+                    _CST.printTree();
+                //}
+
                 //Next Program
                 this.putLine(2);
             }

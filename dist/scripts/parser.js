@@ -27,7 +27,7 @@ var Compiler;
         }
         static parseBlock() {
             Compiler.Control.putParseMessage("parseBlock()");
-            _CST.addNode("|Block|", false);
+            _CST.addNode("Block", false);
             this.match("OPEN BRACE");
             this.parseStatementList();
             this.match("CLOSE BRACE");
@@ -35,7 +35,7 @@ var Compiler;
         }
         static parseStatementList() {
             Compiler.Control.putParseMessage("parseStatementList()");
-            _CST.addNode("|Statement List|", false);
+            _CST.addNode("Statement List", false);
             //Acceptable tokens
             switch (parseToken.description) {
                 case "PRINT":
@@ -55,7 +55,7 @@ var Compiler;
         }
         static parseStatement() {
             Compiler.Control.putParseMessage("parseStatement()");
-            _CST.addNode("|Statement|", false);
+            _CST.addNode("Statement", false);
             //Acceptable tokens
             switch (parseToken.description) {
                 case "PRINT":
@@ -85,7 +85,7 @@ var Compiler;
         }
         static parsePrintStatement() {
             Compiler.Control.putParseMessage("parsePrintStatement()");
-            _CST.addNode("|Print Statement|", false);
+            _CST.addNode("Print Statement", false);
             this.match("PRINT");
             this.match("OPEN PARENTHESIS");
             this.parseExpr();
@@ -94,7 +94,7 @@ var Compiler;
         }
         static parseAssignmentStatement() {
             Compiler.Control.putParseMessage("parseAssignmentStatement()");
-            _CST.addNode("|Assignment Statement|", false);
+            _CST.addNode("Assignment Statement", false);
             this.match("ID");
             this.match("ASSIGNMENT");
             this.parseExpr();
@@ -102,14 +102,14 @@ var Compiler;
         }
         static parseVarDecl() {
             Compiler.Control.putParseMessage("parseVarDecl()");
-            _CST.addNode("|Var Decl|", false);
+            _CST.addNode("Var Decl", false);
             this.match("VARIABLE TYPE");
             this.match("ID");
             _CST.moveUp();
         }
         static parseWhileStatement() {
             Compiler.Control.putParseMessage("parseWhileStatement()");
-            _CST.addNode("|While Statement|", false);
+            _CST.addNode("While Statement", false);
             this.match("WHILE");
             this.parseBooleanExpr();
             this.parseBlock();
@@ -117,7 +117,7 @@ var Compiler;
         }
         static parseIfStatement() {
             Compiler.Control.putParseMessage("parseIfStatement()");
-            _CST.addNode("|If Statement|", false);
+            _CST.addNode("If Statement", false);
             this.match("IF");
             this.parseBooleanExpr();
             this.parseBlock();
@@ -125,7 +125,7 @@ var Compiler;
         }
         static parseExpr() {
             Compiler.Control.putParseMessage("parseExpr()");
-            _CST.addNode("|Expr|", false);
+            _CST.addNode("Expr", false);
             //Acceptable tokens
             switch (parseToken.description) {
                 case "DIGIT":
@@ -150,7 +150,7 @@ var Compiler;
         }
         static parseIntExpr() {
             Compiler.Control.putParseMessage("parseIntExpr()");
-            _CST.addNode("|Int Expr|", false);
+            _CST.addNode("Int Expr", false);
             this.match("DIGIT");
             //num + ...
             if (parseToken.description === "ADDITION") {
@@ -161,7 +161,7 @@ var Compiler;
         }
         static parseStringExpr() {
             Compiler.Control.putParseMessage("parseStringExpr()");
-            _CST.addNode("|String Expr|", false);
+            _CST.addNode("String Expr", false);
             this.match("QUOTATION");
             this.parseCharList();
             this.match("QUOTATION");
@@ -169,7 +169,7 @@ var Compiler;
         }
         static parseBooleanExpr() {
             Compiler.Control.putParseMessage("parseBooleanExpr()");
-            _CST.addNode("|Boolean Expr|", false);
+            _CST.addNode("Boolean Expr", false);
             //CHECK CODE
             //how do i want to handle error i guess..
             //Acceptable tokens
@@ -191,7 +191,7 @@ var Compiler;
         }
         static parseCharList() {
             Compiler.Control.putParseMessage("parseCharList()");
-            _CST.addNode("|Char List|", false);
+            _CST.addNode("Char List", false);
             if (parseToken.description === "CHAR") {
                 this.match("CHAR");
                 this.parseCharList();
@@ -203,7 +203,7 @@ var Compiler;
         }
         static parseBoolOp() {
             Compiler.Control.putParseMessage("parseBoolOp()");
-            _CST.addNode("|Bool Op|", false);
+            _CST.addNode("Bool Op", false);
             //Acceptable tokens
             switch (parseToken.description) {
                 case "EQUALITY":
@@ -269,7 +269,7 @@ var Compiler;
             if (parseToken.description === goalDescription) {
                 //Print success
                 Compiler.Control.putMessage(goalDescription);
-                _CST.addNode("[" + parseToken.str + "]", true); //true == Add leaf node
+                _CST.addNode(parseToken.str, true); //true == Add leaf node
                 //TODO:
                 //Node should point to Token object
                 //Next token

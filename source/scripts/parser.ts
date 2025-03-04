@@ -35,7 +35,7 @@ namespace Compiler {
 
         public static parseBlock() {
             Control.putParseMessage("parseBlock()");
-            _CST.addNode("|Block|", false);
+            _CST.addNode("Block", false);
 
             this.match("OPEN BRACE");
             this.parseStatementList();
@@ -46,7 +46,7 @@ namespace Compiler {
 
         public static parseStatementList() {
             Control.putParseMessage("parseStatementList()");
-            _CST.addNode("|Statement List|", false);
+            _CST.addNode("Statement List", false);
 
             //Acceptable tokens
             switch (parseToken.description) {
@@ -71,7 +71,7 @@ namespace Compiler {
 
         public static parseStatement() {
             Control.putParseMessage("parseStatement()");
-            _CST.addNode("|Statement|", false);
+            _CST.addNode("Statement", false);
 
             //Acceptable tokens
             switch (parseToken.description) {
@@ -111,7 +111,7 @@ namespace Compiler {
 
         public static parsePrintStatement() {
             Control.putParseMessage("parsePrintStatement()");
-            _CST.addNode("|Print Statement|", false);
+            _CST.addNode("Print Statement", false);
 
             this.match("PRINT");
             this.match("OPEN PARENTHESIS");
@@ -123,7 +123,7 @@ namespace Compiler {
 
         public static parseAssignmentStatement() {
             Control.putParseMessage("parseAssignmentStatement()");
-            _CST.addNode("|Assignment Statement|", false);
+            _CST.addNode("Assignment Statement", false);
 
             this.match("ID");
             this.match("ASSIGNMENT");
@@ -134,7 +134,7 @@ namespace Compiler {
         
         public static parseVarDecl() {
             Control.putParseMessage("parseVarDecl()");
-            _CST.addNode("|Var Decl|", false);
+            _CST.addNode("Var Decl", false);
 
             this.match("VARIABLE TYPE");
             this.match("ID");
@@ -144,7 +144,7 @@ namespace Compiler {
 
         public static parseWhileStatement() {
             Control.putParseMessage("parseWhileStatement()");
-            _CST.addNode("|While Statement|", false);
+            _CST.addNode("While Statement", false);
 
             this.match("WHILE");
             this.parseBooleanExpr();
@@ -155,7 +155,7 @@ namespace Compiler {
 
         public static parseIfStatement() {
             Control.putParseMessage("parseIfStatement()");
-            _CST.addNode("|If Statement|", false);
+            _CST.addNode("If Statement", false);
 
             this.match("IF");
             this.parseBooleanExpr();
@@ -166,7 +166,7 @@ namespace Compiler {
 
         public static parseExpr() {
             Control.putParseMessage("parseExpr()");
-            _CST.addNode("|Expr|", false);
+            _CST.addNode("Expr", false);
 
             //Acceptable tokens
             switch (parseToken.description) {
@@ -199,7 +199,7 @@ namespace Compiler {
 
         public static parseIntExpr() {
             Control.putParseMessage("parseIntExpr()");
-            _CST.addNode("|Int Expr|", false);
+            _CST.addNode("Int Expr", false);
 
             this.match("DIGIT");
             //num + ...
@@ -213,7 +213,7 @@ namespace Compiler {
 
         public static parseStringExpr() {
             Control.putParseMessage("parseStringExpr()");
-            _CST.addNode("|String Expr|", false);
+            _CST.addNode("String Expr", false);
 
             this.match("QUOTATION");
             this.parseCharList();
@@ -224,7 +224,7 @@ namespace Compiler {
 
         public static parseBooleanExpr() {
             Control.putParseMessage("parseBooleanExpr()");
-            _CST.addNode("|Boolean Expr|", false);
+            _CST.addNode("Boolean Expr", false);
 
             //CHECK CODE
             //how do i want to handle error i guess..
@@ -253,7 +253,7 @@ namespace Compiler {
 
         public static parseCharList() {
             Control.putParseMessage("parseCharList()");
-            _CST.addNode("|Char List|", false);
+            _CST.addNode("Char List", false);
 
             if (parseToken.description === "CHAR") {
                 this.match("CHAR");
@@ -268,7 +268,7 @@ namespace Compiler {
         
         public static parseBoolOp() {
             Control.putParseMessage("parseBoolOp()");
-            _CST.addNode("|Bool Op|", false);
+            _CST.addNode("Bool Op", false);
 
             //Acceptable tokens
             switch (parseToken.description) {
@@ -343,7 +343,7 @@ namespace Compiler {
             if (parseToken.description === goalDescription) {
                 //Print success
                 Control.putMessage(goalDescription);
-                _CST.addNode("["+parseToken.str+"]", true); //true == Add leaf node
+                _CST.addNode(parseToken.str, true); //true == Add leaf node
                 //TODO:
                 //Node should point to Token object
 
