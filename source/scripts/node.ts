@@ -11,8 +11,8 @@ namespace Compiler {
             public children?) { 
 
             //Node knows itself, parent, children
-            this.name = null;
-            this.parent = null;       //Attributes are updated later
+            this.name;
+            this.parent;       //Attributes are updated later
             this.children = [];
         }
 

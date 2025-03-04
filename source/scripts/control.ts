@@ -60,7 +60,9 @@ namespace Compiler {
                 if (isLexSuccessful) {
                     this.putLine();
                     this.putMessage("Begin PARSE");
+
                     var isParseSuccessful = Parser.parse();
+
                     //this.putMessage("Parse complete with " + warningCount +" warning(s) and "+ errorCount+" error(s)");
                     this.putMessage("PARSE complete with " + warningCount +" warning(s) and "+ errorCount+" error(s)");
                 }

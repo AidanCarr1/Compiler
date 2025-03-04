@@ -10,8 +10,8 @@ var Compiler;
             this.parent = parent;
             this.children = children;
             //Node knows itself, parent, children
-            this.name = null;
-            this.parent = null; //Attributes are updated later
+            this.name;
+            this.parent; //Attributes are updated later
             this.children = [];
         }
         //Add node to end of the array of children

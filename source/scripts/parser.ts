@@ -15,7 +15,7 @@ namespace Compiler {
             //Set the token stream
             parseToken = tokenStream[0];
             parseTokenIndex = 0;
-            Control.putDebug(parseToken.str + " " +parseToken.description);
+            Control.putDebug("First token: "+parseToken.str + " " +parseToken.description);
 
             //Dive in and start:
             this.parseProgram();
@@ -25,22 +25,29 @@ namespace Compiler {
 
         public static parseProgram() {
             Control.putParseMessage("parseProgram()");
+            _CST.addNode("<Program>", false);
 
             this.parseBlock();
             this.match("EOP");
+
+            _CST.moveUp();
         }
 
         public static parseBlock() {
             Control.putParseMessage("parseBlock()");
-            
+            _CST.addNode("<Block>", false);
+
             this.match("OPEN BRACE");
             this.parseStatementList();
             this.match("CLOSE BRACE");
+
+            _CST.moveUp();
         }
 
         public static parseStatementList() {
             Control.putParseMessage("parseStatementList()");
-            
+            _CST.addNode("<Statement List>");
+
             //Acceptable tokens
             switch (parseToken.description) {
                 
@@ -58,11 +65,14 @@ namespace Compiler {
                     //Do nothing
                     //Final statement
             }
+            
+            _CST.moveUp();
         }
 
         public static parseStatement() {
             Control.putParseMessage("parseStatement()");
-            
+            _CST.addNode("<Statement>");
+
             //Acceptable tokens
             switch (parseToken.description) {
                 
@@ -94,52 +104,70 @@ namespace Compiler {
                     Control.putMessage("How did we get here?");
                     //Should not be possible    
                     //No statement found
-            }    
+            }  
+            
+            _CST.moveUp();  
         }
 
         public static parsePrintStatement() {
             Control.putParseMessage("parsePrintStatement()");
-            
+            _CST.addNode("<Print Statement>");
+
             this.match("PRINT");
             this.match("OPEN PARENTHESIS");
             this.parseExpr();
             this.match("CLOSE PARENTHESIS");
+            
+            _CST.moveUp();
         }
 
         public static parseAssignmentStatement() {
             Control.putParseMessage("parseAssignmentStatement()");
-            
+            _CST.addNode("<Assignment Statement>");
+
             this.match("ID");
             this.match("ASSIGNMENT");
             this.parseExpr();
+            
+            _CST.moveUp();
         }
         
         public static parseVarDecl() {
             Control.putParseMessage("parseVarDecl()");
-            
+            _CST.addNode("<Var Decl>");
+
             this.match("VARIABLE TYPE");
             this.match("ID");
+            
+            _CST.moveUp();
         }
 
         public static parseWhileStatement() {
             Control.putParseMessage("parseWhileStatement()");
-            
+            _CST.addNode("<While Statement>");
+
             this.match("WHILE");
             this.parseBooleanExpr();
             this.parseBlock();
+            
+            _CST.moveUp();
         }
 
         public static parseIfStatement() {
             Control.putParseMessage("parseIfStatement()");
-            
+            _CST.addNode("<If Statement>");
+
             this.match("IF");
             this.parseBooleanExpr();
             this.parseBlock();
+            
+            _CST.moveUp();
         }
 
         public static parseExpr() {
             Control.putParseMessage("parseExpr()");
-            
+            _CST.addNode("<Expr>");
+
             //Acceptable tokens
             switch (parseToken.description) {
                 
@@ -164,12 +192,15 @@ namespace Compiler {
                 default:
                     //Empty expr 
                     //Or error 
-            }          
+            }    
+            
+            _CST.moveUp();      
         }
 
         public static parseIntExpr() {
             Control.putParseMessage("parseIntExpr()");
-            
+            _CST.addNode("<Int Expr>");
+
             this.match("DIGIT");
             //num + ...
             if (parseToken.description === "ADDITION") {
@@ -177,19 +208,24 @@ namespace Compiler {
                 this.parseExpr();
             }
             
+            _CST.moveUp();
         }
 
         public static parseStringExpr() {
             Control.putParseMessage("parseStringExpr()");
-            
+            _CST.addNode("<String Expr>");
+
             this.match("QUOTATION");
             this.parseCharList();
             this.match("QUOTATION");
+            
+            _CST.moveUp();
         }
 
         public static parseBooleanExpr() {
             Control.putParseMessage("parseBooleanExpr()");
-            
+            _CST.addNode("<Boolean Expr>");
+
             //CHECK CODE
             //how do i want to handle error i guess..
 
@@ -211,11 +247,14 @@ namespace Compiler {
                 default:
                     //Error?
             }
+            
+            _CST.moveUp();
         }
 
         public static parseCharList() {
             Control.putParseMessage("parseCharList()");
-            
+            _CST.addNode("<Char List>");
+
             if (parseToken.description === "CHAR") {
                 this.match("CHAR");
                 this.parseCharList();
@@ -223,12 +262,29 @@ namespace Compiler {
             else {
                 //End of char list
             }
+            
+            _CST.moveUp();
         }
         
         public static parseBoolOp() {
             Control.putParseMessage("parseBoolOp()");
+            _CST.addNode("<Bool Op>");
+
+            //Acceptable tokens
+            switch (parseToken.description) {
+                
+                case "EQUALITY":
+                    this.match("EQUALITY");
+                    break;
+                
+                case "INEQUALITY":
+                    this.match("INEQUALITY");
+
+                default:
+                    //Error?
+            }
             
-            
+            _CST.moveUp();
         }
 
 /*
@@ -281,12 +337,17 @@ namespace Compiler {
 */
 
 
-        public static match(str?, strList?) {
+        public static match(goalDescription?, strList?) {
             
             //Match found
-            if (parseToken.description === str) {
+            if (parseToken.description === goalDescription) {
                 //Print success
-                Control.putMessage(str);
+                Control.putMessage(goalDescription);
+                _CST.addNode("["+parseToken.str+"]", true); //true == Add leaf node
+                //TODO:
+                //Node should point to Token object
+
+
                 //Next token
                 parseTokenIndex ++;
                 parseToken = tokenStream[parseTokenIndex];
@@ -296,7 +357,7 @@ namespace Compiler {
                 warningCount += 10;
                 errorCount += 100;
                 //Print fail
-                Control.putMessage("Found: ['"+parseToken.description+"'] Expected: ['"+str+"'] at "+Utils.address(parseToken.startIndex));
+                Control.putMessage("Found: ['"+parseToken.description+"'] Expected: ['"+goalDescription+"'] at "+Utils.address(parseToken.startIndex));
             }
         }
 

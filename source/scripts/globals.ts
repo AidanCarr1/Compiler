@@ -46,3 +46,6 @@ var previousDictionaryName = "MAIN";
 // PARSE
 var parseToken = null;
 var parseTokenIndex = 0;
+
+
+var _CST = new Compiler.Tree(null, null);
