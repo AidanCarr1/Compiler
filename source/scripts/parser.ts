@@ -25,7 +25,7 @@ namespace Compiler {
 
         public static parseProgram() {
             Control.putParseMessage("parseProgram()");
-            _CST.addNode("(Program)", false);
+            _CST.addNode("Program", false);
 
             this.parseBlock();
             this.match("EOP");
@@ -57,6 +57,9 @@ namespace Compiler {
                 case "WHILE":
                 case "IF":
                 case "OPEN BRACE":
+                    //??Only add the statement list Node if there is a statement??
+                    //_CST.addNode("Statement List", false);
+
                     this.parseStatement();
                     this.parseStatementList();
                     break;
@@ -342,7 +345,7 @@ namespace Compiler {
             //Match found
             if (parseToken.description === goalDescription) {
                 //Print success
-                Control.putMessage(goalDescription);
+                Control.putDebug(goalDescription);
                 _CST.addNode(parseToken.str, true); //true == Add leaf node
                 //TODO:
                 //Node should point to Token object
