@@ -30,6 +30,7 @@ var Compiler;
             if (!isLeaf) {
                 this.current = newNode;
             }
+            newNode.isLeaf = isLeaf;
         }
         //Up the tree
         moveUp() {
@@ -58,6 +59,10 @@ var Compiler;
             Compiler.Control.putMessage(traversalResult);
         }
         expand(node, depth) {
+            //Skip the fake leaf! (empty List item)
+            if (!node.isLeaf && (!node.children || node.children.length === 0)) {
+                return;
+            }
             for (var i = 0; i < depth; i++) {
                 traversalResult += "-";
             }

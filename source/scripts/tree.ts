@@ -36,6 +36,7 @@ namespace Compiler {
             if (! isLeaf) {
                 this.current = newNode;
             }
+            newNode.isLeaf = isLeaf;
         }
 
         //Up the tree
@@ -73,6 +74,11 @@ namespace Compiler {
 
         private expand(node: Node, depth) {
             
+            //Skip the fake leaf! (empty List item)
+            if (!node.isLeaf && (!node.children || node.children.length === 0)) {
+                return;
+            }
+
             for (var i = 0; i < depth; i++) {
                 traversalResult += "-";
             }

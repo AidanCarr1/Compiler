@@ -8,7 +8,8 @@ namespace Compiler {
         //New Node
         constructor(public name: String, 
             public parent?: Node, 
-            public children?) { 
+            public children?,
+            public isLeaf?) { 
 
             //Node knows itself, parent, children
             this.name = name;

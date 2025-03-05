@@ -5,10 +5,11 @@ var Compiler;
 (function (Compiler) {
     class Node {
         //New Node
-        constructor(name, parent, children) {
+        constructor(name, parent, children, isLeaf) {
             this.name = name;
             this.parent = parent;
             this.children = children;
+            this.isLeaf = isLeaf;
             //Node knows itself, parent, children
             this.name = name;
             this.parent; //Attributes are updated later
