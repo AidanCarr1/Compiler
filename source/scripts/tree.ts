@@ -17,7 +17,7 @@ namespace Compiler {
         }
 
         //Add new Node into the tree somewhere
-        public addNode(nodeName: String, isLeaf?) {
+        public addNode(nodeName: String, isLeaf?: boolean, token?: Token) {
             var newNode = new Node(nodeName);
 
             //First node, root node
@@ -36,6 +36,10 @@ namespace Compiler {
             if (! isLeaf) {
                 this.current = newNode;
             }
+            else {
+                newNode.tokenPointer = token;
+                Control.putDebug("&gt;&gt; TOKEN ["+newNode.tokenPointer.str +"] at "+Utils.address(newNode.tokenPointer.startIndex));
+            }
             newNode.isLeaf = isLeaf;
         }
 
@@ -44,7 +48,7 @@ namespace Compiler {
             
             if (this.current.parent != null) {
                 this.current = this.current.parent;
-                Control.putDebug("new current: "+this.current.name);
+                //Control.putDebug("new current: "+this.current.name);
             }
             else {
                 //Cannot go past the root,

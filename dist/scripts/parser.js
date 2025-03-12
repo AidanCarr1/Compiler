@@ -270,10 +270,10 @@ var Compiler;
             //Match found
             if (parseToken.description === goalDescription) {
                 //Print success
-                Compiler.Control.putDebug(goalDescription);
-                _CST.addNode(parseToken.str, true); //true == Add leaf node
-                //TODO:
-                //Node should point to Token object
+                //Control.putDebug(goalDescription);
+                _CST.addNode(parseToken.str, true, parseToken); //true == Add leaf node
+                //Node should point to corresponding Token object
+                _CST.current.tokenPointer = parseToken;
                 //Next token
                 parseTokenIndex++;
                 parseToken = tokenStream[parseTokenIndex];
@@ -283,7 +283,7 @@ var Compiler;
                 //Track the FIRST Error
                 if (errorCount <= 0) {
                     //errorCount += 1;
-                    var newError = new Compiler.ErrorCompiler("Found: '" + parseToken.description + "' Expected: '" + goalDescription + "'", Compiler.Utils.address(parseToken.startIndex));
+                    var newError = new Compiler.ErrorCompiler("Found: '" + parseToken.description + "' Expected: '" + goalDescription + "'", parseToken.startIndex);
                     //Control.putMessage("Found: ['"+parseToken.description+"'] Expected: ['"+goalDescription+"'] at "+Utils.address(parseToken.startIndex));
                 }
             }

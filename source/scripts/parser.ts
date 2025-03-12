@@ -345,11 +345,10 @@ namespace Compiler {
             //Match found
             if (parseToken.description === goalDescription) {
                 //Print success
-                Control.putDebug(goalDescription);
-                _CST.addNode(parseToken.str, true); //true == Add leaf node
-                //TODO:
-                //Node should point to Token object
-
+                //Control.putDebug(goalDescription);
+                _CST.addNode(parseToken.str, true, parseToken); //true == Add leaf node
+                //Node should point to corresponding Token object
+                _CST.current.tokenPointer = parseToken;
 
                 //Next token
                 parseTokenIndex ++;
@@ -361,7 +360,7 @@ namespace Compiler {
                 //Track the FIRST Error
                 if (errorCount <= 0) {
                     //errorCount += 1;
-                    var newError = new ErrorCompiler("Found: '"+parseToken.description+"' Expected: '"+goalDescription+"'", Utils.address(parseToken.startIndex));
+                    var newError = new ErrorCompiler("Found: '"+parseToken.description+"' Expected: '"+goalDescription+"'", parseToken.startIndex);
                     //Control.putMessage("Found: ['"+parseToken.description+"'] Expected: ['"+goalDescription+"'] at "+Utils.address(parseToken.startIndex));
                 }                
             }

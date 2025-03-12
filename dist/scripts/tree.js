@@ -14,7 +14,7 @@ var Compiler;
             Compiler.Control.putDebug("CST Created");
         }
         //Add new Node into the tree somewhere
-        addNode(nodeName, isLeaf) {
+        addNode(nodeName, isLeaf, token) {
             var newNode = new Compiler.Node(nodeName);
             //First node, root node
             if (this.root == null) {
@@ -30,13 +30,17 @@ var Compiler;
             if (!isLeaf) {
                 this.current = newNode;
             }
+            else {
+                newNode.tokenPointer = token;
+                Compiler.Control.putDebug("&gt;&gt; TOKEN [" + newNode.tokenPointer.str + "] at " + Compiler.Utils.address(newNode.tokenPointer.startIndex));
+            }
             newNode.isLeaf = isLeaf;
         }
         //Up the tree
         moveUp() {
             if (this.current.parent != null) {
                 this.current = this.current.parent;
-                Compiler.Control.putDebug("new current: " + this.current.name);
+                //Control.putDebug("new current: "+this.current.name);
             }
             else {
                 //Cannot go past the root,

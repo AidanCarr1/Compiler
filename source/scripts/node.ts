@@ -9,7 +9,8 @@ namespace Compiler {
         constructor(public name: String, 
             public parent?: Node, 
             public children?,
-            public isLeaf?) { 
+            public isLeaf?,
+            public tokenPointer?: Token) { 
 
             //Node knows itself, parent, children
             this.name = name;
