@@ -13,11 +13,13 @@ var Compiler;
             //new ERROR constructed!
             this.eid = errorCount; //error ID
             errorCount++;
-            //print ERROR Message
-            var message = "<mark class='error'>ERROR";
-            message += " [ " + str + " ]</mark> ";
-            message += "<mark class='address'> at " + Compiler.Utils.address(index) + "</mark>";
-            Compiler.Control.putMessage(message);
+            //print FIRST ERROR Message
+            if (errorCount <= 1) {
+                var message = "<mark class='error'>ERROR";
+                message += " [ " + str + " ]</mark> ";
+                message += "<mark class='address'> at " + Compiler.Utils.address(index) + "</mark>";
+                Compiler.Control.putMessage(message);
+            }
         }
     }
     Compiler.ErrorCompiler = ErrorCompiler;

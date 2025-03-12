@@ -17,12 +17,14 @@ namespace Compiler {
             this.eid = errorCount; //error ID
             errorCount ++;
 
-            //print ERROR Message
-            var message = "<mark class='error'>ERROR";
-            message += " [ " + str + " ]</mark> ";
-            message += "<mark class='address'> at " + Utils.address(index) + "</mark>";
+            //print FIRST ERROR Message
+            if (errorCount <= 1) {
+                var message = "<mark class='error'>ERROR";
+                message += " [ " + str + " ]</mark> ";
+                message += "<mark class='address'> at " + Utils.address(index) + "</mark>";
 
-            Control.putMessage(message);
+                Control.putMessage(message);
+            }
         }
     }
 }

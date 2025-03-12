@@ -145,8 +145,9 @@ var Compiler;
                     this.match("ID");
                     break;
                 default:
-                //Empty expr 
-                //Or error 
+                    //Error
+                    //Add more info
+                    var newError = new Compiler.ErrorCompiler("Invalid Expr", parseToken.startIndex);
             }
             _CST.moveUp();
         }
@@ -187,7 +188,9 @@ var Compiler;
                 case "FALSE":
                     this.match("BOOLEAN VALUE");
                 default:
-                //Error?
+                    //Error
+                    //Add more info
+                    var newError = new Compiler.ErrorCompiler("Invalid Boolean Expr", parseToken.startIndex);
             }
             _CST.moveUp();
         }
@@ -281,11 +284,11 @@ var Compiler;
             //Match not found
             else {
                 //Track the FIRST Error
-                if (errorCount <= 0) {
-                    //errorCount += 1;
-                    var newError = new Compiler.ErrorCompiler("Found: '" + parseToken.description + "' Expected: '" + goalDescription + "'", parseToken.startIndex);
-                    //Control.putMessage("Found: ['"+parseToken.description+"'] Expected: ['"+goalDescription+"'] at "+Utils.address(parseToken.startIndex));
-                }
+                //if (errorCount <= 0) {
+                //errorCount += 1;
+                var newError = new Compiler.ErrorCompiler("Found: '" + parseToken.description + "' Expected: '" + goalDescription + "'", parseToken.startIndex);
+                //Control.putMessage("Found: ['"+parseToken.description+"'] Expected: ['"+goalDescription+"'] at "+Utils.address(parseToken.startIndex));
+                //}                
             }
         }
     }

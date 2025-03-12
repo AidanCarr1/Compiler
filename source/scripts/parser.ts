@@ -193,8 +193,10 @@ namespace Compiler {
                     break;
                 
                 default:
-                    //Empty expr 
-                    //Or error 
+                    //Error
+                    //Add more info
+                    var newError = new ErrorCompiler("Invalid Expr", parseToken.startIndex);
+
             }    
             
             _CST.moveUp();      
@@ -248,7 +250,9 @@ namespace Compiler {
                     this.match("BOOLEAN VALUE");
 
                 default:
-                    //Error?
+                    //Error
+                    //Add more info
+                    var newError = new ErrorCompiler("Invalid Boolean Expr", parseToken.startIndex);
             }
             
             _CST.moveUp();
@@ -358,11 +362,11 @@ namespace Compiler {
             //Match not found
             else {
                 //Track the FIRST Error
-                if (errorCount <= 0) {
+                //if (errorCount <= 0) {
                     //errorCount += 1;
                     var newError = new ErrorCompiler("Found: '"+parseToken.description+"' Expected: '"+goalDescription+"'", parseToken.startIndex);
                     //Control.putMessage("Found: ['"+parseToken.description+"'] Expected: ['"+goalDescription+"'] at "+Utils.address(parseToken.startIndex));
-                }                
+                //}                
             }
         }
 

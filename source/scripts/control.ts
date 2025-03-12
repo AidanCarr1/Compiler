@@ -72,7 +72,7 @@ namespace Compiler {
                     this.putMessage("PARSE Skipped");
                 }
 
-                if (isParseSuccessful) {
+                if (errorCount == 0) {
                     Control.putLine();
                     Control.putMessage("Concrete Syntax Tree");
                     _CST.printTree();
