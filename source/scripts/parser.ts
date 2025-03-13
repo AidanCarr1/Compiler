@@ -71,8 +71,8 @@ namespace Compiler {
 
                 default:
                     //Error with info
-                    var newError = new ErrorCompiler("Invalid Expr", "Found: "+parseToken.description+
-                        " Expected: DIGIT, QUOTATION, OPEN PARENTHESIS, TRUE, FALSE, ID", parseToken.startIndex);
+                    var newError = new ErrorCompiler("Invalid Statement", "Found: "+parseToken.description+
+                        " Expected: PRINT, ID, VARIABLE TYPE, WHILE, IF, OPEN BRACE, CLOSE BRACE", parseToken.startIndex);
             
                     
             }
@@ -201,8 +201,7 @@ namespace Compiler {
                     break;
                 
                 default:
-                    //Error
-                    //With info
+                    //Error with info
                     var newError = new ErrorCompiler("Invalid Expr", "Found: "+parseToken.description+
                         " Expected: DIGIT, QUOTATION, OPEN PARENTHESIS, TRUE, FALSE, ID", parseToken.startIndex);
             }    
@@ -258,8 +257,7 @@ namespace Compiler {
                     this.match("BOOLEAN VALUE");
 
                 default:
-                    //Error
-                    //With info
+                    //Error with info
                     var newError = new ErrorCompiler("Invalid Boolean Expr", "Found: "+parseToken.description+
                         " Expected: 'OPEN PARENTHESIS, TRUE, FALSE", parseToken.startIndex);
             }
@@ -297,10 +295,9 @@ namespace Compiler {
                     this.match("INEQUALITY");
 
                 default:
-                    //Error
-                    //With info
+                    //Error with info
                     var newError = new ErrorCompiler("Invalid Bool Op", "Found: "+parseToken.description+
-                        " Expected: 'EQUALITY, INEQUALITY", parseToken.startIndex);
+                        " Expected: EQUALITY, INEQUALITY", parseToken.startIndex);
             }
             
             _CST.moveUp();

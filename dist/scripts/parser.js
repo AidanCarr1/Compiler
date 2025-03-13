@@ -49,9 +49,14 @@ var Compiler;
                     this.parseStatement();
                     this.parseStatementList();
                     break;
+                case "CLOSE BRACE":
+                    //Do nothing
+                    //Final statement
+                    break;
                 default:
-                //Do nothing
-                //Final statement
+                    //Error with info
+                    var newError = new Compiler.ErrorCompiler("Invalid Statement", "Found: " + parseToken.description +
+                        " Expected: PRINT, ID, VARIABLE TYPE, WHILE, IF, OPEN BRACE, CLOSE BRACE", parseToken.startIndex);
             }
             _CST.moveUp();
         }
@@ -145,8 +150,7 @@ var Compiler;
                     this.match("ID");
                     break;
                 default:
-                    //Error
-                    //With info
+                    //Error with info
                     var newError = new Compiler.ErrorCompiler("Invalid Expr", "Found: " + parseToken.description +
                         " Expected: DIGIT, QUOTATION, OPEN PARENTHESIS, TRUE, FALSE, ID", parseToken.startIndex);
             }
@@ -189,8 +193,7 @@ var Compiler;
                 case "FALSE":
                     this.match("BOOLEAN VALUE");
                 default:
-                    //Error
-                    //With info
+                    //Error with info
                     var newError = new Compiler.ErrorCompiler("Invalid Boolean Expr", "Found: " + parseToken.description +
                         " Expected: 'OPEN PARENTHESIS, TRUE, FALSE", parseToken.startIndex);
             }
@@ -219,10 +222,9 @@ var Compiler;
                 case "INEQUALITY":
                     this.match("INEQUALITY");
                 default:
-                    //Error
-                    //With info
+                    //Error with info
                     var newError = new Compiler.ErrorCompiler("Invalid Bool Op", "Found: " + parseToken.description +
-                        " Expected: 'EQUALITY, INEQUALITY", parseToken.startIndex);
+                        " Expected: EQUALITY, INEQUALITY", parseToken.startIndex);
             }
             _CST.moveUp();
         }
