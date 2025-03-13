@@ -187,4 +187,9 @@ int e
 e = 99
 print(e)
 }$
-        
+
+/*allow boolean Declaration*/    
+{
+boolean r 
+r= true
+}$

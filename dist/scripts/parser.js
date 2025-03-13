@@ -142,8 +142,7 @@ var Compiler;
                     this.parseStringExpr();
                     break;
                 case "OPEN PARENTHESIS":
-                case "TRUE":
-                case "FALSE":
+                case "BOOLEAN VALUE":
                     this.parseBooleanExpr();
                     break;
                 case "ID":
@@ -152,7 +151,7 @@ var Compiler;
                 default:
                     //Error with info
                     var newError = new Compiler.ErrorCompiler("Invalid Expr", "Found: " + parseToken.description +
-                        " Expected: DIGIT, QUOTATION, OPEN PARENTHESIS, TRUE, FALSE, ID", parseToken.startIndex);
+                        " Expected: DIGIT, QUOTATION, OPEN PARENTHESIS, BOOLEAN VALUE, ID", parseToken.startIndex);
             }
             _CST.moveUp();
         }
@@ -189,13 +188,13 @@ var Compiler;
                     this.parseExpr();
                     this.match("CLOSE PARENTHESIS");
                     break;
-                case "TRUE":
-                case "FALSE":
+                case "BOOLEAN VALUE":
                     this.match("BOOLEAN VALUE");
+                    break;
                 default:
                     //Error with info
                     var newError = new Compiler.ErrorCompiler("Invalid Boolean Expr", "Found: " + parseToken.description +
-                        " Expected: 'OPEN PARENTHESIS, TRUE, FALSE", parseToken.startIndex);
+                        " Expected: OPEN PARENTHESIS, BOOLEAN VALUE", parseToken.startIndex);
             }
             _CST.moveUp();
         }
