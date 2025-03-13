@@ -23,8 +23,8 @@ namespace Compiler {
 
             //print TOKEN Message
             var message = "<mark class='label'>TOKEN </mark>";
-            message += "<mark class='bracket'>[ '" + str + "' ]</mark> ";
-            message += "<mark class='info'>" + description + " </mark>";
+            message += "<mark class='bracket'>[ " + description + " ]</mark> ";
+            message += "<mark class='info'>'" + str + "' </mark>";
             message += "<mark class='address'> at " + Utils.address(startIndex);
 
             //Multi-character TOKEN

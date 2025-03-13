@@ -5,6 +5,7 @@ namespace Compiler {
     export class ErrorCompiler {
 
         constructor(public str, 
+                    public description,
                     public index, 
                     public eid?) { 
                         
@@ -20,8 +21,9 @@ namespace Compiler {
             //print FIRST ERROR Message
             if (errorCount <= 1) {
                 var message = "<mark class='error'>ERROR";
-                message += " [ " + str + " ]</mark> ";
-                message += "<mark class='address'> at " + Utils.address(index) + "</mark>";
+                message += " [ " + str + " ] ";
+                message += description;
+                message += " </mark><mark class='address'> at " + Utils.address(index) + "</mark>";
 
                 Control.putMessage(message);
             }

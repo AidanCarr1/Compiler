@@ -3,8 +3,9 @@ var Compiler;
 (function (Compiler) {
     //because Error is a keyword    
     class ErrorCompiler {
-        constructor(str, index, eid) {
+        constructor(str, description, index, eid) {
             this.str = str;
+            this.description = description;
             this.index = index;
             this.eid = eid;
             //set variables
@@ -16,8 +17,9 @@ var Compiler;
             //print FIRST ERROR Message
             if (errorCount <= 1) {
                 var message = "<mark class='error'>ERROR";
-                message += " [ " + str + " ]</mark> ";
-                message += "<mark class='address'> at " + Compiler.Utils.address(index) + "</mark>";
+                message += " [ " + str + " ] ";
+                message += description;
+                message += " </mark><mark class='address'> at " + Compiler.Utils.address(index) + "</mark>";
                 Compiler.Control.putMessage(message);
             }
         }

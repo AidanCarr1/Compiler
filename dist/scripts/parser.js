@@ -146,8 +146,9 @@ var Compiler;
                     break;
                 default:
                     //Error
-                    //Add more info
-                    var newError = new Compiler.ErrorCompiler("Invalid Expr", parseToken.startIndex);
+                    //With info
+                    var newError = new Compiler.ErrorCompiler("Invalid Expr", "Found: " + parseToken.description +
+                        " Expected: DIGIT, QUOTATION, OPEN PARENTHESIS, TRUE, FALSE, ID", parseToken.startIndex);
             }
             _CST.moveUp();
         }
@@ -189,8 +190,9 @@ var Compiler;
                     this.match("BOOLEAN VALUE");
                 default:
                     //Error
-                    //Add more info
-                    var newError = new Compiler.ErrorCompiler("Invalid Boolean Expr", parseToken.startIndex);
+                    //With info
+                    var newError = new Compiler.ErrorCompiler("Invalid Boolean Expr", "Found: " + parseToken.description +
+                        " Expected: 'OPEN PARENTHESIS, TRUE, FALSE", parseToken.startIndex);
             }
             _CST.moveUp();
         }
@@ -217,7 +219,10 @@ var Compiler;
                 case "INEQUALITY":
                     this.match("INEQUALITY");
                 default:
-                //Error?
+                    //Error
+                    //With info
+                    var newError = new Compiler.ErrorCompiler("Invalid Bool Op", "Found: " + parseToken.description +
+                        " Expected: 'EQUALITY, INEQUALITY", parseToken.startIndex);
             }
             _CST.moveUp();
         }
@@ -286,7 +291,7 @@ var Compiler;
                 //Track the FIRST Error
                 //if (errorCount <= 0) {
                 //errorCount += 1;
-                var newError = new Compiler.ErrorCompiler("Found: '" + parseToken.description + "' Expected: '" + goalDescription + "'", parseToken.startIndex);
+                var newError = new Compiler.ErrorCompiler("Incorrect Token", "Found: '" + parseToken.description + "' Expected: '" + goalDescription + "'", parseToken.startIndex);
                 //Control.putMessage("Found: ['"+parseToken.description+"'] Expected: ['"+goalDescription+"'] at "+Utils.address(parseToken.startIndex));
                 //}                
             }

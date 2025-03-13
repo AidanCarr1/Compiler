@@ -64,9 +64,17 @@ namespace Compiler {
                     this.parseStatementList();
                     break;
 
-                default:
+                case "CLOSE BRACE":
                     //Do nothing
                     //Final statement
+                    break;
+
+                default:
+                    //Error with info
+                    var newError = new ErrorCompiler("Invalid Expr", "Found: "+parseToken.description+
+                        " Expected: DIGIT, QUOTATION, OPEN PARENTHESIS, TRUE, FALSE, ID", parseToken.startIndex);
+            
+                    
             }
             
             _CST.moveUp();
@@ -194,9 +202,9 @@ namespace Compiler {
                 
                 default:
                     //Error
-                    //Add more info
-                    var newError = new ErrorCompiler("Invalid Expr", parseToken.startIndex);
-
+                    //With info
+                    var newError = new ErrorCompiler("Invalid Expr", "Found: "+parseToken.description+
+                        " Expected: DIGIT, QUOTATION, OPEN PARENTHESIS, TRUE, FALSE, ID", parseToken.startIndex);
             }    
             
             _CST.moveUp();      
@@ -251,8 +259,9 @@ namespace Compiler {
 
                 default:
                     //Error
-                    //Add more info
-                    var newError = new ErrorCompiler("Invalid Boolean Expr", parseToken.startIndex);
+                    //With info
+                    var newError = new ErrorCompiler("Invalid Boolean Expr", "Found: "+parseToken.description+
+                        " Expected: 'OPEN PARENTHESIS, TRUE, FALSE", parseToken.startIndex);
             }
             
             _CST.moveUp();
@@ -288,7 +297,10 @@ namespace Compiler {
                     this.match("INEQUALITY");
 
                 default:
-                    //Error?
+                    //Error
+                    //With info
+                    var newError = new ErrorCompiler("Invalid Bool Op", "Found: "+parseToken.description+
+                        " Expected: 'EQUALITY, INEQUALITY", parseToken.startIndex);
             }
             
             _CST.moveUp();
@@ -364,7 +376,7 @@ namespace Compiler {
                 //Track the FIRST Error
                 //if (errorCount <= 0) {
                     //errorCount += 1;
-                    var newError = new ErrorCompiler("Found: '"+parseToken.description+"' Expected: '"+goalDescription+"'", parseToken.startIndex);
+                    var newError = new ErrorCompiler("Incorrect Token","Found: '"+parseToken.description+"' Expected: '"+goalDescription+"'", parseToken.startIndex);
                     //Control.putMessage("Found: ['"+parseToken.description+"'] Expected: ['"+goalDescription+"'] at "+Utils.address(parseToken.startIndex));
                 //}                
             }

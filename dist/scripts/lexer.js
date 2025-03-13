@@ -132,11 +132,11 @@ var Compiler;
                         bestTokenStartIndex[CHAR]++;
                         //Display error based on the dictionary
                         if (quoteIsOpen) {
-                            var newError = new Compiler.ErrorCompiler("UNKNOWN CHARACTER '" + checkingToken[0] + "'", bestTokenStartIndex);
+                            var newError = new Compiler.ErrorCompiler("UNKNOWN CHARACTER", "'" + checkingToken[0] + "'", bestTokenStartIndex);
                             return false;
                         }
                         else {
-                            var newError = new Compiler.ErrorCompiler("UNRECOGNIZED TOKEN '" + checkingToken[0] + "'", bestTokenStartIndex);
+                            var newError = new Compiler.ErrorCompiler("UNRECOGNIZED TOKEN", "'" + checkingToken[0] + "'", bestTokenStartIndex);
                             return false;
                         }
                         return sourceString;
@@ -176,7 +176,7 @@ var Compiler;
                     sourceIndex[CHAR] = 1; //start at :1
                     //No new lines when inside a quote!
                     if (quoteIsOpen) {
-                        newError = new Compiler.ErrorCompiler("NEW LINE BEFORE STRING TERMINATION", bestTokenStartIndex);
+                        newError = new Compiler.ErrorCompiler("NEW LINE BEFORE STRING TERMINATION", "", bestTokenStartIndex);
                         quoteIsOpen = false;
                         return false;
                         //Let the lexer go on as if there was and added quote?
@@ -198,13 +198,13 @@ var Compiler;
             var finalToken = tokenStream[tokenCount - 1];
             //Comment open
             if (commentIsOpen) {
-                var newError = new Compiler.ErrorCompiler("REACHED EOP WITH UNCLOSED COMMENT", bestTokenEndIndex);
+                var newError = new Compiler.ErrorCompiler("REACHED EOP WITH UNCLOSED COMMENT", "", bestTokenEndIndex);
                 return false;
                 //putMessage("ERROR [ Unclosed Comment ]  "+address(bestTokenEndIndex));
             }
             //Quote open
             else if (quoteIsOpen) {
-                var newError = new Compiler.ErrorCompiler("REACHED EOP WITH UNCLOSED QUOTE", bestTokenEndIndex);
+                var newError = new Compiler.ErrorCompiler("REACHED EOP WITH UNCLOSED QUOTE", "", bestTokenEndIndex);
                 return false;
                 //putMessage("ERROR [ Unclosed Quote ]  "+address(bestTokenEndIndex));
             }

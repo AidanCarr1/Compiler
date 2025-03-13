@@ -53,15 +53,16 @@ var Compiler;
                     var isParseSuccessful = Compiler.Parser.parse();
                     //this.putMessage("Parse complete with " + warningCount +" warning(s) and "+ errorCount+" error(s)");
                     this.putMessage("PARSE complete with " + warningCount + " warning(s) and " + errorCount + " error(s)");
+                    //CST
+                    if (errorCount == 0) {
+                        Control.putLine();
+                        Control.putMessage("Concrete Syntax Tree");
+                        _CST.printTree();
+                    }
                 }
                 else {
                     this.putLine();
                     this.putMessage("PARSE Skipped");
-                }
-                if (errorCount == 0) {
-                    Control.putLine();
-                    Control.putMessage("Concrete Syntax Tree");
-                    _CST.printTree();
                 }
                 //Next Program
                 this.putLine(2);

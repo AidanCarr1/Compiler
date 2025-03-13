@@ -19,8 +19,8 @@ var Compiler;
             tokenCount++;
             //print TOKEN Message
             var message = "<mark class='label'>TOKEN </mark>";
-            message += "<mark class='bracket'>[ '" + str + "' ]</mark> ";
-            message += "<mark class='info'>" + description + " </mark>";
+            message += "<mark class='bracket'>[ " + description + " ]</mark> ";
+            message += "<mark class='info'>'" + str + "' </mark>";
             message += "<mark class='address'> at " + Compiler.Utils.address(startIndex);
             //Multi-character TOKEN
             if (startIndex[LINE] < endIndex[LINE] || startIndex[CHAR] < endIndex[CHAR]) {
