@@ -19,7 +19,7 @@ var Compiler;
             tokens = "";
             tokenCount = 0;
             currentToken = ' ';
-            errorCount = 0;
+            //errorCount = 0;        
         }
         static btnCompile_click() {
             // This is executed as a result of the usr pressing the 
@@ -35,33 +35,52 @@ var Compiler;
             programs = Compiler.Utils.addSpacing(programs);
             //Run process one by one
             for (var i = 0; i < programs.length; i++) {
+                //Reset program variables
+                errorCount = 0;
+                warningCount = 0;
+                tokenCount = 0;
+                var isLexSuccessful = false;
+                var isParseSuccessful = false;
+                //Display program start
                 this.putHeader1("PROGRAM #" + (i + 1));
                 this.putLine();
                 //Lex
                 this.putMessage("Begin LEX");
-                var isLexSuccessful = Compiler.Lexer.lex(programs[i]);
-                this.putMessage("LEX complete with " + warningCount + " warning(s) and " + errorCount + " error(s)");
-                //Reset errors
+                Compiler.Lexer.lex(programs[i]);
+                //Print result
+                if (errorCount == 0) {
+                    this.putMessage("LEX complete with " + warningCount + " warning(s) and 0 errors");
+                    isLexSuccessful = true;
+                }
+                else {
+                    this.putMessage("LEX exited with " + warningCount + " warning(s) and " + errorCount + " error(s)");
+                }
+                this.putLine();
+                //Reset errors and CST
                 warningCount = 0;
                 errorCount = 0;
-                tokenCount = 0;
-                //Parse
+                _CST.reset();
+                //Was Lex completed?
                 if (isLexSuccessful) {
-                    this.putLine();
+                    //Parse
                     this.putMessage("Begin PARSE");
-                    _CST.reset();
-                    var isParseSuccessful = Compiler.Parser.parse();
-                    //this.putMessage("Parse complete with " + warningCount +" warning(s) and "+ errorCount+" error(s)");
-                    this.putMessage("PARSE complete with " + warningCount + " warning(s) and " + errorCount + " error(s)");
-                    //CST
+                    Compiler.Parser.parse();
+                    //Print result
                     if (errorCount == 0) {
-                        Control.putLine();
-                        Control.putMessage("Concrete Syntax Tree");
+                        this.putMessage("PARSE complete with " + warningCount + " warning(s) and 0 errors");
+                        isParseSuccessful = true;
+                    }
+                    else {
+                        this.putMessage("PARSE exited with " + warningCount + " warning(s) and " + errorCount + " error(s)");
+                    }
+                    //CST
+                    if (isParseSuccessful) {
+                        this.putLine();
+                        this.putMessage("Concrete Syntax Tree");
                         _CST.printTree();
                     }
                 }
                 else {
-                    this.putLine();
                     this.putMessage("PARSE Skipped");
                 }
                 //Next Program
@@ -72,7 +91,7 @@ var Compiler;
         }
         static btnVerbose_click() {
             // Toggleable button: Verbose mode on or off
-            // On, turns on debug feautres, printing a more in-depth compiler output
+            // On, turns on debug features, printing a more in-depth compiler output
             if (document.getElementById("btnVerbose").value === "OFF") {
                 document.getElementById("btnVerbose").value = "ON";
                 debug = true;

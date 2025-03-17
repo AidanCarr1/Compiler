@@ -221,3 +221,43 @@ while (a != 9) {
   f = (1 == 1)
   print(f)
 }
+
+
+{
+ int i
+ i = 0
+
+ while (i != 7) {
+  print(i) 
+  print(" ")
+  print((i == 7))
+  
+  /*increment*/
+  i = 1 + i
+  print(" and ")
+ }
+
+}$
+
+
+/* works for now */
+{
+ string s
+ h = "hello "
+ w = "world"
+ print (1+h)
+ print (2+w)
+
+ string t
+ g = "goodbye"
+ print (3+g)
+ print (4+w)
+}$
+
+
+{ int a a = 1 print(A)}$ /*LEX error*/
+{ int b b = 2 print(b }$ /*PARSE error*/
+{ int c c = 3 print(c)}$ /*Good*/
+{ int d d = 4 print(d)}  /*LEX warning*/
+           
+

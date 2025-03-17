@@ -17,11 +17,11 @@
 
     <div>
         <p>User Program</p>
-        <textarea id="taSourceCode" cols="65" rows="10">{
-boolean r 
-r= true
-}$
-           
+        <textarea id="taSourceCode" cols="65" rows="10">
+{ int a a = 1 print(A)}$ /*LEX error*/
+{ int b b = 2 print(b }$ /*PARSE error*/
+{ int c c = 3 print(c)}$ /*Good*/
+{ int d d = 4 print(d)}  /*LEX warning*/
 </textarea>
         <br>
         Verbose Mode is <input type="button" id="btnVerbose" value="OFF" onclick="Compiler.Control.btnVerbose_click();"/>
