@@ -118,7 +118,9 @@ var Compiler;
             Compiler.Control.putParseMessage("parseWhileStatement()");
             _CST.addNode("While Statement", false);
             this.match("WHILE");
+            //this.match("OPEN PARENTHESIS");
             this.parseBooleanExpr();
+            //this.match("CLOSE PARENTHESIS");
             this.parseBlock();
             _CST.moveUp();
         }
@@ -126,7 +128,9 @@ var Compiler;
             Compiler.Control.putParseMessage("parseIfStatement()");
             _CST.addNode("If Statement", false);
             this.match("IF");
+            //this.match("OPEN PARENTHESIS");
             this.parseBooleanExpr();
+            //this.match("CLOSE PARENTHESIS");
             this.parseBlock();
             _CST.moveUp();
         }
@@ -220,6 +224,7 @@ var Compiler;
                     break;
                 case "INEQUALITY":
                     this.match("INEQUALITY");
+                    break;
                 default:
                     //Error with info
                     var newError = new Compiler.ErrorCompiler("Invalid Bool Op", "Found: " + parseToken.description +

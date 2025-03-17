@@ -166,9 +166,11 @@ a = 9
 print(a)
 }
 
+
 { } $
 { a } $
 {b} $
+
 
 {
 print(a)
@@ -176,10 +178,12 @@ print(b)
 print(c)
 }$
 
+
 {while () {
 }
 
 }$
+
 
 /*digit error*/
 { 
@@ -188,8 +192,32 @@ e = 99
 print(e)
 }$
 
+
 /*allow boolean Declaration*/    
 {
 boolean r 
 r= true
 }$
+
+
+/*test while and if*/
+{
+if true{
+  int a
+  a = 0
+}
+while (a != 9) {
+  print(a)
+  a = 1+a
+}
+}$
+
+
+/* Many programs?*/
+{{}}$
+{print(a)}$
+{
+  boolean f
+  f = (1 == 1)
+  print(f)
+}

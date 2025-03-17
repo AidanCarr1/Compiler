@@ -158,7 +158,9 @@ namespace Compiler {
             _CST.addNode("While Statement", false);
 
             this.match("WHILE");
+            //this.match("OPEN PARENTHESIS");
             this.parseBooleanExpr();
+            //this.match("CLOSE PARENTHESIS");
             this.parseBlock();
             
             _CST.moveUp();
@@ -169,7 +171,9 @@ namespace Compiler {
             _CST.addNode("If Statement", false);
 
             this.match("IF");
+            //this.match("OPEN PARENTHESIS");
             this.parseBooleanExpr();
+            //this.match("CLOSE PARENTHESIS");
             this.parseBlock();
             
             _CST.moveUp();
@@ -292,6 +296,7 @@ namespace Compiler {
                 
                 case "INEQUALITY":
                     this.match("INEQUALITY");
+                    break;
 
                 default:
                     //Error with info
