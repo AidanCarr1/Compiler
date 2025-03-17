@@ -261,3 +261,32 @@ while (a != 9) {
 { int d d = 4 print(d)}  /*LEX warning*/
            
 
+{ 
+{{}{/*{}*/}{}}
+while true {
+print(true)} 
+{int j{}int k}
+}$
+
+
+
+/*ERROR MESSAGES*/
+
+{ while {print(a)} }$
+{ int a=0 }$
+{ print(string) }$
+{ k=k+1 }$
+{ k=8+8+8+a+0 }$
+
+/*more bools*/
+{ 
+boolean y y = false
+if (true==y) {
+  print("y is true") }
+if (y==false) {
+  print("y is false") }
+}$
+{
+if (7+7+7==3+3+3+3+3+3+3){
+  print("twenty one")
+}}$
