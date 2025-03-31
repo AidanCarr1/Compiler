@@ -168,35 +168,33 @@ var Compiler;
         }
         static astStringExpr() {
             Compiler.Control.putParseMessage("astStringExpr()");
-            _AST.addNode("String Expr", false);
+            //_AST.addNode("String Expr", false);
             this.skip("QUOTATION");
             this.astCharList();
             this.skip("QUOTATION");
-            _AST.moveUp();
+            //_AST.moveUp();
         }
         static astBooleanExpr() {
             Compiler.Control.putParseMessage("astBooleanExpr()");
-            _AST.addNode("Boolean Expr", false);
-            //CHECK CODE
-            //how do i want to handle error i guess..
             //Acceptable tokens
             switch (astToken.description) {
                 case "OPEN PARENTHESIS":
-                    this.match("OPEN PARENTHESIS");
+                    _AST.addNode("Boolean Expr", false);
+                    this.skip("OPEN PARENTHESIS");
                     this.astExpr();
                     this.astBoolOp();
                     this.astExpr();
-                    this.match("CLOSE PARENTHESIS");
+                    this.skip("CLOSE PARENTHESIS");
+                    _AST.moveUp();
                     break;
                 case "BOOLEAN VALUE":
                     this.match("BOOLEAN VALUE");
                     break;
-                default:
-                    //Error with info
-                    var newError = new Compiler.ErrorCompiler("Invalid Boolean Expr", "Found: " + astToken.description +
-                        " Expected: OPEN PARENTHESIS, BOOLEAN VALUE", astToken.startIndex);
+                // default:
+                //     //Error with info
+                //     var newError = new ErrorCompiler("Invalid Boolean Expr", "Found: "+astToken.description+
+                //         " Expected: OPEN PARENTHESIS, BOOLEAN VALUE", astToken.startIndex);
             }
-            _AST.moveUp();
         }
         static astCharList() {
             Compiler.Control.putParseMessage("astCharList()");
