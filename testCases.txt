@@ -290,3 +290,20 @@ if (y==false) {
 if (7+7+7==3+3+3+3+3+3+3){
   print("twenty one")
 }}$
+
+
+/*SEM ANALYSIS */
+{
+ int a
+ a = 1
+ {
+  string a
+  a = "a"
+  print(a)
+ }
+ string b
+ b = "b"
+ if (a == 1) {
+  print(b)
+ }
+}

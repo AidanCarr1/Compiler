@@ -101,6 +101,18 @@ namespace Compiler {
                     this.putMessage("PARSE Skipped");
                 }
 
+                //Was Parse completed?
+                if (isParseSuccessful) {
+
+                    //AST
+                    Semantic.createAST();
+
+                    //Check type and scope
+                    Semantic.checkTypeScope();
+
+                }
+
+
                 //Next Program
                 this.putLine(2);
             }

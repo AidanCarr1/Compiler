@@ -1,10 +1,4 @@
-/*
-var onDocumentLoad = function() {
-    TSOS.Control.hostInit();
-};
-*/
-//var _Lexer = TSC.Lexer;
-// Global variables
+/* Global variables */
 // Tokens
 var tokens = "";
 var tokenIndex = 0;
@@ -36,4 +30,8 @@ var parseToken = null;
 var parseTokenIndex = 0;
 var _CST = new Compiler.Tree(null, null);
 var traversalResult = "";
+// SEMANTIC ANALYSIS
+var semanticToken = null;
+var semanticTokenIndex = 0;
+var _AST = new Compiler.Tree(null, null);
 //# sourceMappingURL=globals.js.map

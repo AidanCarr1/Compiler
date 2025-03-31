@@ -83,6 +83,13 @@ var Compiler;
                 else {
                     this.putMessage("PARSE Skipped");
                 }
+                //Was Parse completed?
+                if (isParseSuccessful) {
+                    //AST
+                    Compiler.Semantic.createAST();
+                    //Check type and scope
+                    Compiler.Semantic.checkTypeScope();
+                }
                 //Next Program
                 this.putLine(2);
             }
