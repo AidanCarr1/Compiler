@@ -16,10 +16,10 @@ var Compiler;
         }
         static astProgram() {
             Compiler.Control.putParseMessage("astProgram()");
-            _AST.addNode("Program", false);
+            //_AST.addNode("Program", false);
             this.astBlock();
-            this.match("EOP");
-            _AST.moveUp();
+            this.skip("EOP");
+            //_AST.moveUp();
         }
         static astBlock() {
             Compiler.Control.putParseMessage("astBlock()");
@@ -169,9 +169,9 @@ var Compiler;
         static astStringExpr() {
             Compiler.Control.putParseMessage("astStringExpr()");
             _AST.addNode("String Expr", false);
-            this.match("QUOTATION");
+            this.skip("QUOTATION");
             this.astCharList();
-            this.match("QUOTATION");
+            this.skip("QUOTATION");
             _AST.moveUp();
         }
         static astBooleanExpr() {
@@ -200,15 +200,17 @@ var Compiler;
         }
         static astCharList() {
             Compiler.Control.putParseMessage("astCharList()");
-            _AST.addNode("Char List", false);
-            if (astToken.description === "CHAR") {
-                this.match("CHAR");
-                this.astCharList();
+            //_AST.addNode("Char List", false);
+            var charList = "";
+            var firstCharToken = astToken;
+            while (astToken.description === "CHAR") {
+                charList += astToken.str;
+                //Next token
+                astTokenIndex++;
+                astToken = tokenStream[astTokenIndex];
             }
-            else {
-                //End of char list
-            }
-            _AST.moveUp();
+            _AST.addNode(charList, true, firstCharToken);
+            //_AST.moveUp();
         }
         static astBoolOp() {
             Compiler.Control.putParseMessage("astBoolOp()");

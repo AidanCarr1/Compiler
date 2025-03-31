@@ -20,12 +20,12 @@ namespace Compiler {
 
         public static astProgram() {
             Control.putParseMessage("astProgram()");
-            _AST.addNode("Program", false);
+            //_AST.addNode("Program", false);
 
             this.astBlock();
-            this.match("EOP");
+            this.skip("EOP");
 
-            _AST.moveUp();
+            //_AST.moveUp();
         }
 
         public static astBlock() {
@@ -225,9 +225,9 @@ namespace Compiler {
             Control.putParseMessage("astStringExpr()");
             _AST.addNode("String Expr", false);
 
-            this.match("QUOTATION");
+            this.skip("QUOTATION");
             this.astCharList();
-            this.match("QUOTATION");
+            this.skip("QUOTATION");
             
             _AST.moveUp();
         }
@@ -265,17 +265,21 @@ namespace Compiler {
 
         public static astCharList() {
             Control.putParseMessage("astCharList()");
-            _AST.addNode("Char List", false);
+            //_AST.addNode("Char List", false);
 
-            if (astToken.description === "CHAR") {
-                this.match("CHAR");
-                this.astCharList();
+            var charList = "";
+            var firstCharToken = astToken;
+            while (astToken.description === "CHAR") {
+                charList += astToken.str;
+                
+                //Next token
+                astTokenIndex ++;
+                astToken = tokenStream[astTokenIndex];
+
             }
-            else {
-                //End of char list
-            }
+            _AST.addNode(charList, true, firstCharToken);
             
-            _AST.moveUp();
+            //_AST.moveUp();
         }
         
         public static astBoolOp() {

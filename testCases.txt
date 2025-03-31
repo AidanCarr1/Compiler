@@ -307,3 +307,17 @@ if (7+7+7==3+3+3+3+3+3+3){
   print(b)
  }
 }
+
+{
+    int a 
+    boolean b 
+    {
+        string c 
+        a = 5 
+        b = true 
+        c = "inta" 
+        print(c) 
+    }
+    print(b)
+    print(a)
+} $
