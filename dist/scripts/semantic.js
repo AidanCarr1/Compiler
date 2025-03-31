@@ -16,7 +16,7 @@ var Compiler;
         }
         static astProgram() {
             Compiler.Control.putParseMessage("astProgram()");
-            _AST.addNode("Program (AST)", false);
+            _AST.addNode("Program", false);
             this.astBlock();
             this.match("EOP");
             _AST.moveUp();
@@ -24,14 +24,14 @@ var Compiler;
         static astBlock() {
             Compiler.Control.putParseMessage("astBlock()");
             _AST.addNode("Block", false);
-            this.match("OPEN BRACE");
+            this.skip("OPEN BRACE");
             this.astStatementList();
-            this.match("CLOSE BRACE");
+            this.skip("CLOSE BRACE");
             _AST.moveUp();
         }
         static astStatementList() {
             Compiler.Control.putParseMessage("astStatementList()");
-            _AST.addNode("Statement List", false);
+            //_AST.addNode("Statement List", false);
             //Acceptable tokens
             switch (astToken.description) {
                 case "PRINT":
@@ -49,16 +49,16 @@ var Compiler;
                     //Do nothing
                     //Final statement
                     break;
-                default:
-                    //Error with info
-                    var newError = new Compiler.ErrorCompiler("Invalid Statement", "Found: " + astToken.description +
-                        " Expected: PRINT, ID, VARIABLE TYPE, WHILE, IF, OPEN BRACE, CLOSE BRACE", astToken.startIndex);
+                // default:
+                //     //Error with info
+                //     var newError = new ErrorCompiler("Invalid Statement", "Found: "+astToken.description+
+                //         " Expected: PRINT, ID, VARIABLE TYPE, WHILE, IF, OPEN BRACE, CLOSE BRACE", astToken.startIndex);
             }
-            _AST.moveUp();
+            //_AST.moveUp();
         }
         static astStatement() {
             Compiler.Control.putParseMessage("astStatement()");
-            _AST.addNode("Statement", false);
+            //_AST.addNode("Statement", false);
             //Acceptable tokens
             switch (astToken.description) {
                 case "PRINT":
@@ -84,22 +84,22 @@ var Compiler;
                 //Should not be possible    
                 //No statement found
             }
-            _AST.moveUp();
+            //_AST.moveUp();  
         }
         static astPrintStatement() {
             Compiler.Control.putParseMessage("astPrintStatement()");
             _AST.addNode("Print Statement", false);
-            this.match("PRINT");
-            this.match("OPEN PARENTHESIS");
+            this.skip("PRINT");
+            this.skip("OPEN PARENTHESIS");
             this.astExpr();
-            this.match("CLOSE PARENTHESIS");
+            this.skip("CLOSE PARENTHESIS");
             _AST.moveUp();
         }
         static astAssignmentStatement() {
             Compiler.Control.putParseMessage("astAssignmentStatement()");
             _AST.addNode("Assignment Statement", false);
             this.match("ID");
-            this.match("ASSIGNMENT");
+            this.skip("ASSIGNMENT");
             this.astExpr();
             _AST.moveUp();
         }
@@ -132,7 +132,7 @@ var Compiler;
         }
         static astExpr() {
             Compiler.Control.putParseMessage("astExpr()");
-            _AST.addNode("Expr", false);
+            //_AST.addNode("Expr", false);
             //Acceptable tokens
             switch (astToken.description) {
                 case "DIGIT":
@@ -153,18 +153,18 @@ var Compiler;
                     var newError = new Compiler.ErrorCompiler("Invalid Expr", "Found: " + astToken.description +
                         " Expected: DIGIT, QUOTATION, OPEN PARENTHESIS, BOOLEAN VALUE, ID", astToken.startIndex);
             }
-            _AST.moveUp();
+            //_AST.moveUp();      
         }
         static astIntExpr() {
             Compiler.Control.putParseMessage("astIntExpr()");
-            _AST.addNode("Int Expr", false);
+            //_AST.addNode("Int Expr", false);
             this.match("DIGIT");
             //num + ...
             if (astToken.description === "ADDITION") {
                 this.match("ADDITION");
                 this.astExpr();
             }
-            _AST.moveUp();
+            //_AST.moveUp();
         }
         static astStringExpr() {
             Compiler.Control.putParseMessage("astStringExpr()");
@@ -241,14 +241,19 @@ var Compiler;
                 astToken = tokenStream[astTokenIndex];
             }
             //Match not found
-            else {
-                //Track the FIRST Error
-                //if (errorCount <= 0) {
-                //errorCount += 1;
-                var newError = new Compiler.ErrorCompiler("Incorrect Token", "Found: '" + astToken.description + "' Expected: '" + goalDescription + "'", astToken.startIndex);
-                //Control.putMessage("Found: ['"+astToken.description+"'] Expected: ['"+goalDescription+"'] at "+Utils.address(astToken.startIndex));
-                //}                
-            }
+            // else {
+            //     //Track the FIRST Error
+            //     //if (errorCount <= 0) {
+            //         //errorCount += 1;
+            //         var newError = new ErrorCompiler("Incorrect Token","Found: '"+astToken.description+"' Expected: '"+goalDescription+"'", astToken.startIndex);
+            //         //Control.putMessage("Found: ['"+astToken.description+"'] Expected: ['"+goalDescription+"'] at "+Utils.address(astToken.startIndex));
+            //     //}                
+            // }
+        }
+        static skip(str) {
+            //Next token
+            astTokenIndex++;
+            astToken = tokenStream[astTokenIndex];
         }
         static checkTypeScope() {
         }

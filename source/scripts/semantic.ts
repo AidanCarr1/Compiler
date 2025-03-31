@@ -20,7 +20,7 @@ namespace Compiler {
 
         public static astProgram() {
             Control.putParseMessage("astProgram()");
-            _AST.addNode("Program (AST)", false);
+            _AST.addNode("Program", false);
 
             this.astBlock();
             this.match("EOP");
@@ -32,16 +32,16 @@ namespace Compiler {
             Control.putParseMessage("astBlock()");
             _AST.addNode("Block", false);
 
-            this.match("OPEN BRACE");
+            this.skip("OPEN BRACE");
             this.astStatementList();
-            this.match("CLOSE BRACE");
+            this.skip("CLOSE BRACE");
 
             _AST.moveUp();
         }
 
         public static astStatementList() {
             Control.putParseMessage("astStatementList()");
-            _AST.addNode("Statement List", false);
+            //_AST.addNode("Statement List", false);
 
             //Acceptable tokens
             switch (astToken.description) {
@@ -64,20 +64,20 @@ namespace Compiler {
                     //Final statement
                     break;
 
-                default:
-                    //Error with info
-                    var newError = new ErrorCompiler("Invalid Statement", "Found: "+astToken.description+
-                        " Expected: PRINT, ID, VARIABLE TYPE, WHILE, IF, OPEN BRACE, CLOSE BRACE", astToken.startIndex);
+                // default:
+                //     //Error with info
+                //     var newError = new ErrorCompiler("Invalid Statement", "Found: "+astToken.description+
+                //         " Expected: PRINT, ID, VARIABLE TYPE, WHILE, IF, OPEN BRACE, CLOSE BRACE", astToken.startIndex);
             
                     
             }
             
-            _AST.moveUp();
+            //_AST.moveUp();
         }
 
         public static astStatement() {
             Control.putParseMessage("astStatement()");
-            _AST.addNode("Statement", false);
+            //_AST.addNode("Statement", false);
 
             //Acceptable tokens
             switch (astToken.description) {
@@ -112,17 +112,17 @@ namespace Compiler {
                     //No statement found
             }  
             
-            _AST.moveUp();  
+            //_AST.moveUp();  
         }
 
         public static astPrintStatement() {
             Control.putParseMessage("astPrintStatement()");
             _AST.addNode("Print Statement", false);
 
-            this.match("PRINT");
-            this.match("OPEN PARENTHESIS");
+            this.skip("PRINT");
+            this.skip("OPEN PARENTHESIS");
             this.astExpr();
-            this.match("CLOSE PARENTHESIS");
+            this.skip("CLOSE PARENTHESIS");
             
             _AST.moveUp();
         }
@@ -132,7 +132,7 @@ namespace Compiler {
             _AST.addNode("Assignment Statement", false);
 
             this.match("ID");
-            this.match("ASSIGNMENT");
+            this.skip("ASSIGNMENT");
             this.astExpr();
             
             _AST.moveUp();
@@ -176,7 +176,7 @@ namespace Compiler {
 
         public static astExpr() {
             Control.putParseMessage("astExpr()");
-            _AST.addNode("Expr", false);
+            //_AST.addNode("Expr", false);
 
             //Acceptable tokens
             switch (astToken.description) {
@@ -204,12 +204,12 @@ namespace Compiler {
                         " Expected: DIGIT, QUOTATION, OPEN PARENTHESIS, BOOLEAN VALUE, ID", astToken.startIndex);
             }    
             
-            _AST.moveUp();      
+            //_AST.moveUp();      
         }
 
         public static astIntExpr() {
             Control.putParseMessage("astIntExpr()");
-            _AST.addNode("Int Expr", false);
+            //_AST.addNode("Int Expr", false);
 
             this.match("DIGIT");
             //num + ...
@@ -218,7 +218,7 @@ namespace Compiler {
                 this.astExpr();
             }
             
-            _AST.moveUp();
+            //_AST.moveUp();
         }
 
         public static astStringExpr() {
@@ -319,14 +319,20 @@ namespace Compiler {
             }
 
             //Match not found
-            else {
-                //Track the FIRST Error
-                //if (errorCount <= 0) {
-                    //errorCount += 1;
-                    var newError = new ErrorCompiler("Incorrect Token","Found: '"+astToken.description+"' Expected: '"+goalDescription+"'", astToken.startIndex);
-                    //Control.putMessage("Found: ['"+astToken.description+"'] Expected: ['"+goalDescription+"'] at "+Utils.address(astToken.startIndex));
-                //}                
-            }
+            // else {
+            //     //Track the FIRST Error
+            //     //if (errorCount <= 0) {
+            //         //errorCount += 1;
+            //         var newError = new ErrorCompiler("Incorrect Token","Found: '"+astToken.description+"' Expected: '"+goalDescription+"'", astToken.startIndex);
+            //         //Control.putMessage("Found: ['"+astToken.description+"'] Expected: ['"+goalDescription+"'] at "+Utils.address(astToken.startIndex));
+            //     //}                
+            // }
+        }
+
+        public static skip(str?){
+            //Next token
+            astTokenIndex ++;
+            astToken = tokenStream[astTokenIndex];
         }
 
         public static checkTypeScope(){

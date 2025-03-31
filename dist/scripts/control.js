@@ -60,6 +60,7 @@ var Compiler;
                 warningCount = 0;
                 errorCount = 0;
                 _CST.reset();
+                _AST.reset();
                 //Was Lex completed?
                 if (isLexSuccessful) {
                     //Parse
