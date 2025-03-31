@@ -104,8 +104,15 @@ namespace Compiler {
                 //Was Parse completed?
                 if (isParseSuccessful) {
 
-                    //AST
+                    //Creat AST
+                    this.putLine();
+                    this.putMessage("Begin SEMANTIC ANALYSIS");
                     Semantic.createAST();
+
+                    //Print AST
+                    this.putLine();
+                    this.putMessage("Abstract Syntax Tree");
+                    _AST.printTree();
 
                     //Check type and scope
                     Semantic.checkTypeScope();

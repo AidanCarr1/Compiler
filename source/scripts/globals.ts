@@ -40,11 +40,11 @@ var parseToken = null;
 var parseTokenIndex = 0;
 
 var _CST = new Compiler.Tree(null, null);
-var traversalResult = "";
+var traversalResult = ""; //used for printing trees
 
 
 // SEMANTIC ANALYSIS
-var semanticToken = null;
-var semanticTokenIndex = 0;
+var astToken = null;
+var astTokenIndex = 0;
 
 var _AST = new Compiler.Tree(null, null);
