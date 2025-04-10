@@ -321,3 +321,17 @@ if (7+7+7==3+3+3+3+3+3+3){
     print(b)
     print(a)
 } $
+
+
+/*overloaded boolean operations*/
+{
+    boolean a
+    a = true 
+    int b 
+    b = 6
+    
+    boolean c
+    c = ((a==false) != (6==b))
+    print(c)
+} $
+

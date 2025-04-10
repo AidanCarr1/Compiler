@@ -113,7 +113,7 @@ var Compiler;
         static astWhileStatement() {
             Compiler.Control.putParseMessage("astWhileStatement()");
             _AST.addNode("While Statement", false);
-            this.match("WHILE");
+            this.skip("WHILE");
             //this.match("OPEN PARENTHESIS");
             this.astBooleanExpr();
             //this.match("CLOSE PARENTHESIS");
@@ -123,7 +123,7 @@ var Compiler;
         static astIfStatement() {
             Compiler.Control.putParseMessage("astIfStatement()");
             _AST.addNode("If Statement", false);
-            this.match("IF");
+            this.skip("IF");
             //this.match("OPEN PARENTHESIS");
             this.astBooleanExpr();
             //this.match("CLOSE PARENTHESIS");
@@ -179,7 +179,7 @@ var Compiler;
             //Acceptable tokens
             switch (astToken.description) {
                 case "OPEN PARENTHESIS":
-                    var newNode = _AST.addNode("Boolean Expr", false);
+                    var newNode = _AST.addNode("Boolean Expr TEMPORARY NAME", false);
                     this.skip("OPEN PARENTHESIS");
                     this.astExpr();
                     var boolOpName = this.astBoolOp(); //whatever the op is here, change the name to boolean expr
@@ -200,7 +200,7 @@ var Compiler;
         static astCharList() {
             Compiler.Control.putParseMessage("astCharList()");
             //_AST.addNode("Char List", false);
-            var charList = "";
+            var charList = "\""; //begin quote
             var firstCharToken = astToken;
             while (astToken.description === "CHAR") {
                 charList += astToken.str;
@@ -208,6 +208,7 @@ var Compiler;
                 astTokenIndex++;
                 astToken = tokenStream[astTokenIndex];
             }
+            charList += "\""; //end quote
             _AST.addNode(charList, true, firstCharToken);
             //_AST.moveUp();
         }
@@ -218,11 +219,11 @@ var Compiler;
             switch (astToken.description) {
                 case "EQUALITY":
                     this.skip("EQUALITY");
-                    return "Is Equal";
+                    return "Equality";
                     break;
                 case "INEQUALITY":
                     this.skip("INEQUALITY");
-                    return "Is Inequal";
+                    return "Inequality";
                     break;
                 // default:
                 //     //Error with info

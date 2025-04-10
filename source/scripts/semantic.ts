@@ -152,7 +152,7 @@ namespace Compiler {
             Control.putParseMessage("astWhileStatement()");
             _AST.addNode("While Statement", false);
 
-            this.match("WHILE");
+            this.skip("WHILE");
             //this.match("OPEN PARENTHESIS");
             this.astBooleanExpr();
             //this.match("CLOSE PARENTHESIS");
@@ -165,7 +165,7 @@ namespace Compiler {
             Control.putParseMessage("astIfStatement()");
             _AST.addNode("If Statement", false);
 
-            this.match("IF");
+            this.skip("IF");
             //this.match("OPEN PARENTHESIS");
             this.astBooleanExpr();
             //this.match("CLOSE PARENTHESIS");
@@ -241,7 +241,7 @@ namespace Compiler {
             switch (astToken.description) {
                 
                 case "OPEN PARENTHESIS":
-                    var newNode = _AST.addNode("Boolean Expr", false);
+                    var newNode = _AST.addNode("Boolean Expr TEMPORARY NAME", false);
                     this.skip("OPEN PARENTHESIS");
                     this.astExpr();
                     var boolOpName = this.astBoolOp(); //whatever the op is here, change the name to boolean expr
@@ -268,7 +268,7 @@ namespace Compiler {
             Control.putParseMessage("astCharList()");
             //_AST.addNode("Char List", false);
 
-            var charList = "";
+            var charList = "\""; //begin quote
             var firstCharToken = astToken;
             while (astToken.description === "CHAR") {
                 charList += astToken.str;
@@ -278,6 +278,7 @@ namespace Compiler {
                 astToken = tokenStream[astTokenIndex];
 
             }
+            charList += "\""; //end quote
             _AST.addNode(charList, true, firstCharToken);
             
             //_AST.moveUp();
@@ -292,12 +293,12 @@ namespace Compiler {
                 
                 case "EQUALITY":
                     this.skip("EQUALITY");
-                    return "Is Equal";
+                    return "Equality";
                     break;
                 
                 case "INEQUALITY":
                     this.skip("INEQUALITY");
-                    return "Is Inequal";
+                    return "Inequality";
                     break;
 
                 // default:
