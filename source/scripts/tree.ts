@@ -17,7 +17,7 @@ namespace Compiler {
         }
 
         //Add new Node into the tree somewhere
-        public addNode(nodeName: String, isLeaf?: boolean, token?: Token) {
+        public addNode(nodeName: String, isLeaf?: boolean, token?: Token): Node {
             var newNode = new Node(nodeName);
 
             //First node, root node
@@ -41,6 +41,8 @@ namespace Compiler {
                 Control.putDebug("&gt;&gt; TOKEN ["+newNode.tokenPointer.str +"] at "+Utils.address(newNode.tokenPointer.startIndex));
             }
             newNode.isLeaf = isLeaf;
+
+            return newNode;
         }
 
         //Up the tree

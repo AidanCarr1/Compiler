@@ -35,6 +35,7 @@ var Compiler;
                 Compiler.Control.putDebug("&gt;&gt; TOKEN [" + newNode.tokenPointer.str + "] at " + Compiler.Utils.address(newNode.tokenPointer.startIndex));
             }
             newNode.isLeaf = isLeaf;
+            return newNode;
         }
         //Up the tree
         moveUp() {

@@ -179,10 +179,11 @@ var Compiler;
             //Acceptable tokens
             switch (astToken.description) {
                 case "OPEN PARENTHESIS":
-                    _AST.addNode("Boolean Expr", false);
+                    var newNode = _AST.addNode("Boolean Expr", false);
                     this.skip("OPEN PARENTHESIS");
                     this.astExpr();
-                    this.astBoolOp();
+                    var boolOpName = this.astBoolOp(); //whatever the op is here, change the name to boolean expr
+                    newNode.name = boolOpName;
                     this.astExpr();
                     this.skip("CLOSE PARENTHESIS");
                     _AST.moveUp();
@@ -212,21 +213,23 @@ var Compiler;
         }
         static astBoolOp() {
             Compiler.Control.putParseMessage("astBoolOp()");
-            _AST.addNode("Bool Op", false);
+            //_AST.addNode("Bool Op", false);
             //Acceptable tokens
             switch (astToken.description) {
                 case "EQUALITY":
-                    this.match("EQUALITY");
+                    this.skip("EQUALITY");
+                    return "Is Equal";
                     break;
                 case "INEQUALITY":
-                    this.match("INEQUALITY");
+                    this.skip("INEQUALITY");
+                    return "Is Inequal";
                     break;
-                default:
-                    //Error with info
-                    var newError = new Compiler.ErrorCompiler("Invalid Bool Op", "Found: " + astToken.description +
-                        " Expected: EQUALITY, INEQUALITY", astToken.startIndex);
+                // default:
+                //     //Error with info
+                //     var newError = new ErrorCompiler("Invalid Bool Op", "Found: "+astToken.description+
+                //         " Expected: EQUALITY, INEQUALITY", astToken.startIndex);
             }
-            _AST.moveUp();
+            //_AST.moveUp();
         }
         static match(goalDescription, strList) {
             //Match found
