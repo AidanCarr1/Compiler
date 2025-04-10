@@ -182,7 +182,14 @@ namespace Compiler {
             switch (astToken.description) {
                 
                 case "DIGIT":
-                    this.astIntExpr();
+                    //digit + ______
+                    if (tokenStream[astTokenIndex+1].description === "ADDITION") {
+                        this.astIntExpr();
+                    }
+                    //digit
+                    else {
+                        this.match("DIGIT");
+                    }
                     break;
 
                 case "QUOTATION":
@@ -209,16 +216,16 @@ namespace Compiler {
 
         public static astIntExpr() {
             Control.putParseMessage("astIntExpr()");
-            //_AST.addNode("Int Expr", false);
+            _AST.addNode("Addition", false);
 
             this.match("DIGIT");
             //num + ...
             if (astToken.description === "ADDITION") {
-                this.match("ADDITION");
+                this.skip("ADDITION");
                 this.astExpr();
             }
             
-            //_AST.moveUp();
+            _AST.moveUp();
         }
 
         public static astStringExpr() {
