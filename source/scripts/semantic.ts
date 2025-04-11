@@ -197,7 +197,7 @@ namespace Compiler {
         public static astStringExpr() {
             Control.putASTMessage("astStringExpr()");
 
-            this.skip("QUOTATION");
+            //this.skip("QUOTATION");
             this.astCharList();
             this.skip("QUOTATION");
         }
@@ -234,7 +234,9 @@ namespace Compiler {
             Control.putASTMessage("astCharList()");
 
             var charList = "\""; //begin quote
-            var firstCharToken = astToken;
+            var firstCharToken = astToken; //point to first quote
+            this.skip("QUOTATION");
+
             while (astToken.description === "CHAR") {
                 charList += astToken.str;
                 
@@ -393,6 +395,19 @@ namespace Compiler {
                             //But the id isnt a boolean
                             if (currentSymbolTable.getType(id) !== "boolean") {
                                 var newError = new ErrorCompiler("TYPE MISMATCH", "Cannot assign boolean value to "+currentSymbolTable.getType(id)+" variable "+id, currentNode.tokenPointer.startIndex);
+                            }
+                            Control.putDebug("Int "+id+" = " +currentNode.name);
+                        }
+
+                        //If it's an id...
+                        else if (currentNode.tokenPointer.description === "ID") {
+                            //But the id is undeclared
+                            if (!currentSymbolTable.isDeclared(currentNode.tokenPointer.str)) {
+                                var newError = new ErrorCompiler("REFERENCE TO UNDECLARED VARIABLE", id, currentNode.tokenPointer.startIndex);
+                            }
+                            //But the id types dont match
+                            else if (currentSymbolTable.getType(id) !== currentSymbolTable.getType(currentNode.name)) {
+                                var newError = new ErrorCompiler("TYPE MISMATCH", "Cannot assign "+ currentSymbolTable.getType(currentNode.name)+" variable "+currentNode.name+" to "+currentSymbolTable.getType(id)+" variable "+id, currentNode.tokenPointer.startIndex);
                             }
                             Control.putDebug("Int "+id+" = " +currentNode.name);
                         }
