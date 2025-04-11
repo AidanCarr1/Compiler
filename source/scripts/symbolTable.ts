@@ -18,14 +18,23 @@ namespace Compiler {
             //convert letter to number a-z = 0-25
             var idCode = id.charCodeAt(0) - "a".charCodeAt(0);
 
-            //if ID has NEVER been declared
-            if (this.table[idCode] == null) {
+            //if ID is NOT declared, declare it
+            if (!this.isDeclared(id)) {
                 this.table[idCode] = type;
             }
-            //ID already declared
+            //ID already declared, give error
             else {
                 var newError = new ErrorCompiler("VARIABLE REDELCARATION", type+" "+id, currentNode.tokenPointer.startIndex);
             }
+        }
+
+        //Return true/false if a given id has been declared in this scope
+        public isDeclared(id:String): boolean {
+
+            var idCode = id.charCodeAt(0) - "a".charCodeAt(0);
+            return this.table[idCode] != null;
+            //null -> not declared -> false
+            //full -> declared -> true
         }
     }
 }

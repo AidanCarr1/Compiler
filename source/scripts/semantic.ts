@@ -317,6 +317,30 @@ namespace Compiler {
 
                     //Put it in the symbol table
                     this.newVariable(type, id);
+
+                    //Next statement
+                    this.nextNode();
+                    break;
+                
+                case "Print":
+
+                    //What we are printing:
+                    this.nextNode();
+
+                    //If printing a variable...
+                    if (currentNode.tokenPointer.description === "ID") {
+                        
+                        //Is it declared?
+                        var symbolTable = _ScopeTree.current.symbolTable;
+                        if (symbolTable.isDeclared(currentNode.tokenPointer.str)) {
+                            //Then we are fine
+                        }
+                        else {
+                            var newError = new ErrorCompiler("UNDELCARED VARIABLE REFERENCE", id, currentNode.tokenPointer.startIndex);
+                        }
+                    } 
+
+
                     // //Type match
                     // switch (type) {
 
