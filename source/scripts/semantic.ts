@@ -294,7 +294,9 @@ namespace Compiler {
 
             //Traverse the AST
             //Scope 0
-            var currentScope = 0;
+            scopeCounter = 0;
+            //var currentScope = 0;
+            //_ScopeTree = new Compiler.Tree(null, null);
             var currentNode = _AST.root;
             
             switch (currentNode.name) {
@@ -309,14 +311,41 @@ namespace Compiler {
                 case "Var Decl":
                     //Get type
                     this.nextNode();
-                    this.
+                    var type = currentNode.tokenPointer.str; //"int" "boolean" "string"
                     //Get id
-                    this.nextNode();
+                    var id = this.nextNode();
+
+                    //Put it in the symbol table
+                    this.newVariable(type, id);
+                    // //Type match
+                    // switch (type) {
+
+                    //     case "int":
+
+                    //     case "boolean":
+
+                    //     case "string":
+
+
+                    // }
 
 
             }
 
 
         } 
+
+        public static newScope() {
+            _ScopeTree.addNode("SCOPE "+scopeCounter);
+            scopeCounter++;
+        }
+
+        public static nextNode() {
+
+        }
+
+        public static newVariable(type, id) {
+
+        }
     }
 }

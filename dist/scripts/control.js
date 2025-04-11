@@ -61,6 +61,7 @@ var Compiler;
                 errorCount = 0;
                 _CST.reset();
                 _AST.reset();
+                _ScopeTree.reset();
                 //Was Lex completed?
                 if (isLexSuccessful) {
                     //Parse

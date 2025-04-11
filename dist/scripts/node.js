@@ -5,12 +5,13 @@ var Compiler;
 (function (Compiler) {
     class Node {
         //New Node
-        constructor(name, parent, children, isLeaf, tokenPointer) {
+        constructor(name, parent, children, isLeaf, tokenPointer, symbolTable) {
             this.name = name;
             this.parent = parent;
             this.children = children;
             this.isLeaf = isLeaf;
             this.tokenPointer = tokenPointer;
+            this.symbolTable = symbolTable;
             //Node knows itself, parent, children
             this.name = name;
             this.parent; //Attributes are updated later

@@ -13,7 +13,7 @@ namespace Compiler {
             this.root = null;
             this.current = null;    //Attributes are updated later
 
-            Control.putDebug("CST Created");
+            Control.putDebug("Tree Created");
         }
 
         //Add new Node into the tree somewhere

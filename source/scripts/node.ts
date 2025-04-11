@@ -10,7 +10,9 @@ namespace Compiler {
             public parent?: Node, 
             public children?,
             public isLeaf?,
-            public tokenPointer?: Token) { 
+            public tokenPointer?: Token,
+            public symbolTable?: SymbolTable 
+            ) { 
 
             //Node knows itself, parent, children
             this.name = name;

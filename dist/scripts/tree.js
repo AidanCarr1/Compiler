@@ -11,7 +11,7 @@ var Compiler;
             //Simple tree structure, remember first and recent
             this.root = null;
             this.current = null; //Attributes are updated later
-            Compiler.Control.putDebug("CST Created");
+            Compiler.Control.putDebug("Tree Created");
         }
         //Add new Node into the tree somewhere
         addNode(nodeName, isLeaf, token) {
