@@ -357,4 +357,16 @@ if (7+7+7==3+3+3+3+3+3+3){
 } $       
 
 
+{
+ int a {
+  boolean b {
+   string c {
+    a = 5 + 8 + "abs"
+    b = (false != (8==0))
+    c = "true" }
+   print(c) }
+  print(b) }
+ print(a)
+}$ 
+
 

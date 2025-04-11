@@ -174,6 +174,13 @@ namespace Compiler {
                 += "<p><mark class='label'>PARSE</mark> <mark class='info'>"+msg+"</mark></p>";
             }
         }
+        public static putASTMessage(msg) {
+            if (errorCount <= 0) {
+                (<HTMLInputElement> document.getElementById("taOutput")).innerHTML 
+                += "<p><mark class='label'>Semantic</mark> <mark class='info'>"+msg+"</mark></p>";
+            }
+        }
+        
 
     }
 }

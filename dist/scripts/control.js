@@ -145,6 +145,12 @@ var Compiler;
                     += "<p><mark class='label'>PARSE</mark> <mark class='info'>" + msg + "</mark></p>";
             }
         }
+        static putASTMessage(msg) {
+            if (errorCount <= 0) {
+                document.getElementById("taOutput").innerHTML
+                    += "<p><mark class='label'>Semantic</mark> <mark class='info'>" + msg + "</mark></p>";
+            }
+        }
     }
     Compiler.Control = Control;
 })(Compiler || (Compiler = {}));
