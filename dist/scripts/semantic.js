@@ -222,18 +222,19 @@ var Compiler;
             scopeCounter = 0;
             currentNode = _AST.root;
             nodeCounter = 0;
+            currentSymbolTable = null;
             //Go through the AST until we reach the end
             while (currentNode != null) {
                 switch (currentNode.name) {
                     case "Block":
-                        Compiler.Control.putDebug("Block");
+                        Compiler.Control.putSemanticMessage("Block Type/Scope Check");
                         //New scope, grow up the tree
                         this.newScope();
                         //Go to first statement inside the block
                         this.nextNode();
                         break;
                     case "Var Decl":
-                        Compiler.Control.putDebug("Var Decl");
+                        Compiler.Control.putSemanticMessage("Var Decl Type/Scope Check");
                         //Get type
                         this.nextNode();
                         var type = currentNode.tokenPointer.str; //"int" "boolean" "string"
@@ -246,23 +247,62 @@ var Compiler;
                         this.nextNode();
                         break;
                     case "Print":
-                        Compiler.Control.putDebug("Print");
+                        Compiler.Control.putSemanticMessage("Print Type/Scope Check");
                         //What we are printing:
                         this.nextNode();
                         //If printing a variable...
                         if (currentNode.tokenPointer.description === "ID") {
-                            //Is it declared?
-                            var symbolTable = _ScopeTree.current.symbolTable;
-                            if (symbolTable.isDeclared(currentNode.tokenPointer.str)) {
-                                //Then we are fine
+                            //Check that it's not undeclared!
+                            if (!currentSymbolTable.isDeclared(currentNode.tokenPointer.str)) {
+                                var newError = new Compiler.ErrorCompiler("REFERENCE TO UNDECLARED VARIABLE", id, currentNode.tokenPointer.startIndex);
                             }
-                            else {
-                                var newError = new Compiler.ErrorCompiler("UNDELCARED VARIABLE REFERENCE", id, currentNode.tokenPointer.startIndex);
-                            }
+                            Compiler.Control.putDebug("Print id " + id + " exists");
                         }
+                        //If printing an expr...
+                        else {
+                        }
+                        //Next statement
+                        this.nextNode();
+                        break;
+                    case "Assignment":
+                        Compiler.Control.putSemanticMessage("Assignment Type/Scope Check");
+                        //Get id
+                        this.nextNode();
+                        var id = currentNode.tokenPointer.str; //"a" "b" "c"...
+                        //Check if id has been declared
+                        if (!currentSymbolTable.isDeclared(currentNode.tokenPointer.str)) {
+                            var newError = new Compiler.ErrorCompiler("UNDECLARED VARIABLE", "Cannot assign value to " + id, currentNode.tokenPointer.startIndex);
+                        }
+                        //Get value
+                        this.nextNode();
+                        //If it's a string constant...
+                        if (currentNode.name.charAt(0) === "\"") {
+                            //But the id isnt a string
+                            if (currentSymbolTable.getType(id) !== "string") {
+                                var newError = new Compiler.ErrorCompiler("TYPE MISMATCH", "Cannot assign string value to " + currentSymbolTable.getType(id) + " variable " + id, currentNode.tokenPointer.startIndex);
+                            }
+                            Compiler.Control.putDebug("String " + id + " = " + currentNode.name);
+                        }
+                        //If it's a digit...
+                        else if (currentNode.tokenPointer.description === "DIGIT") {
+                            //But the id isnt an int
+                            if (currentSymbolTable.getType(id) !== "int") {
+                                var newError = new Compiler.ErrorCompiler("TYPE MISMATCH", "Cannot assign int value to " + currentSymbolTable.getType(id) + " variable " + id, currentNode.tokenPointer.startIndex);
+                            }
+                            Compiler.Control.putDebug("Int " + id + " = " + currentNode.name);
+                        }
+                        //If it's a boolean...
+                        else if (currentNode.tokenPointer.description === "BOOLEAN VALUE") {
+                            //But the id isnt a boolean
+                            if (currentSymbolTable.getType(id) !== "boolean") {
+                                var newError = new Compiler.ErrorCompiler("TYPE MISMATCH", "Cannot assign boolean value to " + currentSymbolTable.getType(id) + " variable " + id, currentNode.tokenPointer.startIndex);
+                            }
+                            Compiler.Control.putDebug("Int " + id + " = " + currentNode.name);
+                        }
+                        //Next statement
+                        this.nextNode();
                         break;
                     default:
-                        Compiler.Control.putDebug("unknown:" + currentNode.name);
                         this.nextNode();
                     // //Type match
                     // switch (type) {
@@ -272,35 +312,26 @@ var Compiler;
                     // }
                 }
             }
-            Compiler.Control.putASTMessage("DONE WITH TYPE SCOPE CHECK WHILE LOOP");
+            //Control.putASTMessage("DONE WITH TYPE SCOPE CHECK WHILE LOOP");
         }
         static newScope() {
-            Compiler.Control.putDebug("new scope");
             _ScopeTree.addNode("SCOPE " + scopeCounter);
+            Compiler.Control.putDebug("SCOPE " + scopeCounter);
             scopeCounter++;
-            //Control.putDebug("done new scope");
+            currentSymbolTable = _ScopeTree.current.symbolTable;
         }
         static nextNode() {
-            Compiler.Control.putDebug("next node");
-            //Control.putDebug("list: "+(_AST.nodeList));
-            //Control.putDebug("len: "+(_AST.nodeList).length);
             nodeCounter++;
             if (nodeCounter >= (_AST.nodeList).length) {
-                //Control.putDebug("no more nodes");
                 currentNode = null;
             }
             else {
-                //Control.putDebug("found a next node");
                 currentNode = _AST.nodeList[nodeCounter];
             }
-            //Control.putDebug("done next node");
         }
         static newVariable(type, id) {
-            Compiler.Control.putDebug("new var");
             var symbolTable = _ScopeTree.current.symbolTable;
-            Compiler.Control.putDebug(symbolTable);
             symbolTable.newVariable(type, id);
-            Compiler.Control.putDebug("done new var");
         }
     }
     Compiler.Semantic = Semantic;

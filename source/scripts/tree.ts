@@ -26,6 +26,7 @@ namespace Compiler {
             //First node, root node
             if (this.root == null) {
                 this.root = newNode;
+                this.nodeList = [];
             }
 
             //newNode is current's child

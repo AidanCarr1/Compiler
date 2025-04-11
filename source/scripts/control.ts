@@ -117,7 +117,9 @@ namespace Compiler {
                     _AST.printTree();
 
                     //Check type and scope
+                    this.putLine();
                     Semantic.checkTypeScope();
+                    this.putMessage("Done with type and scope check");
 
                 }
 
@@ -178,10 +180,16 @@ namespace Compiler {
         public static putASTMessage(msg) {
             if (errorCount <= 0) {
                 (<HTMLInputElement> document.getElementById("taOutput")).innerHTML 
-                += "<p><mark class='label'>Semantic</mark> <mark class='info'>"+msg+"</mark></p>";
+                += "<p><mark class='label'>Semantic AST</mark> <mark class='info'>"+msg+"</mark></p>";
             }
         }
-        
+
+        public static putSemanticMessage(msg) {
+            if (errorCount <= 0) {
+                (<HTMLInputElement> document.getElementById("taOutput")).innerHTML 
+                += "<p><mark class='label'>Semantic</mark> <mark class='info'>"+msg+"</mark></p>";
+            }
+        }        
 
     }
 }

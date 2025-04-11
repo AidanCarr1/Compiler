@@ -52,3 +52,4 @@ var _ScopeTree = new Compiler.Tree(null, null);
 var scopeCounter = 0;
 var currentNode = null;
 var nodeCounter = 0;
+var currentSymbolTable = null;

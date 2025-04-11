@@ -96,7 +96,9 @@ var Compiler;
                     this.putMessage("Abstract Syntax Tree");
                     _AST.printTree();
                     //Check type and scope
+                    this.putLine();
                     Compiler.Semantic.checkTypeScope();
+                    this.putMessage("Done with type and scope check");
                 }
                 //Next Program
                 this.putLine(2);
@@ -147,6 +149,12 @@ var Compiler;
             }
         }
         static putASTMessage(msg) {
+            if (errorCount <= 0) {
+                document.getElementById("taOutput").innerHTML
+                    += "<p><mark class='label'>Semantic AST</mark> <mark class='info'>" + msg + "</mark></p>";
+            }
+        }
+        static putSemanticMessage(msg) {
             if (errorCount <= 0) {
                 document.getElementById("taOutput").innerHTML
                     += "<p><mark class='label'>Semantic</mark> <mark class='info'>" + msg + "</mark></p>";
