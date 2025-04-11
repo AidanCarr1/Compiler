@@ -12,6 +12,7 @@ var Compiler;
             //Simple tree structure, remember first and recent
             this.root = null;
             this.current = null; //Attributes are updated later
+            this.nodeList = [];
             Compiler.Control.putDebug("Tree Created");
         }
         //Add new Node into the tree somewhere

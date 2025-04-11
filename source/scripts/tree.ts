@@ -14,6 +14,7 @@ namespace Compiler {
             //Simple tree structure, remember first and recent
             this.root = null;
             this.current = null;    //Attributes are updated later
+            this.nodeList = [];
 
             Control.putDebug("Tree Created");
         }
@@ -46,7 +47,7 @@ namespace Compiler {
 
             //add it to the in order node list
             this.nodeList.push(newNode);
-            
+
             return newNode;
         }
 

@@ -18,6 +18,7 @@ namespace Compiler {
             this.name = name;
             this.parent;       //Attributes are updated later
             this.children = [];
+            this.symbolTable = new SymbolTable();
         }
 
         //Add node to end of the array of children

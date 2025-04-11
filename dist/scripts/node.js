@@ -16,6 +16,7 @@ var Compiler;
             this.name = name;
             this.parent; //Attributes are updated later
             this.children = [];
+            this.symbolTable = new Compiler.SymbolTable();
         }
         //Add node to end of the array of children
         addChild(childNode) {
