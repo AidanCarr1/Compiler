@@ -8,7 +8,7 @@ namespace Compiler {
         //New Tree
         constructor(public root?,
                     public current?,
-                    public nodeList?: Array<Node>
+                    public nodeList?: Node[]
                     ) { 
 
             //Simple tree structure, remember first and recent
