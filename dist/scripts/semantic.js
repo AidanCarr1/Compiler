@@ -217,6 +217,24 @@ var Compiler;
             astToken = tokenStream[astTokenIndex];
         }
         static checkTypeScope() {
+            //Traverse the AST
+            //Scope 0
+            var currentScope = 0;
+            var currentNode = _AST.root;
+            switch (currentNode.name) {
+                case "Block":
+                    //New scope, grow up the tree
+                    this.newScope();
+                    //Go to first statement inside the block
+                    this.nextNode();
+                    break;
+                case "Var Decl":
+                    //Get type
+                    this.nextNode();
+                    this.
+                        //Get id
+                        this.nextNode();
+            }
         }
     }
     Compiler.Semantic = Semantic;
