@@ -7,7 +7,9 @@ namespace Compiler {
 
         //New Tree
         constructor(public root?,
-                    public current? ) { 
+                    public current?,
+                    public nodeList?: Array<Node>
+                    ) { 
 
             //Simple tree structure, remember first and recent
             this.root = null;
@@ -42,6 +44,9 @@ namespace Compiler {
             }
             newNode.isLeaf = isLeaf;
 
+            //add it to the in order node list
+            this.nodeList.push(newNode);
+            
             return newNode;
         }
 

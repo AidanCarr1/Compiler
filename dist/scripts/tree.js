@@ -5,9 +5,10 @@ var Compiler;
 (function (Compiler) {
     class Tree {
         //New Tree
-        constructor(root, current) {
+        constructor(root, current, nodeList) {
             this.root = root;
             this.current = current;
+            this.nodeList = nodeList;
             //Simple tree structure, remember first and recent
             this.root = null;
             this.current = null; //Attributes are updated later
@@ -35,6 +36,8 @@ var Compiler;
                 Compiler.Control.putDebug("&gt;&gt; TOKEN [" + newNode.tokenPointer.str + "] at " + Compiler.Utils.address(newNode.tokenPointer.startIndex));
             }
             newNode.isLeaf = isLeaf;
+            //add it to the in order node list
+            this.nodeList.push(newNode);
             return newNode;
         }
         //Up the tree

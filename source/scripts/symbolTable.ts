@@ -17,8 +17,15 @@ namespace Compiler {
 
             //convert letter to number a-z = 0-25
             var idCode = id.charCodeAt(0) - "a".charCodeAt(0);
-            this.table[idCode] = type;
-            
+
+            //if ID has NEVER been declared
+            if (this.table[idCode] == null) {
+                this.table[idCode] = type;
+            }
+            //ID already declared
+            else {
+                var newError = new ErrorCompiler("VARIABLE REDELCARATION", type+" "+id, currentNode.tokenPointer.startIndex);
+            }
         }
     }
 }
