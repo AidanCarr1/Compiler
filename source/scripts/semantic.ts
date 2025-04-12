@@ -41,6 +41,8 @@ namespace Compiler {
             this.skip("CLOSE BRACE");
 
             _AST.moveUp();
+            //Let SEMANTIC know we are moving up the scope as well
+            _AST.nodeList.push(new Node("SCOPE UP"));
         }
 
         public static astStatementList() {
@@ -373,7 +375,7 @@ namespace Compiler {
 
                         //Check if id has been declared
                         if (!currentSymbolTable.isDeclared(currentNode.tokenPointer.str)) {
-                            var newError = new ErrorCompiler("UNDECLARED VARIABLE", "Cannot assign value to "+id, currentNode.tokenPointer.startIndex);
+                            var newError = new ErrorCompiler("UNDECLARED VARIABLE", "Cannot assign a value to "+id, currentNode.tokenPointer.startIndex);
                         }
 
                         //Get value
@@ -422,11 +424,17 @@ namespace Compiler {
                         //If it's addition...
                         //keep checking down and down until you reach the end to see if its all ints
 
-                        
-
                         //Next statement
                         this.nextNode();
                         break;
+
+                    //End of block, scope up
+                    case "SCOPE UP":
+                        this.oldScope();
+
+                        //Next statement
+                        this.nextNode();
+                        break; 
 
                     default:
                         this.nextNode();
@@ -473,6 +481,14 @@ namespace Compiler {
         public static newVariable(type, id) {
             var symbolTable = _ScopeTree.current.symbolTable;
             symbolTable.newVariable(type, id);
+        }
+
+        public static oldScope() {
+            //go to parent Scope
+            _ScopeTree.moveUp();
+
+            //reset scope table
+            currentSymbolTable = _ScopeTree.current.symbolTable;
         }
     }
 }
