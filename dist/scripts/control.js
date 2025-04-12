@@ -98,7 +98,7 @@ var Compiler;
                     //Check type and scope
                     this.putLine();
                     Compiler.Semantic.checkTypeScope();
-                    this.putMessage("Done with type and scope check");
+                    this.putMessage("SEMANTIC complete with " + warningCount + " warning(s) and 0 errors");
                 }
                 //Next Program
                 this.putLine(2);

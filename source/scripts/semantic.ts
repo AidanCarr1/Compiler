@@ -31,6 +31,13 @@ namespace Compiler {
 
             this.skip("OPEN BRACE");
             this.astStatementList();
+            
+            //If the block has no children, add a fake child for tree printing purposes
+            if (_AST.current.children.length == 0) {
+                _AST.addNode("SKIP", false);
+                _AST.moveUp();
+            }
+            
             this.skip("CLOSE BRACE");
 
             _AST.moveUp();
@@ -259,12 +266,12 @@ namespace Compiler {
                 case "EQUALITY":
                     this.skip("EQUALITY");
                     return "Equality";
-                    break;
+                    //break;
                 
                 case "INEQUALITY":
                     this.skip("INEQUALITY");
                     return "Inequality";
-                    break;
+                    //break;
 
             }
         }
@@ -411,6 +418,9 @@ namespace Compiler {
                             }
                             Control.putDebug("Int "+id+" = " +currentNode.name);
                         }
+
+                        //If it's addition...
+                        //keep checking down and down until you reach the end to see if its all ints
 
                         
 
