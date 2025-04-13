@@ -5,8 +5,9 @@ var Compiler;
 (function (Compiler) {
     class Node {
         //New Node
-        constructor(name, parent, children, isLeaf, tokenPointer, symbolTable) {
+        constructor(name, isSymbolTableNode, parent, children, isLeaf, tokenPointer, symbolTable) {
             this.name = name;
+            this.isSymbolTableNode = isSymbolTableNode;
             this.parent = parent;
             this.children = children;
             this.isLeaf = isLeaf;
@@ -16,7 +17,10 @@ var Compiler;
             this.name = name;
             this.parent; //Attributes are updated later
             this.children = [];
-            this.symbolTable = new Compiler.SymbolTable();
+            //Node for Symbol Table (one of those)
+            if (isSymbolTableNode) {
+                this.symbolTable = new Compiler.SymbolTable();
+            }
         }
         //Add node to end of the array of children
         addChild(childNode) {

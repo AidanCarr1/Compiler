@@ -7,6 +7,7 @@ namespace Compiler {
 
         //New Node
         constructor(public name: String, 
+            public isSymbolTableNode?: boolean,
             public parent?: Node, 
             public children?,
             public isLeaf?,
@@ -18,7 +19,11 @@ namespace Compiler {
             this.name = name;
             this.parent;       //Attributes are updated later
             this.children = [];
-            this.symbolTable = new SymbolTable();
+
+            //Node for Symbol Table (one of those)
+            if (isSymbolTableNode) {
+                this.symbolTable = new SymbolTable();
+            }
         }
 
         //Add node to end of the array of children

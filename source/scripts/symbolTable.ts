@@ -6,10 +6,11 @@ namespace Compiler {
     export class SymbolTable {
 
         //New Node
-        constructor(public table?: String[]) { 
+        constructor(public table?: SymbolNode[]) { 
 
-            //Table of 26 positions (one for each letter id)
-            this.table = new Array(26).fill(null);;
+            //Table of 26 positions (one SymbolNode for each letter id)
+            this.table = Array.from({ length: 26 }, () => new SymbolNode());
+            //ChatGPT Help ^^
         }
 
         //Add node to end of the array of children
@@ -20,7 +21,7 @@ namespace Compiler {
 
             //if ID is NOT declared, declare it
             if (!this.isDeclared(id)) {
-                this.table[idCode] = type;
+                this.table[idCode].type = type;
             }
             //ID already declared, give error
             else {
@@ -41,7 +42,7 @@ namespace Compiler {
         public getType(id:String): String {
             
             var idCode:number = (id.charCodeAt(0) - "a".charCodeAt(0));
-            return this.table[idCode];
+            return this.table[idCode].type;
         }
     }
 }

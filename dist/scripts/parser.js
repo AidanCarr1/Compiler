@@ -21,6 +21,7 @@ var Compiler;
         static parseProgram() {
             Compiler.Control.putParseMessage("parseProgram()");
             _CST.addNode("Program", false);
+            Compiler.Control.putDebug("AfterADDNode");
             this.parseBlock();
             this.match("EOP");
             _CST.moveUp();

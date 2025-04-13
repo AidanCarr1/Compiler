@@ -21,21 +21,22 @@ namespace Compiler {
 
         //Add new Node into the tree somewhere
         public addNode(nodeName: String, isLeaf?: boolean, token?: Token): Node {
+            Control.putDebug("in add node");
             var newNode = new Node(nodeName);
-
+            Control.putDebug("1");
             //First node, root node
             if (this.root == null) {
                 this.root = newNode;
                 this.nodeList = [];
             }
-
+            
             //newNode is current's child
             else {
                 newNode.parent = this.current;
                 newNode.parent.addChild(newNode);
                 Control.putDebug("NODE ["+newNode.name+", parent: "+newNode.parent.name+", children: "+newNode.children + "]");
             }
-
+            Control.putDebug("2");
             //Move current pointer down the tree (unless its a leaf node)
             if (! isLeaf) {
                 this.current = newNode;
@@ -45,10 +46,10 @@ namespace Compiler {
                 Control.putDebug("&gt;&gt; TOKEN ["+newNode.tokenPointer.str +"] at "+Utils.address(newNode.tokenPointer.startIndex));
             }
             newNode.isLeaf = isLeaf;
-
+            Control.putDebug("3");
             //add it to the in order node list
             this.nodeList.push(newNode);
-
+            Control.putDebug("done adding node");
             return newNode;
         }
 

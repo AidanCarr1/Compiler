@@ -7,9 +7,9 @@ var Compiler;
         //New Node
         constructor(table) {
             this.table = table;
-            //Table of 26 positions (one for each letter id)
-            this.table = new Array(26).fill(null);
-            ;
+            //Table of 26 positions (one SymbolNode for each letter id)
+            this.table = Array.from({ length: 26 }, () => new Compiler.SymbolNode());
+            //ChatGPT Help ^^
         }
         //Add node to end of the array of children
         newVariable(type, id) {
@@ -17,7 +17,7 @@ var Compiler;
             var idCode = id.charCodeAt(0) - "a".charCodeAt(0);
             //if ID is NOT declared, declare it
             if (!this.isDeclared(id)) {
-                this.table[idCode] = type;
+                this.table[idCode].type = type;
             }
             //ID already declared, give error
             else {
@@ -34,7 +34,7 @@ var Compiler;
         //Return type string given id string
         getType(id) {
             var idCode = (id.charCodeAt(0) - "a".charCodeAt(0));
-            return this.table[idCode];
+            return this.table[idCode].type;
         }
     }
     Compiler.SymbolTable = SymbolTable;

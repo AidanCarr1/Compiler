@@ -26,7 +26,7 @@ namespace Compiler {
         public static parseProgram() {
             Control.putParseMessage("parseProgram()");
             _CST.addNode("Program", false);
-
+            Control.putDebug("AfterADDNode");
             this.parseBlock();
             this.match("EOP");
 
