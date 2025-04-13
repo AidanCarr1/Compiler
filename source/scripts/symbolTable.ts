@@ -6,12 +6,28 @@ namespace Compiler {
     export class SymbolTable {
 
         //New Node
-        constructor(public table?: SymbolNode[]) { 
+        constructor(public name?: String, //ex: "SCOPE 1"
+            public table?: SymbolNode[],
+            public parent?: SymbolTable
+            ) { 
 
             //Table of 26 positions (one SymbolNode for each letter id)
             this.table = Array.from({ length: 26 }, () => new SymbolNode());
             //ChatGPT Help ^^
         }
+
+
+
+
+
+
+
+        /*the following will probably get moved to symbol tale tree, and use the 'current' attribute */
+
+
+
+
+
 
         //Add node to end of the array of children
         public newVariable(type:String, id:String) {

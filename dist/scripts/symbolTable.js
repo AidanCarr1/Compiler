@@ -5,12 +5,16 @@ var Compiler;
 (function (Compiler) {
     class SymbolTable {
         //New Node
-        constructor(table) {
+        constructor(name, //ex: "SCOPE 1"
+        table, parent) {
+            this.name = name;
             this.table = table;
+            this.parent = parent;
             //Table of 26 positions (one SymbolNode for each letter id)
             this.table = Array.from({ length: 26 }, () => new Compiler.SymbolNode());
             //ChatGPT Help ^^
         }
+        /*the following will probably get moved to symbol tale tree, and use the 'current' attribute */
         //Add node to end of the array of children
         newVariable(type, id) {
             //convert letter to number a->z = 0->25
