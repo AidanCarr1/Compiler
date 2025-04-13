@@ -22,7 +22,7 @@ namespace Compiler {
 
 
 
-        /*the following will probably get moved to symbol tale tree, and use the 'current' attribute */
+        /*the following will probably get moved to symbol table tree, and use the 'current' attribute */
 
 
 

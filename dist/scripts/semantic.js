@@ -226,6 +226,13 @@ var Compiler;
         }
         static checkTypeScope() {
             //Traverse the AST
+            /*
+            A note on the Symbol Table STRUCTURE:
+
+            Symbol Table Tree: a tree of symbol tables
+            Symbol Table: name of scope, parent pointer, table of ids and their symbol nodes
+            Symbol Node: info about an id like type, isInherited, isInitialized, isUsed
+            */
             //Scope 0
             scopeCounter = 0;
             currentNode = _AST.root;
