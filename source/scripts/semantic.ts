@@ -417,6 +417,11 @@ namespace Compiler {
                             Control.putDebug("String "+id+" = " +currentNode.name);
                         }
 
+                        //If it's addition...
+                        else if (currentNode.name == "Addition") {
+                            this.checkAddition();
+                        }
+
                         //If it's a digit...
                         else if (currentNode.tokenPointer.description === "DIGIT") {
                             //But the id isnt an int
@@ -452,8 +457,7 @@ namespace Compiler {
                             Control.putDebug("Int "+id+" = " +currentNode.name);
                         }
 
-                        //If it's addition...
-                        //keep checking down and down until you reach the end to see if its all ints
+                        
 
                         //Next statement
                         this.nextNode();
@@ -505,6 +509,7 @@ namespace Compiler {
             
             //Get left (left id is impossible by parse)
             this.nextNode();
+            Control.putDebug("left"+currentNode.name);
             if (currentNode.tokenPointer.description === "DIGIT") {
                 //left is good
                 Control.putDebug("left is good ("+currentNode.name+")");
@@ -519,7 +524,7 @@ namespace Compiler {
 
             //Get right
             this.nextNode();
-            //Control.putDebug("right"+currentNode.name);
+            Control.putDebug("right"+currentNode.name);
             if (currentNode.name === "Addition"){
                 Control.putDebug("right addition lets do it again ");
                 this.checkAddition();
@@ -532,7 +537,12 @@ namespace Compiler {
                 Control.putDebug("right id");
                 //make sure it's an int id
                 var id:String = currentNode.tokenPointer.str;
-                if (_SymbolTableTree.getTypeAnyScope(id) !== "int") {
+
+                //but first, does it even exist?
+                if (_SymbolTableTree.getTypeAnyScope(id) === null) {
+                    var newError = new ErrorCompiler("REFERENCE TO UNDECLARED VARIABLE", id, currentNode.tokenPointer.startIndex);
+                }
+                else if (_SymbolTableTree.getTypeAnyScope(id) !== "int") {
                     var newError = new ErrorCompiler("INCOMPATABLE TYPES", "Cannot add and int with a "+ _SymbolTableTree.getTypeAnyScope(id) +" variable "+id, currentNode.tokenPointer.startIndex);
                 }
             }
