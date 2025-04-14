@@ -70,36 +70,26 @@ var Compiler;
             return this.current.isDeclared(id);
         }
         //is this declared ANY (related) SCOPE up the tree
-        // public isDeclaredAnyScope(id:String) {
-        //     var isFound = false;
-        //     var idCode:number = (id.charCodeAt(0) - "a".charCodeAt(0));
-        //     var foundType = this.table[idCode].type;
-        //     var scopesMoved = 0;
-        //     while (foundType != null) {
-        //         scopesMoved++;
-        //     }
-        //     return this.current.isDeclared(id);
-        // }
+        isDeclaredAnyScope(id) {
+            return this.getTypeAnyScope(id) != null;
+        }
         //Return type with closest found scope or null if not found
         getTypeAnyScope(id) {
+            Compiler.Control.putDebug("in get type any scope STT");
             //var isFound = false;
             //var idCode:number = (id.charCodeAt(0) - "a".charCodeAt(0));
             //try the first scope
-            var foundType = this.getType(id);
+            var foundType = this.current.getType(id);
             //var scopesMoved = 0;
             var checking = this.current;
             //check up the scopes
-            while (foundType != null || checking.parent != null) {
+            while (foundType == null && checking.parent != null) {
                 //scopesMoved++;
                 checking = checking.parent;
                 Compiler.Control.putDebug("Lets check " + checking.name);
                 foundType = checking.getType(id);
             }
             return foundType;
-        }
-        getType(id) {
-            //onyl works for current scope rn
-            return this.current.getType(id);
         }
     }
     Compiler.SymbolTableTree = SymbolTableTree;

@@ -390,7 +390,7 @@ namespace Compiler {
 
                         //Check if id has been declared
                         //if (!_SymbolTableTree.isDeclaredAnyScope(currentNode.tokenPointer.str)) {
-                        if (!_SymbolTableTree.getTypeAnyScope(currentNode.tokenPointer.str)) {
+                        if (_SymbolTableTree.getTypeAnyScope(currentNode.tokenPointer.str) == null) {
                             var newError = new ErrorCompiler("UNDECLARED VARIABLE", "Cannot assign a value to "+id, currentNode.tokenPointer.startIndex);
                         }
 
@@ -401,7 +401,7 @@ namespace Compiler {
                         if (currentNode.name.charAt(0) === "\"") {
                             //But the id isnt a string
                             if (_SymbolTableTree.getTypeAnyScope(id) !== "string") {
-                                var newError = new ErrorCompiler("TYPE MISMATCH", "Cannot assign string value to "+_SymbolTableTree.getType(id)+" variable "+id, currentNode.tokenPointer.startIndex);
+                                var newError = new ErrorCompiler("TYPE MISMATCH", "Cannot assign string value to "+_SymbolTableTree.getTypeAnyScope(id)+" variable "+id, currentNode.tokenPointer.startIndex);
                             }
                             Control.putDebug("String "+id+" = " +currentNode.name);
                         }
@@ -410,7 +410,8 @@ namespace Compiler {
                         else if (currentNode.tokenPointer.description === "DIGIT") {
                             //But the id isnt an int
                             if (_SymbolTableTree.getTypeAnyScope(id) !== "int") {
-                                var newError = new ErrorCompiler("TYPE MISMATCH", "Cannot assign int value to "+_SymbolTableTree.getType(id)+" variable "+id, currentNode.tokenPointer.startIndex);
+                                var newError = new ErrorCompiler("TYPE MISMATCH", "Cannot assign int value to "+
+                                    _SymbolTableTree.getTypeAnyScope(id)+" variable "+id, currentNode.tokenPointer.startIndex);
                             }
                             Control.putDebug("Int "+id+" = " +currentNode.name);
                         }
@@ -419,7 +420,8 @@ namespace Compiler {
                         else if (currentNode.tokenPointer.description === "BOOLEAN VALUE") {
                             //But the id isnt a boolean
                             if (_SymbolTableTree.getTypeAnyScope(id) !== "boolean") {
-                                var newError = new ErrorCompiler("TYPE MISMATCH", "Cannot assign boolean value to "+_SymbolTableTree.getType(id)+" variable "+id, currentNode.tokenPointer.startIndex);
+                                var newError = new ErrorCompiler("TYPE MISMATCH", "Cannot assign boolean value to "+
+                                    _SymbolTableTree.getTypeAnyScope(id)+" variable "+id, currentNode.tokenPointer.startIndex);
                             }
                             Control.putDebug("Int "+id+" = " +currentNode.name);
                         }
@@ -431,8 +433,10 @@ namespace Compiler {
                                 var newError = new ErrorCompiler("REFERENCE TO UNDECLARED VARIABLE", id, currentNode.tokenPointer.startIndex);
                             }
                             //But the id types dont match
-                            else if (_SymbolTableTree.getTypeAnyScope(id) !== _SymbolTableTree.getType(currentNode.name)) {
-                                var newError = new ErrorCompiler("TYPE MISMATCH", "Cannot assign "+ _SymbolTableTree.getType(currentNode.name)+" variable "+currentNode.name+" to "+_SymbolTableTree.getType(id)+" variable "+id, currentNode.tokenPointer.startIndex);
+                            else if (_SymbolTableTree.getTypeAnyScope(id) !== _SymbolTableTree.getTypeAnyScope(currentNode.name)) {
+                                var newError = new ErrorCompiler("TYPE MISMATCH", "Cannot assign "+ 
+                                    _SymbolTableTree.getTypeAnyScope(currentNode.name)+" variable "+currentNode.name+" to "+
+                                    _SymbolTableTree.getTypeAnyScope(id)+" variable "+id, currentNode.tokenPointer.startIndex);
                             }
                             Control.putDebug("Int "+id+" = " +currentNode.name);
                         }

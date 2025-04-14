@@ -64,19 +64,19 @@ namespace Compiler {
         }
 
         //Return true/false if a given id has been declared in this scope
-        public isDeclaredAnyScope(id:String): boolean {
+        // public isDeclaredAnyScope(id:String): boolean {
 
-            var isFound = false;
-            var idCode:number = (id.charCodeAt(0) - "a".charCodeAt(0));
-            var foundType = this.table[idCode].type;
-            var scopesMoved = 0;
+        //     var isFound = false;
+        //     var idCode:number = (id.charCodeAt(0) - "a".charCodeAt(0));
+        //     var foundType = this.table[idCode].type;
+        //     var scopesMoved = 0;
 
-            while (foundType != null) {
-                scopesMoved++;
+        //     while (foundType != null) {
+        //         scopesMoved++;
                 
 
-            }
-        }
+        //     }
+        // }
 
         // //Return type with closest found scope or null if not found
         // public getTypeAnyScope(id:String): String {
