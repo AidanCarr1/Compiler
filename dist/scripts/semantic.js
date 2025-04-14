@@ -281,9 +281,13 @@ var Compiler;
                                 Compiler.Control.putDebug("Print id " + id + " exists");
                             }
                         }
-                        //If printing an expr...
-                        else {
+                        //If printing an addition
+                        else if (currentNode.name === "Addition") {
+                            Compiler.Control.putDebug("Lets check addition");
+                            this.checkAddition();
                         }
+                        //any other expr
+                        else { }
                         //Next statement
                         this.nextNode();
                         break;
@@ -356,12 +360,6 @@ var Compiler;
                     default:
                         Compiler.Control.putSemanticMessage("ERROR, unknown Node name: " + currentNode.name);
                         this.nextNode();
-                    // //Type match
-                    // switch (type) {
-                    //     case "int":
-                    //     case "boolean":
-                    //     case "string":
-                    // }
                 }
             }
             //Control.putASTMessage("DONE WITH TYPE SCOPE CHECK WHILE LOOP");
@@ -378,6 +376,47 @@ var Compiler;
             // if (currentNode != null) {
             //     Control.putDebug("next node " +nodeCounter+") "+currentNode.name);
             // }
+        }
+        //precondition: current=Addition
+        //post condition: current= after the whole addition block?
+        static checkAddition() {
+            //Get left (left id is impossible by parse)
+            this.nextNode();
+            if (currentNode.tokenPointer.description === "DIGIT") {
+                //left is good
+                Compiler.Control.putDebug("left is good (" + currentNode.name + ")");
+            }
+            else if (currentNode.name === "Addition") {
+                this.checkAddition();
+            }
+            else {
+                //return error
+                Compiler.Control.putSemanticMessage("HOW are we here left");
+            }
+            //Get right
+            this.nextNode();
+            //Control.putDebug("right"+currentNode.name);
+            if (currentNode.name === "Addition") {
+                Compiler.Control.putDebug("right addition lets do it again ");
+                this.checkAddition();
+            }
+            else if (currentNode.tokenPointer.description === "DIGIT") {
+                //right is good
+                Compiler.Control.putDebug("right digit");
+            }
+            else if (currentNode.tokenPointer.description === "ID") {
+                Compiler.Control.putDebug("right id");
+                //make sure it's an int id
+                var id = currentNode.tokenPointer.str;
+                if (_SymbolTableTree.getTypeAnyScope(id) !== "int") {
+                    var newError = new Compiler.ErrorCompiler("INCOMPATABLE TYPES", "Cannot add and int with a " + _SymbolTableTree.getTypeAnyScope(id) + " variable " + id, currentNode.tokenPointer.startIndex);
+                }
+            }
+            else {
+                //return error 
+                //not an int!!
+                var newError = new Compiler.ErrorCompiler("INCOMPATABLE TYPES", "Cannot add and int with " + currentNode.name, currentNode.tokenPointer.startIndex);
+            }
         }
     }
     Compiler.Semantic = Semantic;

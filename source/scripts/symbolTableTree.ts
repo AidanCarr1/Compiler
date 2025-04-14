@@ -143,11 +143,11 @@ namespace Compiler {
             var foundSymbolNode:SymbolNode = checking.getSymbol(id);
 
             //check up the scopes
-            Control.putDebug("hello?");
-            Control.putDebug("1, "+(foundSymbolNode.type == null) +" 2,"+(checking.parent != null));
+            //Control.putDebug("hello?");
+            //Control.putDebug("1, "+(foundSymbolNode.type == null) +" 2,"+(checking.parent != null));
             while (foundSymbolNode.type == null && checking.parent != null) {
                 checking = checking.parent;
-                Control.putDebug("Lets DAMNNNN check " +checking.name);
+                //Control.putDebug("Lets DAMNNNN check " +checking.name);
                 foundSymbolNode = checking.getSymbol(id);
             }
 

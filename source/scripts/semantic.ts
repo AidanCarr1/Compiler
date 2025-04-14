@@ -377,10 +377,15 @@ namespace Compiler {
                             
                         } 
 
-                        //If printing an expr...
-                        else {
+                        //If printing an addition
+                        else if (currentNode.name === "Addition") {
+                            Control.putDebug("Lets check addition");
+                            this.checkAddition();
 
                         }
+
+                        //any other expr
+                        else{}
 
                         //Next statement
                         this.nextNode();
@@ -454,6 +459,10 @@ namespace Compiler {
                         this.nextNode();
                         break;
 
+
+
+
+                    
                     //End of block, scope up
                     case "SCOPE UP":
                         Control.putSemanticMessage("Scope Up");
@@ -467,20 +476,6 @@ namespace Compiler {
                     default:
                         Control.putSemanticMessage("ERROR, unknown Node name: " + currentNode.name);
                         this.nextNode();
-
-                        // //Type match
-                        // switch (type) {
-
-                        //     case "int":
-
-                        //     case "boolean":
-
-                        //     case "string":
-
-
-                        // }
-
-
                 }
             }
 
@@ -504,17 +499,50 @@ namespace Compiler {
             // }
         }
 
-        // public static newVariable(type, id) {
-        //     var symbolTable = _SymbolTableTree.current.symbolTable;
-        //     symbolTable.newVariable(type, id);
-        // }
+        //precondition: current=Addition
+        //post condition: current= after the whole addition block?
+        public static checkAddition() {
+            
+            //Get left (left id is impossible by parse)
+            this.nextNode();
+            if (currentNode.tokenPointer.description === "DIGIT") {
+                //left is good
+                Control.putDebug("left is good ("+currentNode.name+")");
+            }
+            else if (currentNode.name === "Addition"){
+                this.checkAddition();
+            }
+            else {
+                //return error
+                Control.putSemanticMessage("HOW are we here left");
+            }
 
-        // public static oldScope() {
-        //     //go to parent Scope
-        //     _SymbolTableTree.moveUp();
+            //Get right
+            this.nextNode();
+            //Control.putDebug("right"+currentNode.name);
+            if (currentNode.name === "Addition"){
+                Control.putDebug("right addition lets do it again ");
+                this.checkAddition();
+            }
+            else if (currentNode.tokenPointer.description === "DIGIT") {
+                //right is good
+                Control.putDebug("right digit");
+            }
+            else if (currentNode.tokenPointer.description === "ID") {
+                Control.putDebug("right id");
+                //make sure it's an int id
+                var id:String = currentNode.tokenPointer.str;
+                if (_SymbolTableTree.getTypeAnyScope(id) !== "int") {
+                    var newError = new ErrorCompiler("INCOMPATABLE TYPES", "Cannot add and int with a "+ _SymbolTableTree.getTypeAnyScope(id) +" variable "+id, currentNode.tokenPointer.startIndex);
+                }
+            }
+            
+            else {
+                //return error 
+                //not an int!!
+                var newError = new ErrorCompiler("INCOMPATABLE TYPES", "Cannot add and int with "+ currentNode.name, currentNode.tokenPointer.startIndex);
 
-        //     //reset scope table
-        //     currentSymbolTable = _SymbolTableTree.current.symbolTable;
-        // }
+            }
+        }
     }
 }
