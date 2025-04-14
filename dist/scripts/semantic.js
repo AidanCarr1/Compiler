@@ -270,8 +270,18 @@ var Compiler;
                         //What we are printing:
                         this.nextNode();
                         var id = currentNode.tokenPointer.str; //"a" "b" "c"...
+                        //If printing an addition
+                        if (currentNode.name === "Addition") {
+                            Compiler.Control.putDebug("Lets check '+'");
+                            this.checkAddition();
+                        }
+                        //printing equality/inequality
+                        else if (currentNode.name === "Inequality" || currentNode.name === "Equality") {
+                            Compiler.Control.putDebug("Lets check '!=' or '=='");
+                            this.checkEquality();
+                        }
                         //If printing a variable...
-                        if (currentNode.tokenPointer.description === "ID") {
+                        else if (currentNode.tokenPointer.description === "ID") {
                             //Check that it's not undeclared!
                             if (!_SymbolTableTree.isDeclaredAnyScope(currentNode.tokenPointer.str)) {
                                 var newError = new Compiler.ErrorCompiler("PRINT REFERENCE TO UNDECLARED VARIABLE", id, currentNode.tokenPointer.startIndex);
@@ -280,16 +290,6 @@ var Compiler;
                                 //_SymbolTableTree.setUsed(id);
                                 Compiler.Control.putDebug("Print id " + id + " exists");
                             }
-                        }
-                        //If printing an addition
-                        else if (currentNode.name === "Addition") {
-                            Compiler.Control.putDebug("Lets check '+'");
-                            this.checkAddition();
-                        }
-                        //printing equality/inequality
-                        else if (currentNode.name === "Inequality" || currentNode.name === "Equality") {
-                            Compiler.Control.putDebug("Lets check '!=' or '=='");
-                            this.checkEquality();
                         }
                         //any other expr
                         else { }
@@ -427,45 +427,21 @@ var Compiler;
             else {
                 //return error 
                 //not an int!!
-                var newError = new Compiler.ErrorCompiler("INCOMPATABLE TYPES", "Cannot add and int with " + currentNode.name, currentNode.tokenPointer.startIndex);
+                var newError = new Compiler.ErrorCompiler("INCOMPATABLE TYPES", "Cannot add an int with " + currentNode.name, currentNode.tokenPointer.startIndex);
             }
         }
         static checkEquality() {
-            //Get left (left id is impossible by parse)
-            this.nextNode();
-            Compiler.Control.putDebug("left" + currentNode.name);
             var leftType = null;
             var rightType = null;
+            //Get left
+            this.nextNode();
             leftType = this.getLeftRightType();
             //Get right
             this.nextNode();
-            Compiler.Control.putDebug("right" + currentNode.name);
-            //INT
-            if (currentNode.tokenPointer.description === "DIGIT") {
-                rightType = "int";
-            }
-            else if (currentNode.name === "Addition") {
-                rightType = "int";
-                Compiler.Control;
-                this.checkAddition();
-            }
-            //BOOLEAN
-            else if (currentNode.name === "Inequality" || currentNode.name === "Equality") {
-                rightType = this.checkEquality();
-            }
-            else if (currentNode.tokenPointer.description === "ID") {
-                var id = currentNode.tokenPointer.str;
-                rightType = _SymbolTableTree.getTypeAnyScope(id);
-                if (rightType == null) {
-                    var newError = new Compiler.ErrorCompiler("REFERENCE TO UNDECLARED VARIABLE", id, currentNode.tokenPointer.startIndex);
-                }
-            }
-            else {
-                Compiler.Control.putSemanticMessage("HOW are we here right");
-            }
+            rightType = this.getLeftRightType();
+            //Compare 'em
             if (leftType != rightType) {
                 //return error 
-                //not an int!!
                 var newError = new Compiler.ErrorCompiler("INCOMPATABLE TYPES", "Cannot add and int with " + currentNode.name, currentNode.tokenPointer.startIndex);
             }
             else {
@@ -473,6 +449,7 @@ var Compiler;
             }
         }
         static getLeftRightType() {
+            Compiler.Control.putDebug("One side: " + currentNode.name);
             var thisType = null;
             //INT
             if (currentNode.name === "Addition") {
@@ -487,6 +464,7 @@ var Compiler;
             //BOOLEAN
             else if (currentNode.name === "Inequality" || currentNode.name === "Equality") {
                 thisType = this.checkEquality();
+                thisType = "boolean";
             }
             else if (currentNode.tokenPointer.description === "ID") {
                 var id = currentNode.tokenPointer.str;
