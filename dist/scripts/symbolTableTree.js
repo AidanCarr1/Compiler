@@ -39,13 +39,16 @@ var Compiler;
             //add it to the in order node list
             //this.nodeList.push(newNode);
             //Control.putDebug("done adding node");
+            //make it the new current
+            this.current = newSymbolTable;
+            Compiler.Control.putDebug("returning");
             return newSymbolTable;
         }
         //Up the tree, also forgetting that scope in the process
         moveUp() {
             if (this.current.parent != null) {
                 this.current = this.current.parent;
-                //Control.putDebug("new current: "+this.current.name);
+                Compiler.Control.putDebug("Move up to Symbol Table: " + this.current.name);
             }
             else {
                 //Cannot go past the root,
@@ -56,6 +59,11 @@ var Compiler;
         reset() {
             this.root = null;
             this.current = null;
+        }
+        //Declare a new variable at the current scope
+        newVariable(type, id) {
+            Compiler.Control.putDebug("STT: new var");
+            this.current.newVariable(type, id);
         }
     }
     Compiler.SymbolTableTree = SymbolTableTree;

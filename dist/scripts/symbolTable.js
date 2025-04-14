@@ -12,17 +12,21 @@ var Compiler;
             this.parent = parent;
             //Table of 26 positions (one SymbolNode for each letter id)
             this.table = Array.from({ length: 26 }, () => new Compiler.SymbolNode());
-            //ChatGPT Help ^^
+            //Some ChatGPT Help ^^
         }
         /*the following will probably get moved to symbol table tree, and use the 'current' attribute */
         //Add node to end of the array of children
         newVariable(type, id) {
+            Compiler.Control.putDebug("ST: new var");
             //convert letter to number a->z = 0->25
             var idCode = id.charCodeAt(0) - "a".charCodeAt(0);
-            //if ID is NOT declared, declare it
-            if (!this.isDeclared(id)) {
+            //if ID is NOT declared on the current scope, declare it
+            if (this.table[idCode].type == null) {
                 this.table[idCode].type = type;
             }
+            // if (!this.isDeclared(id)) {
+            //     this.table[idCode].type = type;
+            // }
             //ID already declared, give error
             else {
                 var newError = new Compiler.ErrorCompiler("VARIABLE REDECLARATION", type + " " + id, currentNode.tokenPointer.startIndex);
@@ -31,7 +35,7 @@ var Compiler;
         //Return true/false if a given id has been declared in this scope
         isDeclared(id) {
             var idCode = (id.charCodeAt(0) - "a".charCodeAt(0));
-            return this.table[idCode] != null;
+            return this.table[idCode].type != null;
             //null -> not declared -> false
             //full -> declared -> true
         }

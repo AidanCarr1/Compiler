@@ -375,3 +375,18 @@ if (7+7+7==3+3+3+3+3+3+3){
  {}
  w = 6
 } $
+
+
+/*test inheritance*/ 
+{
+int y
+y = 7
+  {
+  string y                   /*commenting these two lines*/
+  y = "now we are a string"  /*should allow code to work */
+    { 
+    /*should fail*/
+    y = 9 
+    }
+  }
+}$

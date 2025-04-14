@@ -318,6 +318,12 @@ namespace Compiler {
             currentNode = _AST.root;
             nodeCounter = 0;
             //currentSymbolTable = null;
+
+            Control.putDebug("AST Node list: ");
+            for (var i=0; i<_AST.nodeList.length; i++) {
+                Control.putDebug(i+") " +_AST.nodeList[i].name);
+
+            }
             
             //Go through the AST until we reach the end
             while (currentNode != null) {
@@ -345,7 +351,7 @@ namespace Compiler {
                         var id:String = currentNode.tokenPointer.str; //"a" "b" "c"...
 
                         //Put it in the symbol table
-                        this.newVariable(type, id);
+                        _SymbolTableTree.newVariable(type, id);
 
                         //Next statement
                         this.nextNode();
@@ -440,13 +446,16 @@ namespace Compiler {
 
                     //End of block, scope up
                     case "SCOPE UP":
-                        this.oldScope();
+                        Control.putSemanticMessage("Scope Up");
+                        _SymbolTableTree.moveUp();
 
                         //Next statement
                         this.nextNode();
+                        //this.nextNode();
                         break; 
 
                     default:
+                        Control.putSemanticMessage("ERROR, unknown Node name: " + currentNode.name);
                         this.nextNode();
 
                         // //Type match
@@ -480,12 +489,16 @@ namespace Compiler {
 
         public static nextNode() {
             nodeCounter++;
+            //Control.putDebug("prev node: " +currentNode.name);
             if (nodeCounter >= (_AST.nodeList).length) {
                 currentNode = null;
             }
             else {
                 currentNode = _AST.nodeList[nodeCounter];
             }
+            // if (currentNode != null) {
+            //     Control.putDebug("next node " +nodeCounter+") "+currentNode.name);
+            // }
         }
 
         public static newVariable(type, id) {

@@ -19,14 +19,17 @@
         <p>User Program</p>
         <textarea id="taSourceCode" cols="65" rows="10">
 {
-  int w
-  {}
-  w = 6
+  int i
+  boolean b 
+  string s
+  { int x }
+  { int y }
+  { int z }
 } $
                 
 </textarea>
         <br>
-        Verbose Mode is <input type="button" id="btnVerbose" value="OFF" onclick="Compiler.Control.btnVerbose_click();"/>
+        Verbose Mode is <input type="button" id="btnVerbose" value="ON" onclick="Compiler.Control.btnVerbose_click();"/>
         <br>
         <input type="button" id="btnCompile" value="Compile" onclick="Compiler.Control.btnCompile_click();"/>
         <br>

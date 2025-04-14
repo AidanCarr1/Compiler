@@ -47,6 +47,10 @@ namespace Compiler {
             //add it to the in order node list
             //this.nodeList.push(newNode);
             //Control.putDebug("done adding node");
+
+            //make it the new current
+            this.current = newSymbolTable;
+            Control.putDebug("returning");
             return newSymbolTable;
         }
 
@@ -55,7 +59,7 @@ namespace Compiler {
             
             if (this.current.parent != null) {
                 this.current = this.current.parent;
-                //Control.putDebug("new current: "+this.current.name);
+                Control.putDebug("Move up to Symbol Table: "+this.current.name);
             }
             else {
                 //Cannot go past the root,
@@ -70,7 +74,12 @@ namespace Compiler {
         }
 
 
-        //
+        //Declare a new variable at the current scope
+        public newVariable(type:String, id:String) {
+            Control.putDebug("STT: new var");
+            this.current.newVariable(type, id);
+        }
+        
 
     }
 }

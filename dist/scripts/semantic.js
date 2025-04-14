@@ -238,6 +238,10 @@ var Compiler;
             currentNode = _AST.root;
             nodeCounter = 0;
             //currentSymbolTable = null;
+            Compiler.Control.putDebug("AST Node list: ");
+            for (var i = 0; i < _AST.nodeList.length; i++) {
+                Compiler.Control.putDebug(i + ") " + _AST.nodeList[i].name);
+            }
             //Go through the AST until we reach the end
             while (currentNode != null) {
                 switch (currentNode.name) {
@@ -258,7 +262,7 @@ var Compiler;
                         this.nextNode();
                         var id = currentNode.tokenPointer.str; //"a" "b" "c"...
                         //Put it in the symbol table
-                        this.newVariable(type, id);
+                        _SymbolTableTree.newVariable(type, id);
                         //Next statement
                         this.nextNode();
                         break;
@@ -334,11 +338,14 @@ var Compiler;
                         break;
                     //End of block, scope up
                     case "SCOPE UP":
-                        this.oldScope();
+                        Compiler.Control.putSemanticMessage("Scope Up");
+                        _SymbolTableTree.moveUp();
                         //Next statement
                         this.nextNode();
+                        //this.nextNode();
                         break;
                     default:
+                        Compiler.Control.putSemanticMessage("ERROR, unknown Node name: " + currentNode.name);
                         this.nextNode();
                     // //Type match
                     // switch (type) {
@@ -358,12 +365,16 @@ var Compiler;
         }
         static nextNode() {
             nodeCounter++;
+            //Control.putDebug("prev node: " +currentNode.name);
             if (nodeCounter >= (_AST.nodeList).length) {
                 currentNode = null;
             }
             else {
                 currentNode = _AST.nodeList[nodeCounter];
             }
+            // if (currentNode != null) {
+            //     Control.putDebug("next node " +nodeCounter+") "+currentNode.name);
+            // }
         }
         static newVariable(type, id) {
             var symbolTable = _SymbolTableTree.current.symbolTable;
