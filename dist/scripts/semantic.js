@@ -283,8 +283,13 @@ var Compiler;
                         }
                         //If printing an addition
                         else if (currentNode.name === "Addition") {
-                            Compiler.Control.putDebug("Lets check addition");
+                            Compiler.Control.putDebug("Lets check '+'");
                             this.checkAddition();
+                        }
+                        //printing equality/inequality
+                        else if (currentNode.name === "Inequality" || currentNode.name === "Equality") {
+                            Compiler.Control.putDebug("Lets check '!=' or '=='");
+                            this.checkEquality();
                         }
                         //any other expr
                         else { }
@@ -424,6 +429,77 @@ var Compiler;
                 //not an int!!
                 var newError = new Compiler.ErrorCompiler("INCOMPATABLE TYPES", "Cannot add and int with " + currentNode.name, currentNode.tokenPointer.startIndex);
             }
+        }
+        static checkEquality() {
+            //Get left (left id is impossible by parse)
+            this.nextNode();
+            Compiler.Control.putDebug("left" + currentNode.name);
+            var leftType = null;
+            var rightType = null;
+            leftType = this.getLeftRightType();
+            //Get right
+            this.nextNode();
+            Compiler.Control.putDebug("right" + currentNode.name);
+            //INT
+            if (currentNode.tokenPointer.description === "DIGIT") {
+                rightType = "int";
+            }
+            else if (currentNode.name === "Addition") {
+                rightType = "int";
+                Compiler.Control;
+                this.checkAddition();
+            }
+            //BOOLEAN
+            else if (currentNode.name === "Inequality" || currentNode.name === "Equality") {
+                rightType = this.checkEquality();
+            }
+            else if (currentNode.tokenPointer.description === "ID") {
+                var id = currentNode.tokenPointer.str;
+                rightType = _SymbolTableTree.getTypeAnyScope(id);
+                if (rightType == null) {
+                    var newError = new Compiler.ErrorCompiler("REFERENCE TO UNDECLARED VARIABLE", id, currentNode.tokenPointer.startIndex);
+                }
+            }
+            else {
+                Compiler.Control.putSemanticMessage("HOW are we here right");
+            }
+            if (leftType != rightType) {
+                //return error 
+                //not an int!!
+                var newError = new Compiler.ErrorCompiler("INCOMPATABLE TYPES", "Cannot add and int with " + currentNode.name, currentNode.tokenPointer.startIndex);
+            }
+            else {
+                return leftType;
+            }
+        }
+        static getLeftRightType() {
+            var thisType = null;
+            //INT
+            if (currentNode.name === "Addition") {
+                thisType = "int";
+                Compiler.Control.putDebug("start eq add");
+                this.checkAddition();
+                Compiler.Control.putDebug("done with eq addition");
+            }
+            else if (currentNode.tokenPointer.description === "DIGIT") {
+                thisType = "int";
+            }
+            //BOOLEAN
+            else if (currentNode.name === "Inequality" || currentNode.name === "Equality") {
+                thisType = this.checkEquality();
+            }
+            else if (currentNode.tokenPointer.description === "ID") {
+                var id = currentNode.tokenPointer.str;
+                thisType = _SymbolTableTree.getTypeAnyScope(id);
+                if (thisType == null) {
+                    var newError = new Compiler.ErrorCompiler("REFERENCE TO UNDECLARED VARIABLE", id, currentNode.tokenPointer.startIndex);
+                }
+            }
+            else {
+                //return error
+                Compiler.Control.putSemanticMessage("HOW are we here left");
+            }
+            return thisType;
         }
     }
     Compiler.Semantic = Semantic;
