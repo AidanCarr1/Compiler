@@ -94,31 +94,31 @@ var Compiler;
         }
         //set a variable as used
         //can only come here if id exists
-        setUsed(id) {
-            var foundType = false;
+        // public setUsed(id:String) {
+        //     var foundType = false;
+        //     //var scopesMoved = 0;
+        //     var checking:SymbolTable = this.current;
+        //     //check up the scopes
+        //     while (foundID == null && checking.parent != null) {
+        //         //scopesMoved++;
+        //         checking = checking.parent;
+        //         Control.putDebug("Lets check " +checking.name);
+        //         foundType = checking.getType(id);
+        //     }
+        //     return foundType;
+        // }
+        getSymbolAnyScope(id) {
             //var scopesMoved = 0;
             var checking = this.current;
+            var foundSymbolNode = checking.getSymbol(id);
             //check up the scopes
-            while (foundID == null && checking.parent != null) {
+            while (foundSymbolNode == null && checking.parent != null) {
                 //scopesMoved++;
                 checking = checking.parent;
                 Compiler.Control.putDebug("Lets check " + checking.name);
-                foundType = checking.getType(id);
+                foundSymbolNode = checking.getSymbol(id);
             }
-            return foundType;
-        }
-        getSymbolNodeById(id) {
-            var foundSymbolNode = this.current;
-            //var scopesMoved = 0;
-            var checking = this.current;
-            //check up the scopes
-            while (foundType == null || checking.parent != null) {
-                //scopesMoved++;
-                checking = checking.parent;
-                Compiler.Control.putDebug("Lets check " + checking.name);
-                foundType = checking.getType(id);
-            }
-            return foundType;
+            return foundSymbolNode;
         }
     }
     Compiler.SymbolTableTree = SymbolTableTree;

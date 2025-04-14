@@ -392,6 +392,7 @@ namespace Compiler {
                         this.nextNode();
                         var id:String = currentNode.tokenPointer.str; //"a" "b" "c"...
 
+                        Control.putDebug("GET NODE ANY SCOPE "+id+": "+_SymbolTableTree.getSymbolAnyScope(id).type+" used:"+_SymbolTableTree.getSymbolAnyScope(id).IsUsed);
                         //Check if id has been declared
                         //if (!_SymbolTableTree.isDeclaredAnyScope(currentNode.tokenPointer.str)) {
                         if (_SymbolTableTree.getTypeAnyScope(currentNode.tokenPointer.str) == null) {

@@ -68,6 +68,10 @@ var Compiler;
             var idCode = (id.charCodeAt(0) - "a".charCodeAt(0));
             return this.table[idCode].type;
         }
+        getSymbol(id) {
+            var idCode = (id.charCodeAt(0) - "a".charCodeAt(0));
+            return this.table[idCode];
+        }
     }
     Compiler.SymbolTable = SymbolTable;
 })(Compiler || (Compiler = {}));

@@ -99,5 +99,10 @@ namespace Compiler {
             var idCode:number = (id.charCodeAt(0) - "a".charCodeAt(0));
             return this.table[idCode].type;
         }
+
+        public getSymbol(id:String):SymbolNode {
+            var idCode:number = (id.charCodeAt(0) - "a".charCodeAt(0));
+            return this.table[idCode];
+        }
     }
 }

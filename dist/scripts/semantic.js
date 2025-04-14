@@ -291,6 +291,7 @@ var Compiler;
                         //Get id
                         this.nextNode();
                         var id = currentNode.tokenPointer.str; //"a" "b" "c"...
+                        Compiler.Control.putDebug("GET NODE ANY SCOPE " + id + ": " + _SymbolTableTree.getSymbolAnyScope(id).type + " " + _SymbolTableTree.getSymbolAnyScope(id).IsUsed);
                         //Check if id has been declared
                         //if (!_SymbolTableTree.isDeclaredAnyScope(currentNode.tokenPointer.str)) {
                         if (_SymbolTableTree.getTypeAnyScope(currentNode.tokenPointer.str) == null) {
