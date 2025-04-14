@@ -361,13 +361,14 @@ namespace Compiler {
 
                         //What we are printing:
                         this.nextNode();
+                        var id:String = currentNode.tokenPointer.str; //"a" "b" "c"...
 
                         //If printing a variable...
                         if (currentNode.tokenPointer.description === "ID") {
                             
                             //Check that it's not undeclared!
                             if (!_SymbolTableTree.isDeclaredAnyScope(currentNode.tokenPointer.str)) {
-                                var newError = new ErrorCompiler("REFERENCE TO UNDECLARED VARIABLE", id, currentNode.tokenPointer.startIndex);
+                                var newError = new ErrorCompiler("PRINT REFERENCE TO UNDECLARED VARIABLE", id, currentNode.tokenPointer.startIndex);
                             }
                             else {
                                 //_SymbolTableTree.setUsed(id);

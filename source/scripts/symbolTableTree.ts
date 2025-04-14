@@ -93,24 +93,30 @@ namespace Compiler {
         //Return type with closest found scope or null if not found
         public getTypeAnyScope(id:String): String {
 
-            Control.putDebug("in get type any scope STT");
-            //var isFound = false;
-            //var idCode:number = (id.charCodeAt(0) - "a".charCodeAt(0));
-            //try the first scope
-            var foundType = this.current.getType(id);
-            //var scopesMoved = 0;
-            var checking:SymbolTable = this.current;
+            // Control.putDebug("in get type any scope STT");
+            // //var isFound = false;
+            // //var idCode:number = (id.charCodeAt(0) - "a".charCodeAt(0));
+            // //try the first scope
+            // var foundType = this.current.getType(id);
+            // //var scopesMoved = 0;
+            // var checking:SymbolTable = this.current;
 
-            //check up the scopes
-            while (foundType == null && checking.parent != null) {
-                //scopesMoved++;
-                checking = checking.parent;
-                Control.putDebug("Lets check " +checking.name);
-                foundType = checking.getType(id);
+            // //check up the scopes
+            // while (foundType == null && checking.parent != null) {
+            //     //scopesMoved++;
+            //     checking = checking.parent;
+            //     Control.putDebug("Lets check " +checking.name);
+            //     foundType = checking.getType(id);
+            // }
+            // Control.putDebug("FOUND TYPE: "+foundType);
+            // return foundType;
+            var symbol = this.getSymbolAnyScope(id);
+            if (symbol == null) {
+                return null;
             }
-            Control.putDebug("FOUND TYPE: "+foundType);
-            return foundType;
-
+            else {
+                return this.getSymbolAnyScope(id).type;
+            }
         }
 
         
@@ -118,12 +124,10 @@ namespace Compiler {
         //can only come here if id exists
         // public setUsed(id:String) {
         //     var foundType = false;
-        //     //var scopesMoved = 0;
         //     var checking:SymbolTable = this.current;
 
         //     //check up the scopes
         //     while (foundID == null && checking.parent != null) {
-        //         //scopesMoved++;
         //         checking = checking.parent;
         //         Control.putDebug("Lets check " +checking.name);
         //         foundType = checking.getType(id);
@@ -135,15 +139,15 @@ namespace Compiler {
 
         public getSymbolAnyScope(id: String) {
             
-            //var scopesMoved = 0;
             var checking:SymbolTable = this.current;
             var foundSymbolNode:SymbolNode = checking.getSymbol(id);
 
             //check up the scopes
-            while (foundSymbolNode == null && checking.parent != null) {
-                //scopesMoved++;
+            Control.putDebug("hello?");
+            Control.putDebug("1, "+(foundSymbolNode.type == null) +" 2,"+(checking.parent != null));
+            while (foundSymbolNode.type == null && checking.parent != null) {
                 checking = checking.parent;
-                Control.putDebug("Lets check " +checking.name);
+                Control.putDebug("Lets DAMNNNN check " +checking.name);
                 foundSymbolNode = checking.getSymbol(id);
             }
 

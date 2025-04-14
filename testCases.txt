@@ -453,7 +453,7 @@ int r
       i = "stri"
       int i i = 6
       r = 9
-      /*t = "what"*/
+      /*t = "error"*/
     }
     i = "string"
     a = 8
@@ -477,3 +477,12 @@ int r
   }
  }
 }$
+
+
+{
+ int y
+ y = 7
+ {
+  y = 8
+ }
+} $

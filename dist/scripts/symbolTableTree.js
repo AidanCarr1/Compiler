@@ -75,32 +75,37 @@ var Compiler;
         }
         //Return type with closest found scope or null if not found
         getTypeAnyScope(id) {
-            Compiler.Control.putDebug("in get type any scope STT");
-            //var isFound = false;
-            //var idCode:number = (id.charCodeAt(0) - "a".charCodeAt(0));
-            //try the first scope
-            var foundType = this.current.getType(id);
-            //var scopesMoved = 0;
-            var checking = this.current;
-            //check up the scopes
-            while (foundType == null && checking.parent != null) {
-                //scopesMoved++;
-                checking = checking.parent;
-                Compiler.Control.putDebug("Lets check " + checking.name);
-                foundType = checking.getType(id);
+            // Control.putDebug("in get type any scope STT");
+            // //var isFound = false;
+            // //var idCode:number = (id.charCodeAt(0) - "a".charCodeAt(0));
+            // //try the first scope
+            // var foundType = this.current.getType(id);
+            // //var scopesMoved = 0;
+            // var checking:SymbolTable = this.current;
+            // //check up the scopes
+            // while (foundType == null && checking.parent != null) {
+            //     //scopesMoved++;
+            //     checking = checking.parent;
+            //     Control.putDebug("Lets check " +checking.name);
+            //     foundType = checking.getType(id);
+            // }
+            // Control.putDebug("FOUND TYPE: "+foundType);
+            // return foundType;
+            var symbol = this.getSymbolAnyScope(id);
+            if (symbol == null) {
+                return null;
             }
-            Compiler.Control.putDebug("FOUND TYPE: " + foundType);
-            return foundType;
+            else {
+                return this.getSymbolAnyScope(id).type;
+            }
         }
         //set a variable as used
         //can only come here if id exists
         // public setUsed(id:String) {
         //     var foundType = false;
-        //     //var scopesMoved = 0;
         //     var checking:SymbolTable = this.current;
         //     //check up the scopes
         //     while (foundID == null && checking.parent != null) {
-        //         //scopesMoved++;
         //         checking = checking.parent;
         //         Control.putDebug("Lets check " +checking.name);
         //         foundType = checking.getType(id);
@@ -108,14 +113,14 @@ var Compiler;
         //     return foundType;
         // }
         getSymbolAnyScope(id) {
-            //var scopesMoved = 0;
             var checking = this.current;
             var foundSymbolNode = checking.getSymbol(id);
             //check up the scopes
-            while (foundSymbolNode == null && checking.parent != null) {
-                //scopesMoved++;
+            Compiler.Control.putDebug("hello?");
+            Compiler.Control.putDebug("1, " + (foundSymbolNode.type == null) + " 2," + (checking.parent != null));
+            while (foundSymbolNode.type == null && checking.parent != null) {
                 checking = checking.parent;
-                Compiler.Control.putDebug("Lets check " + checking.name);
+                Compiler.Control.putDebug("Lets DAMNNNN check " + checking.name);
                 foundSymbolNode = checking.getSymbol(id);
             }
             return foundSymbolNode;

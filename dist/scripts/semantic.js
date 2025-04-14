@@ -269,11 +269,12 @@ var Compiler;
                         Compiler.Control.putSemanticMessage("Print Type/Scope Check");
                         //What we are printing:
                         this.nextNode();
+                        var id = currentNode.tokenPointer.str; //"a" "b" "c"...
                         //If printing a variable...
                         if (currentNode.tokenPointer.description === "ID") {
                             //Check that it's not undeclared!
                             if (!_SymbolTableTree.isDeclaredAnyScope(currentNode.tokenPointer.str)) {
-                                var newError = new Compiler.ErrorCompiler("REFERENCE TO UNDECLARED VARIABLE", id, currentNode.tokenPointer.startIndex);
+                                var newError = new Compiler.ErrorCompiler("PRINT REFERENCE TO UNDECLARED VARIABLE", id, currentNode.tokenPointer.startIndex);
                             }
                             else {
                                 //_SymbolTableTree.setUsed(id);
@@ -291,7 +292,7 @@ var Compiler;
                         //Get id
                         this.nextNode();
                         var id = currentNode.tokenPointer.str; //"a" "b" "c"...
-                        Compiler.Control.putDebug("GET NODE ANY SCOPE " + id + ": " + _SymbolTableTree.getSymbolAnyScope(id).type + " " + _SymbolTableTree.getSymbolAnyScope(id).IsUsed);
+                        Compiler.Control.putDebug("GET NODE ANY SCOPE " + id + ": " + _SymbolTableTree.getSymbolAnyScope(id).type + " used:" + _SymbolTableTree.getSymbolAnyScope(id).IsUsed);
                         //Check if id has been declared
                         //if (!_SymbolTableTree.isDeclaredAnyScope(currentNode.tokenPointer.str)) {
                         if (_SymbolTableTree.getTypeAnyScope(currentNode.tokenPointer.str) == null) {
