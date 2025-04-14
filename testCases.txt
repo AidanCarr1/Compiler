@@ -429,3 +429,51 @@ pg18 Semantic analysis slides*/
  }
  i = "still string out here"
 } $ 
+
+
+{
+  int a
+  int z
+  print(z)
+  {
+    string b b = "red"
+    int c c = 6
+    a = 4
+    }
+  print(a)
+} $
+
+
+{ 
+int r
+  {
+    string i i = "st"
+    int a
+    {
+      i = "stri"
+      int i i = 6
+      r = 9
+      /*t = "what"*/
+    }
+    i = "string"
+    a = 8
+    /*a = "not allowed"*/
+    print(r)
+  }
+} $
+
+
+{/*s0*/
+ {/*s1*/
+  int r
+  {
+   /*s2*/
+   {
+    /*s3*/
+    r = 9
+   }
+   /*s2*/
+   print(r)
+  }
+ }
+}$

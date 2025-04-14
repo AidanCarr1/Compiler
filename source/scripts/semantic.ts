@@ -366,10 +366,14 @@ namespace Compiler {
                         if (currentNode.tokenPointer.description === "ID") {
                             
                             //Check that it's not undeclared!
-                            if (!_SymbolTableTree.isDeclared(currentNode.tokenPointer.str)) {
+                            if (!_SymbolTableTree.isDeclaredAnyScope(currentNode.tokenPointer.str)) {
                                 var newError = new ErrorCompiler("REFERENCE TO UNDECLARED VARIABLE", id, currentNode.tokenPointer.startIndex);
                             }
-                            Control.putDebug("Print id "+id+" exists");
+                            else {
+                                //_SymbolTableTree.setUsed(id);
+                                Control.putDebug("Print id "+id+" exists");
+                            }
+                            
                         } 
 
                         //If printing an expr...

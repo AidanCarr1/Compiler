@@ -89,6 +89,35 @@ var Compiler;
                 Compiler.Control.putDebug("Lets check " + checking.name);
                 foundType = checking.getType(id);
             }
+            Compiler.Control.putDebug("FOUND TYPE: " + foundType);
+            return foundType;
+        }
+        //set a variable as used
+        //can only come here if id exists
+        setUsed(id) {
+            var foundType = false;
+            //var scopesMoved = 0;
+            var checking = this.current;
+            //check up the scopes
+            while (foundID == null && checking.parent != null) {
+                //scopesMoved++;
+                checking = checking.parent;
+                Compiler.Control.putDebug("Lets check " + checking.name);
+                foundType = checking.getType(id);
+            }
+            return foundType;
+        }
+        getSymbolNodeById(id) {
+            var foundSymbolNode = this.current;
+            //var scopesMoved = 0;
+            var checking = this.current;
+            //check up the scopes
+            while (foundType == null || checking.parent != null) {
+                //scopesMoved++;
+                checking = checking.parent;
+                Compiler.Control.putDebug("Lets check " + checking.name);
+                foundType = checking.getType(id);
+            }
             return foundType;
         }
     }
