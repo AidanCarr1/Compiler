@@ -16,10 +16,13 @@ namespace Compiler {
         }
 
         //Add new Symbol Table into the tree
-        public addScope(scopeName: String): SymbolTable {
-            Control.putDebug("adding a new scope");
-
+        public addScope(): SymbolTable {
+            
+            var scopeName = "SCOPE " + scopeCounter;
+            scopeCounter ++;
             var newSymbolTable = new SymbolTable(scopeName);
+            Control.putDebug("New Symbol Table: " + newSymbolTable.name);
+
             //Control.putDebug("1");
             //First scope, root symbol table "node"
             if (this.root == null) {
@@ -65,6 +68,9 @@ namespace Compiler {
             this.root = null;
             this.current = null;
         }
+
+
+        //
 
     }
 }

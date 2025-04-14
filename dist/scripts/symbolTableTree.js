@@ -13,9 +13,11 @@ var Compiler;
             this.current = null;
         }
         //Add new Symbol Table into the tree
-        addScope(scopeName) {
-            Compiler.Control.putDebug("adding a new scope");
+        addScope() {
+            var scopeName = "SCOPE " + scopeCounter;
+            scopeCounter++;
             var newSymbolTable = new Compiler.SymbolTable(scopeName);
+            Compiler.Control.putDebug("New Symbol Table: " + newSymbolTable.name);
             //Control.putDebug("1");
             //First scope, root symbol table "node"
             if (this.root == null) {

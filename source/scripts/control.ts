@@ -74,7 +74,7 @@ namespace Compiler {
                 errorCount = 0;
                 _CST.reset();
                 _AST.reset();
-                _ScopeTree.reset();
+                _SymbolTableTree.reset();
                 
                 //Was Lex completed?
                 if (isLexSuccessful) {

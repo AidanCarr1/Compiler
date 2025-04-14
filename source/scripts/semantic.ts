@@ -317,7 +317,7 @@ namespace Compiler {
             scopeCounter = 0;
             currentNode = _AST.root;
             nodeCounter = 0;
-            currentSymbolTable = null;
+            //currentSymbolTable = null;
             
             //Go through the AST until we reach the end
             while (currentNode != null) {
@@ -328,7 +328,8 @@ namespace Compiler {
                         Control.putSemanticMessage("Block Type/Scope Check");
 
                         //New scope, grow up the tree
-                        this.newScope();
+                        //this.newScope();
+                        _SymbolTableTree.addScope();
                         //Go to first statement inside the block
                         this.nextNode();
                         break;
@@ -470,10 +471,10 @@ namespace Compiler {
         } 
 
         public static newScope() {
-            _ScopeTree.addNode("SCOPE "+scopeCounter);
+            _SymbolTableTree.addNode("SCOPE "+scopeCounter);
             Control.putDebug("SCOPE "+scopeCounter);
             scopeCounter++;
-            currentSymbolTable = _ScopeTree.current.symbolTable;
+            currentSymbolTable = _SymbolTableTree.current.symbolTable;
 
         }
 
@@ -488,16 +489,16 @@ namespace Compiler {
         }
 
         public static newVariable(type, id) {
-            var symbolTable = _ScopeTree.current.symbolTable;
+            var symbolTable = _SymbolTableTree.current.symbolTable;
             symbolTable.newVariable(type, id);
         }
 
         public static oldScope() {
             //go to parent Scope
-            _ScopeTree.moveUp();
+            _SymbolTableTree.moveUp();
 
             //reset scope table
-            currentSymbolTable = _ScopeTree.current.symbolTable;
+            currentSymbolTable = _SymbolTableTree.current.symbolTable;
         }
     }
 }
