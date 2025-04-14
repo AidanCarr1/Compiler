@@ -41,7 +41,7 @@ var Compiler;
             //Control.putDebug("done adding node");
             //make it the new current
             this.current = newSymbolTable;
-            Compiler.Control.putDebug("returning");
+            //Control.putDebug("returning");
             return newSymbolTable;
         }
         //Up the tree, also forgetting that scope in the process
@@ -61,12 +61,41 @@ var Compiler;
             this.current = null;
         }
         //Declare a new variable at the current scope
+        //Don't need to check all scopes
         newVariable(type, id) {
             Compiler.Control.putDebug("STT: new var");
             this.current.newVariable(type, id);
         }
         isDeclared(id) {
             return this.current.isDeclared(id);
+        }
+        //is this declared ANY (related) SCOPE up the tree
+        // public isDeclaredAnyScope(id:String) {
+        //     var isFound = false;
+        //     var idCode:number = (id.charCodeAt(0) - "a".charCodeAt(0));
+        //     var foundType = this.table[idCode].type;
+        //     var scopesMoved = 0;
+        //     while (foundType != null) {
+        //         scopesMoved++;
+        //     }
+        //     return this.current.isDeclared(id);
+        // }
+        //Return type with closest found scope or null if not found
+        getTypeAnyScope(id) {
+            //var isFound = false;
+            //var idCode:number = (id.charCodeAt(0) - "a".charCodeAt(0));
+            //try the first scope
+            var foundType = this.getType(id);
+            //var scopesMoved = 0;
+            var checking = this.current;
+            //check up the scopes
+            while (foundType != null || checking.parent != null) {
+                //scopesMoved++;
+                checking = checking.parent;
+                Compiler.Control.putDebug("Lets check " + checking.name);
+                foundType = checking.getType(id);
+            }
+            return foundType;
         }
         getType(id) {
             //onyl works for current scope rn

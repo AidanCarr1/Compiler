@@ -5,15 +5,16 @@ var Compiler;
 (function (Compiler) {
     class SymbolNode {
         //New Node
-        constructor(type, isInherited, isInitialized, IsUsed) {
+        constructor(type, 
+        //public isInherited?: boolean,
+        isInitialized, IsUsed) {
             this.type = type;
-            this.isInherited = isInherited;
             this.isInitialized = isInitialized;
             this.IsUsed = IsUsed;
             //Know the data type
             this.type = null;
             //For scope reasons
-            this.isInherited = false;
+            //this.isInherited = false;
             //For error/warning reasons
             this.isInitialized = false;
             this.IsUsed = false;

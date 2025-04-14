@@ -37,7 +37,7 @@ namespace Compiler {
         //Edit the symbol node for given id inside the table array
         public newVariable(type:String, id:String) {
             Control.putDebug("ST: new var");
-            
+
             //convert letter to number a->z = 0->25
             var idCode = id.charCodeAt(0) - "a".charCodeAt(0);
 
@@ -57,11 +57,41 @@ namespace Compiler {
         //Return true/false if a given id has been declared in this scope
         public isDeclared(id:String): boolean {
 
-            var idCode:number = (id.charCodeAt(0) - "a".charCodeAt(0));
-            return this.table[idCode].type != null;
+            //var idCode:number = (id.charCodeAt(0) - "a".charCodeAt(0));
+            return this.getType(id) != null;
             //null -> not declared -> false
             //full -> declared -> true
         }
+
+        //Return true/false if a given id has been declared in this scope
+        public isDeclaredAnyScope(id:String): boolean {
+
+            var isFound = false;
+            var idCode:number = (id.charCodeAt(0) - "a".charCodeAt(0));
+            var foundType = this.table[idCode].type;
+            var scopesMoved = 0;
+
+            while (foundType != null) {
+                scopesMoved++;
+                
+
+            }
+        }
+
+        // //Return type with closest found scope or null if not found
+        // public getTypeAnyScope(id:String): String {
+
+        //     var isFound = false;
+        //     var idCode:number = (id.charCodeAt(0) - "a".charCodeAt(0));
+        //     var foundType = this.table[idCode].type;
+        //     var scopesMoved = 0;
+
+        //     while ( != null) {
+        //         scopesMoved++;
+                
+
+        //     }
+        // }
 
         //Return type string given id string
         public getType(id:String): String {

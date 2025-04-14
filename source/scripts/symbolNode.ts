@@ -8,7 +8,7 @@ namespace Compiler {
         //New Node
         constructor(public type?: String, 
 
-            public isInherited?: boolean,
+            //public isInherited?: boolean,
             public isInitialized?: boolean,
             public IsUsed?: boolean
             ) { 
@@ -17,7 +17,7 @@ namespace Compiler {
             this.type = null;
 
             //For scope reasons
-            this.isInherited = false;
+            //this.isInherited = false;
 
             //For error/warning reasons
             this.isInitialized = false;

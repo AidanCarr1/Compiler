@@ -289,7 +289,8 @@ var Compiler;
                         this.nextNode();
                         var id = currentNode.tokenPointer.str; //"a" "b" "c"...
                         //Check if id has been declared
-                        if (!_SymbolTableTree.isDeclared(currentNode.tokenPointer.str)) {
+                        //if (!_SymbolTableTree.isDeclaredAnyScope(currentNode.tokenPointer.str)) {
+                        if (!_SymbolTableTree.getTypeAnyScope(currentNode.tokenPointer.str)) {
                             var newError = new Compiler.ErrorCompiler("UNDECLARED VARIABLE", "Cannot assign a value to " + id, currentNode.tokenPointer.startIndex);
                         }
                         //Get value
@@ -297,7 +298,7 @@ var Compiler;
                         //If it's a string constant...
                         if (currentNode.name.charAt(0) === "\"") {
                             //But the id isnt a string
-                            if (_SymbolTableTree.getType(id) !== "string") {
+                            if (_SymbolTableTree.getTypeAnyScope(id) !== "string") {
                                 var newError = new Compiler.ErrorCompiler("TYPE MISMATCH", "Cannot assign string value to " + _SymbolTableTree.getType(id) + " variable " + id, currentNode.tokenPointer.startIndex);
                             }
                             Compiler.Control.putDebug("String " + id + " = " + currentNode.name);
@@ -305,7 +306,7 @@ var Compiler;
                         //If it's a digit...
                         else if (currentNode.tokenPointer.description === "DIGIT") {
                             //But the id isnt an int
-                            if (_SymbolTableTree.getType(id) !== "int") {
+                            if (_SymbolTableTree.getTypeAnyScope(id) !== "int") {
                                 var newError = new Compiler.ErrorCompiler("TYPE MISMATCH", "Cannot assign int value to " + _SymbolTableTree.getType(id) + " variable " + id, currentNode.tokenPointer.startIndex);
                             }
                             Compiler.Control.putDebug("Int " + id + " = " + currentNode.name);
@@ -313,7 +314,7 @@ var Compiler;
                         //If it's a boolean...
                         else if (currentNode.tokenPointer.description === "BOOLEAN VALUE") {
                             //But the id isnt a boolean
-                            if (_SymbolTableTree.getType(id) !== "boolean") {
+                            if (_SymbolTableTree.getTypeAnyScope(id) !== "boolean") {
                                 var newError = new Compiler.ErrorCompiler("TYPE MISMATCH", "Cannot assign boolean value to " + _SymbolTableTree.getType(id) + " variable " + id, currentNode.tokenPointer.startIndex);
                             }
                             Compiler.Control.putDebug("Int " + id + " = " + currentNode.name);
@@ -321,11 +322,11 @@ var Compiler;
                         //If it's an id...
                         else if (currentNode.tokenPointer.description === "ID") {
                             //But the id is undeclared
-                            if (!_SymbolTableTree.isDeclared(currentNode.tokenPointer.str)) {
+                            if (!_SymbolTableTree.getTypeAnyScope(currentNode.tokenPointer.str)) {
                                 var newError = new Compiler.ErrorCompiler("REFERENCE TO UNDECLARED VARIABLE", id, currentNode.tokenPointer.startIndex);
                             }
                             //But the id types dont match
-                            else if (_SymbolTableTree.getType(id) !== _SymbolTableTree.getType(currentNode.name)) {
+                            else if (_SymbolTableTree.getTypeAnyScope(id) !== _SymbolTableTree.getType(currentNode.name)) {
                                 var newError = new Compiler.ErrorCompiler("TYPE MISMATCH", "Cannot assign " + _SymbolTableTree.getType(currentNode.name) + " variable " + currentNode.name + " to " + _SymbolTableTree.getType(id) + " variable " + id, currentNode.tokenPointer.startIndex);
                             }
                             Compiler.Control.putDebug("Int " + id + " = " + currentNode.name);
