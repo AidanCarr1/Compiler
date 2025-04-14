@@ -385,8 +385,35 @@ y = 7
   string y                   /*commenting these two lines*/
   y = "now we are a string"  /*should allow code to work */
     { 
-    /*should fail*/
-    y = 9 
+    y = 9                    /*default: this should fail */
     }
   }
 }$
+
+
+/*modify a global variable
+{
+  int g 
+  {
+    g = 8
+  }
+  print(g)
+}$
+
+/*dynamic scope scope man 
+pg18 Semantic analysis slides*/
+{
+  int a a=1
+  int b b=2
+  /*main*/ {
+    int b b=3
+    print(a) print(b)
+    /*sub1*/ {
+      int a a=4
+      print(a) print(b)
+      /*sub2*/ {
+        print(a) print(b)
+      }
+    }
+  }
+}

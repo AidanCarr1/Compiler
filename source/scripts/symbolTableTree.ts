@@ -33,7 +33,7 @@ namespace Compiler {
             //newNode is current's child
             else {
                 newSymbolTable.parent = this.current;
-                //newSymbolTable.parent.addChild(newSymbolTable);
+                newSymbolTable.parent.addChild(newSymbolTable);
                 //Control.putDebug(" ["+newSymbolTable.name+", parent: "+newNode.parent.name+", children: "+newNode.children + "]");
             }
             //Control.putDebug("2");
@@ -79,7 +79,14 @@ namespace Compiler {
             Control.putDebug("STT: new var");
             this.current.newVariable(type, id);
         }
-        
 
+        public isDeclared(id:String) {
+            return this.current.isDeclared(id);
+        }
+        
+        public getType(id:String) {
+            //onyl works for current scope rn
+            return this.current.getType(id);
+        }
     }
 }

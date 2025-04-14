@@ -8,12 +8,15 @@ namespace Compiler {
         //New Node
         constructor(public name?: String, //ex: "SCOPE 1"
             public table?: SymbolNode[],
-            public parent?: SymbolTable
+            public parent?: SymbolTable,
+            public children?: SymbolTable[] 
             ) { 
 
             //Table of 26 positions (one SymbolNode for each letter id)
             this.table = Array.from({ length: 26 }, () => new SymbolNode());
             //Some ChatGPT Help ^^
+
+            this.children = [];
         }
 
 
@@ -22,16 +25,19 @@ namespace Compiler {
 
 
 
-        /*the following will probably get moved to symbol table tree, and use the 'current' attribute */
+        public addChild(childSymbolTable:SymbolTable){
+            this.children.push(childSymbolTable);
+        }
 
 
 
 
 
 
-        //Add node to end of the array of children
+        //Edit the symbol node for given id inside the table array
         public newVariable(type:String, id:String) {
             Control.putDebug("ST: new var");
+            
             //convert letter to number a->z = 0->25
             var idCode = id.charCodeAt(0) - "a".charCodeAt(0);
 

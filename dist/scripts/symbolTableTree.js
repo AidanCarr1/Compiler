@@ -27,7 +27,7 @@ var Compiler;
             //newNode is current's child
             else {
                 newSymbolTable.parent = this.current;
-                //newSymbolTable.parent.addChild(newSymbolTable);
+                newSymbolTable.parent.addChild(newSymbolTable);
                 //Control.putDebug(" ["+newSymbolTable.name+", parent: "+newNode.parent.name+", children: "+newNode.children + "]");
             }
             //Control.putDebug("2");
@@ -64,6 +64,13 @@ var Compiler;
         newVariable(type, id) {
             Compiler.Control.putDebug("STT: new var");
             this.current.newVariable(type, id);
+        }
+        isDeclared(id) {
+            return this.current.isDeclared(id);
+        }
+        getType(id) {
+            //onyl works for current scope rn
+            return this.current.getType(id);
         }
     }
     Compiler.SymbolTableTree = SymbolTableTree;

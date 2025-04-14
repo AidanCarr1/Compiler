@@ -6,16 +6,20 @@ var Compiler;
     class SymbolTable {
         //New Node
         constructor(name, //ex: "SCOPE 1"
-        table, parent) {
+        table, parent, children) {
             this.name = name;
             this.table = table;
             this.parent = parent;
+            this.children = children;
             //Table of 26 positions (one SymbolNode for each letter id)
             this.table = Array.from({ length: 26 }, () => new Compiler.SymbolNode());
             //Some ChatGPT Help ^^
+            this.children = [];
         }
-        /*the following will probably get moved to symbol table tree, and use the 'current' attribute */
-        //Add node to end of the array of children
+        addChild(childSymbolTable) {
+            this.children.push(childSymbolTable);
+        }
+        //Edit the symbol node for given id inside the table array
         newVariable(type, id) {
             Compiler.Control.putDebug("ST: new var");
             //convert letter to number a->z = 0->25
