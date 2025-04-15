@@ -61,11 +61,11 @@ namespace Compiler {
 
                 //Print result
                 if (errorCount == 0){
-                    this.putMessage("LEX complete with " + warningCount +" warning(s) and 0 errors");
+                    this.putMessage("LEX complete with " + warningCount +" warning(s) and "+ errorCount +" error(s)");
                     isLexSuccessful = true;
                 }
                 else {
-                    this.putMessage("LEX exited with " + warningCount +" warning(s) and "+ errorCount+" error(s)");
+                    this.putMessage("LEX exited with " + warningCount +" warning(s) and "+ errorCount +" error(s)");
                 }
                 this.putLine();
 
@@ -85,11 +85,11 @@ namespace Compiler {
 
                     //Print result
                     if (errorCount == 0) {
-                        this.putMessage("PARSE complete with " + warningCount +" warning(s) and 0 errors");
+                        this.putMessage("PARSE complete with " + warningCount +" warning(s) and "+ errorCount +" error(s)");
                         isParseSuccessful = true;
                     }
                     else {
-                        this.putMessage("PARSE exited with " + warningCount +" warning(s) and "+ errorCount+" error(s)");
+                        this.putMessage("PARSE exited with " + warningCount +" warning(s) and "+ errorCount +" error(s)");
                     }
 
                     //CST
@@ -119,7 +119,7 @@ namespace Compiler {
                     //Check type and scope
                     this.putLine();
                     Semantic.checkTypeScope();
-                    this.putMessage("SEMANTIC complete with " + warningCount +" warning(s) and 0 errors");
+                    this.putMessage("SEMANTIC complete with " + warningCount +" warning(s) and "+ errorCount +" error(s)");
 
                 }
 

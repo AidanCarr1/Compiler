@@ -49,7 +49,7 @@ var Compiler;
                 Compiler.Lexer.lex(programs[i]);
                 //Print result
                 if (errorCount == 0) {
-                    this.putMessage("LEX complete with " + warningCount + " warning(s) and 0 errors");
+                    this.putMessage("LEX complete with " + warningCount + " warning(s) and " + errorCount + " error(s)");
                     isLexSuccessful = true;
                 }
                 else {
@@ -69,7 +69,7 @@ var Compiler;
                     Compiler.Parser.parse();
                     //Print result
                     if (errorCount == 0) {
-                        this.putMessage("PARSE complete with " + warningCount + " warning(s) and 0 errors");
+                        this.putMessage("PARSE complete with " + warningCount + " warning(s) and " + errorCount + " error(s)");
                         isParseSuccessful = true;
                     }
                     else {
@@ -98,7 +98,7 @@ var Compiler;
                     //Check type and scope
                     this.putLine();
                     Compiler.Semantic.checkTypeScope();
-                    this.putMessage("SEMANTIC complete with " + warningCount + " warning(s) and 0 errors");
+                    this.putMessage("SEMANTIC complete with " + warningCount + " warning(s) and " + errorCount + " error(s)");
                 }
                 //Next Program
                 this.putLine(2);

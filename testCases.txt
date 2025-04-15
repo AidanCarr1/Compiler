@@ -548,3 +548,15 @@ int a a=8 a=7 a=6
 boolean b b=(8+9 != 9)
 a = (b != false) /*error*/
 }$
+
+
+{
+ int a a=9
+ string i
+ int c c=8
+ if (a==8+4) {
+  print(a)
+  i="hi"
+  int i i=9+8+2+c
+ }
+}$

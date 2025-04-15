@@ -33,7 +33,7 @@ var Compiler;
             // }
             //ID already declared, give error
             else {
-                var newError = new Compiler.ErrorCompiler("VARIABLE REDECLARATION", type + " " + id, currentNode.tokenPointer.startIndex);
+                var newError = new Compiler.ErrorCompiler("VARIABLE REDECLARATION", id + " has already been declared in the same scope", currentNode.tokenPointer.startIndex);
             }
         }
         //Return true/false if a given id has been declared in this scope

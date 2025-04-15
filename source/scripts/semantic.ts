@@ -332,6 +332,7 @@ namespace Compiler {
 
                 switch (currentNode.name) {
 
+
                     case "Block":
                         Control.putSemanticMessage("Block Type/Scope Check");
 
@@ -340,6 +341,7 @@ namespace Compiler {
                         //Go to first statement inside the block
                         this.nextNode();
                         break;
+
 
                     case "Var Decl":
                         Control.putSemanticMessage("Var Decl Type/Scope Check");
@@ -358,6 +360,7 @@ namespace Compiler {
                         this.nextNode();
                         break;
                     
+
                     case "Print":
                         Control.putSemanticMessage("Print Type/Scope Check");
 
@@ -387,10 +390,7 @@ namespace Compiler {
                                 //_SymbolTableTree.setUsed(id);
                                 Control.putDebug("Print id "+id+" exists");
                             }
-                            
                         } 
-
-                        
 
                         //any other expr
                         else{}
@@ -399,6 +399,7 @@ namespace Compiler {
                         this.nextNode();
                         break;
 
+
                     case "Assignment":
                         Control.putSemanticMessage("Assignment Type/Scope Check");
 
@@ -406,11 +407,13 @@ namespace Compiler {
                         this.nextNode();
                         var id:String = currentNode.tokenPointer.str; //"a" "b" "c"...
 
-                        Control.putDebug("GET NODE ANY SCOPE "+id+": "+_SymbolTableTree.getSymbolAnyScope(id).type+" used:"+_SymbolTableTree.getSymbolAnyScope(id).IsUsed);
+                        Control.putDebug("GET NODE ANY SCOPE "+id+": "+_SymbolTableTree.getSymbolAnyScope(id).type+
+                            " used:"+ _SymbolTableTree.getSymbolAnyScope(id).IsUsed);
+                        
                         //Check if id has been declared
-                        //if (!_SymbolTableTree.isDeclaredAnyScope(currentNode.tokenPointer.str)) {
-                        if (_SymbolTableTree.getTypeAnyScope(currentNode.tokenPointer.str) == null) {
-                            var newError = new ErrorCompiler("UNDECLARED VARIABLE", "Cannot assign a value to "+id, currentNode.tokenPointer.startIndex);
+                        if (!_SymbolTableTree.isDeclaredAnyScope(currentNode.tokenPointer.str)) {
+                            var newError = new ErrorCompiler("UNDECLARED VARIABLE", "Cannot assign a value to "+id, 
+                                currentNode.tokenPointer.startIndex);
                         }
 
                         //Get value
@@ -420,7 +423,8 @@ namespace Compiler {
                         if (currentNode.name.charAt(0) === "\"") {
                             //But the id isnt a string
                             if (_SymbolTableTree.getTypeAnyScope(id) !== "string") {
-                                var newError = new ErrorCompiler("TYPE MISMATCH", "Cannot assign string value to "+_SymbolTableTree.getTypeAnyScope(id)+" variable "+id, currentNode.tokenPointer.startIndex);
+                                var newError = new ErrorCompiler("TYPE MISMATCH", "Cannot assign string value to "+
+                                    _SymbolTableTree.getTypeAnyScope(id)+" variable "+id, currentNode.tokenPointer.startIndex);
                             }
                             Control.putDebug("String "+id+" = " +currentNode.name);
                         }
@@ -476,7 +480,6 @@ namespace Compiler {
                             }
                             Control.putDebug("Int "+id+" = " +currentNode.name);
                         }
-
             
                         //Next statement
                         this.nextNode();
@@ -508,6 +511,7 @@ namespace Compiler {
                         this.nextNode();
                         break;
                     
+
                     //End of block, scope up
                     case "SCOPE UP":
                         Control.putSemanticMessage("Scope Up");
@@ -518,15 +522,12 @@ namespace Compiler {
                         //this.nextNode();
                         break; 
 
+
                     default:
                         Control.putSemanticMessage("ERROR, unknown Node name: " + currentNode.name);
                         this.nextNode();
                 }
             }
-
-            //Control.putASTMessage("DONE WITH TYPE SCOPE CHECK WHILE LOOP");
-
-
         } 
 
 
@@ -539,18 +540,15 @@ namespace Compiler {
             else {
                 currentNode = _AST.nodeList[nodeCounter];
             }
-            // if (currentNode != null) {
-            //     Control.putDebug("next node " +nodeCounter+") "+currentNode.name);
-            // }
         }
 
-        //precondition: current=Addition
+        //precondition:   current= Addition
         //post condition: current= after the whole addition block?
         public static checkAddition() {
             
             Control.putSemanticMessage("Check Addition");
 
-            //Get left (left id is impossible by parse)
+            //Get left (left wont be id, impossible by parse)
             this.nextNode();
             Control.putDebug("left"+currentNode.name);
             if (currentNode.tokenPointer.description === "DIGIT") {
@@ -591,12 +589,12 @@ namespace Compiler {
             }
             
             else {
-                //return error 
-                //not an int!!
+                //return error, not an int!!
                 var newError = new ErrorCompiler("INCOMPATABLE TYPES", "Cannot add an int with "+ currentNode.name, currentNode.tokenPointer.startIndex);
 
             }
         }
+
 
         public static checkEquality(equalityIndex):String {
 
@@ -622,15 +620,16 @@ namespace Compiler {
             }
         }
 
+
         public static getLeftRightType() {
             Control.putDebug("One side: "+currentNode.name);
             var thisType = null;
             //INT
             if (currentNode.name === "Addition"){
                 thisType = "int";
-                Control.putDebug("start eq add");
+                //Control.putDebug("start eq add");
                 this.checkAddition();
-                Control.putDebug("done with eq addition");
+                //Control.putDebug("done with eq addition");
             }            
             //BOOLEAN
             else if (currentNode.name === "Inequality" || currentNode.name === "Equality") {
@@ -658,7 +657,7 @@ namespace Compiler {
             }
             else {
                 //return error
-                Control.putSemanticMessage("HOW are we here left");
+                Control.putDebug("Nothing found, left/right");
             }
 
             return thisType;

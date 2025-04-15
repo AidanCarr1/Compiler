@@ -303,10 +303,10 @@ var Compiler;
                         //Get id
                         this.nextNode();
                         var id = currentNode.tokenPointer.str; //"a" "b" "c"...
-                        Compiler.Control.putDebug("GET NODE ANY SCOPE " + id + ": " + _SymbolTableTree.getSymbolAnyScope(id).type + " used:" + _SymbolTableTree.getSymbolAnyScope(id).IsUsed);
+                        Compiler.Control.putDebug("GET NODE ANY SCOPE " + id + ": " + _SymbolTableTree.getSymbolAnyScope(id).type +
+                            " used:" + _SymbolTableTree.getSymbolAnyScope(id).IsUsed);
                         //Check if id has been declared
-                        //if (!_SymbolTableTree.isDeclaredAnyScope(currentNode.tokenPointer.str)) {
-                        if (_SymbolTableTree.getTypeAnyScope(currentNode.tokenPointer.str) == null) {
+                        if (!_SymbolTableTree.isDeclaredAnyScope(currentNode.tokenPointer.str)) {
                             var newError = new Compiler.ErrorCompiler("UNDECLARED VARIABLE", "Cannot assign a value to " + id, currentNode.tokenPointer.startIndex);
                         }
                         //Get value
@@ -315,7 +315,8 @@ var Compiler;
                         if (currentNode.name.charAt(0) === "\"") {
                             //But the id isnt a string
                             if (_SymbolTableTree.getTypeAnyScope(id) !== "string") {
-                                var newError = new Compiler.ErrorCompiler("TYPE MISMATCH", "Cannot assign string value to " + _SymbolTableTree.getTypeAnyScope(id) + " variable " + id, currentNode.tokenPointer.startIndex);
+                                var newError = new Compiler.ErrorCompiler("TYPE MISMATCH", "Cannot assign string value to " +
+                                    _SymbolTableTree.getTypeAnyScope(id) + " variable " + id, currentNode.tokenPointer.startIndex);
                             }
                             Compiler.Control.putDebug("String " + id + " = " + currentNode.name);
                         }
@@ -401,7 +402,6 @@ var Compiler;
                         this.nextNode();
                 }
             }
-            //Control.putASTMessage("DONE WITH TYPE SCOPE CHECK WHILE LOOP");
         }
         static nextNode() {
             nodeCounter++;
@@ -412,15 +412,12 @@ var Compiler;
             else {
                 currentNode = _AST.nodeList[nodeCounter];
             }
-            // if (currentNode != null) {
-            //     Control.putDebug("next node " +nodeCounter+") "+currentNode.name);
-            // }
         }
-        //precondition: current=Addition
+        //precondition:   current= Addition
         //post condition: current= after the whole addition block?
         static checkAddition() {
             Compiler.Control.putSemanticMessage("Check Addition");
-            //Get left (left id is impossible by parse)
+            //Get left (left wont be id, impossible by parse)
             this.nextNode();
             Compiler.Control.putDebug("left" + currentNode.name);
             if (currentNode.tokenPointer.description === "DIGIT") {
@@ -458,8 +455,7 @@ var Compiler;
                 }
             }
             else {
-                //return error 
-                //not an int!!
+                //return error, not an int!!
                 var newError = new Compiler.ErrorCompiler("INCOMPATABLE TYPES", "Cannot add an int with " + currentNode.name, currentNode.tokenPointer.startIndex);
             }
         }
@@ -488,9 +484,9 @@ var Compiler;
             //INT
             if (currentNode.name === "Addition") {
                 thisType = "int";
-                Compiler.Control.putDebug("start eq add");
+                //Control.putDebug("start eq add");
                 this.checkAddition();
-                Compiler.Control.putDebug("done with eq addition");
+                //Control.putDebug("done with eq addition");
             }
             //BOOLEAN
             else if (currentNode.name === "Inequality" || currentNode.name === "Equality") {
@@ -518,7 +514,7 @@ var Compiler;
             }
             else {
                 //return error
-                Compiler.Control.putSemanticMessage("HOW are we here left");
+                Compiler.Control.putDebug("Nothing found, left/right");
             }
             return thisType;
         }
