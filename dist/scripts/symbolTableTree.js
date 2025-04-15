@@ -93,6 +93,32 @@ var Compiler;
             }
             return foundSymbolNode;
         }
+        /* after everyhting is done, traverse the tree to print and find warnings*/
+        checkWarnings(thisScope) {
+            Compiler.Control.putDebug("Checking warnings on a SCOPE " + thisScope.name);
+            //first check ids on this scope
+            for (var code = 0; code < 26; code++) {
+                //convert number to letter
+                var letter = String.fromCharCode("a".charCodeAt(0) + code);
+                Compiler.Control.putDebug("check " + letter);
+                //get the Symbol Node
+                var thisSymbolNode = thisScope.table[code];
+                if (thisSymbolNode.type != null) {
+                    if (!thisSymbolNode.isInitialized) {
+                        Compiler.Control.putDebug("init warn");
+                        var initWarning = new Compiler.Warning("Variable " + letter + " not initialized", null);
+                    }
+                    if (!thisSymbolNode.IsUsed) {
+                        Compiler.Control.putDebug("used warn");
+                        var usedWarning = new Compiler.Warning("Variable " + letter + " not used", null);
+                    }
+                }
+            }
+            //then check all the children scope's ids
+            for (var i = 0; i < thisScope.children.length; i++) {
+                this.checkWarnings(thisScope.children[i]);
+            }
+        }
     }
     Compiler.SymbolTableTree = SymbolTableTree;
 })(Compiler || (Compiler = {}));

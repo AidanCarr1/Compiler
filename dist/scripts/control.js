@@ -41,6 +41,7 @@ var Compiler;
                 tokenCount = 0;
                 var isLexSuccessful = false;
                 var isParseSuccessful = false;
+                var isSemanticSuccessful = false;
                 //Display program start
                 this.putHeader1("PROGRAM #" + (i + 1));
                 this.putLine();
@@ -49,7 +50,7 @@ var Compiler;
                 Compiler.Lexer.lex(programs[i]);
                 //Print result
                 if (errorCount == 0) {
-                    this.putMessage("LEX complete with " + warningCount + " warning(s) and " + errorCount + " error(s)");
+                    this.putMessage("LEX complete with " + warningCount + " warning(s) and 0 errors");
                     isLexSuccessful = true;
                 }
                 else {
@@ -69,7 +70,7 @@ var Compiler;
                     Compiler.Parser.parse();
                     //Print result
                     if (errorCount == 0) {
-                        this.putMessage("PARSE complete with " + warningCount + " warning(s) and " + errorCount + " error(s)");
+                        this.putMessage("PARSE complete with " + warningCount + " warning(s) and 0 errors");
                         isParseSuccessful = true;
                     }
                     else {
@@ -98,7 +99,23 @@ var Compiler;
                     //Check type and scope
                     this.putLine();
                     Compiler.Semantic.checkTypeScope();
-                    this.putMessage("SEMANTIC complete with " + warningCount + " warning(s) and " + errorCount + " error(s)");
+                    //Check scope tree warnings
+                    _SymbolTableTree.checkWarnings(_SymbolTableTree.root);
+                    //Print result
+                    if (errorCount == 0) {
+                        this.putMessage("SEMANTIC complete with " + warningCount + " warning(s) and 0 errors");
+                        isSemanticSuccessful = true;
+                    }
+                    else {
+                        this.putMessage("SEMANTIC exited with " + warningCount + " warning(s) and " + errorCount + " error(s)");
+                    }
+                    //Scope Tree
+                    if (isSemanticSuccessful) {
+                    }
+                }
+                //Was Semantic Completed?
+                if (isSemanticSuccessful) {
+                    //Do code gen here!!!!!!!!!!
                 }
                 //Next Program
                 this.putLine(2);

@@ -8,14 +8,23 @@ var Compiler;
             this.wid = wid;
             //set variables
             this.str = str;
-            this.index = index.slice();
+            if (index != null) {
+                this.index = index.slice();
+            }
+            else {
+                this.index = null;
+            }
             //new WARNING constructed!
             this.wid = warningCount; //warning ID
             warningCount++;
             //print WARNING Message
             var message = "<mark class='warning'>WARNING";
             message += " [ " + str + " ]</mark> ";
-            message += "<mark class='address'> at " + Compiler.Utils.address(index) + "</mark>";
+            message += "<mark class='address'> ";
+            //print the index, if there is one
+            if (index != null) {
+                "at " + Compiler.Utils.address(index) + "</mark>";
+            }
             Compiler.Control.putMessage(message);
         }
     }

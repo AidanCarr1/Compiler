@@ -9,7 +9,12 @@ namespace Compiler {
                         
             //set variables
             this.str = str;
-            this.index = index.slice();
+            if (index != null) {
+                this.index = index.slice();
+            }
+            else {
+                this.index = null;
+            }
 
 
             //new WARNING constructed!
@@ -19,7 +24,11 @@ namespace Compiler {
             //print WARNING Message
             var message = "<mark class='warning'>WARNING";
             message += " [ " + str + " ]</mark> ";
-            message += "<mark class='address'> at " + Utils.address(index) + "</mark>";
+            message += "<mark class='address'> "
+            //print the index, if there is one
+            if (index != null) { 
+                "at " + Utils.address(index) + "</mark>";
+            }
 
             Control.putMessage(message);
         }
