@@ -133,9 +133,11 @@ namespace Compiler {
                         this.putMessage("SEMANTIC exited with " + warningCount +" warning(s) and "+ errorCount +" error(s)");
                     }
 
-                    //Scope Tree
+                    //Scope Tree/Symbol Table
                     if (isSemanticSuccessful) {
-
+                        this.putLine();
+                        this.putMessage("Symbol Table");
+                        _SymbolTableTree.printTree();
                     }  
                 }
 

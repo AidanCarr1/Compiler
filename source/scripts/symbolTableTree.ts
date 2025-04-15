@@ -105,11 +105,8 @@ namespace Compiler {
             var foundSymbolNode:SymbolNode = checking.getSymbol(id);
 
             //check up the scopes
-            //Control.putDebug("hello?");
-            //Control.putDebug("1, "+(foundSymbolNode.type == null) +" 2,"+(checking.parent != null));
             while (foundSymbolNode.type == null && checking.parent != null) {
                 checking = checking.parent;
-                //Control.putDebug("Lets DAMNNNN check " +checking.name);
                 foundSymbolNode = checking.getSymbol(id);
             }
 
@@ -147,6 +144,75 @@ namespace Compiler {
             //then check all the children scope's ids
             for (var i = 0; i < thisScope.children.length; i++) {
                 this.checkWarnings(thisScope.children[i]);
+            }
+        }
+
+
+        public printTree() {
+            //Start with blank slate
+            traversalResult = "";
+
+            this.expand(this.root, 0);
+            Control.putMessage(traversalResult);
+        }
+
+        private expand(node: SymbolTable, depth) {
+            
+            //Skip the fake leaf! (empty List item)
+            // if (!node.isLeaf && (!node.children || node.children.length === 0)) {
+            //     return;
+            // }
+
+            for (var i = 0; i < depth; i++) {
+                traversalResult += "-";
+            }
+
+            //Print scope name
+            traversalResult += "[" + node.name + "] <br>";
+
+            //Print the table for current scope
+            //first check ids on this scope
+            for (var code = 0; code < 26; code++) {
+                //convert number to letter
+                var letter = String.fromCharCode("a".charCodeAt(0) + code);
+                Control.putDebug("check "+letter);
+
+                //get the Symbol Node
+                var thisSymbolNode:SymbolNode = node.table[code];
+                //Found an entry!
+                if (thisSymbolNode.type != null) {
+
+                    //Print the same indent again
+                    for (var i = 0; i < depth; i++) {
+                        traversalResult += "-";
+                    }
+
+                    //Print the info
+                    traversalResult += letter +" : " +thisSymbolNode.type+", ";
+                    if (thisSymbolNode.isInitialized) {
+                        traversalResult += "initialized, ";
+                    }
+                    else {
+                        traversalResult += "not initialized, ";
+                    }
+                    if (thisSymbolNode.IsUsed) {
+                        traversalResult += "used <br>";
+                    }
+                    else {
+                        traversalResult += "not used <br>";
+                    }
+                }
+            }
+
+            // If there are no children (i.e., leaf nodes)...
+            if (!node.children || node.children.length === 0) {
+                //return
+            }
+            else {
+                // .. recursively expand the children.
+                for (var i = 0; i < node.children.length; i++) {
+                    this.expand(node.children[i], depth + 1);
+                }
             }
         }
     }
