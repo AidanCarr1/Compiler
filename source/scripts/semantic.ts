@@ -225,6 +225,8 @@ namespace Compiler {
                     this.astExpr();
                     var boolOpName = this.astBoolOp(); //whatever the op is here, change the name to boolean expr
                     newNode.name = boolOpName;
+                    newNode.tokenPointer = astToken; //for track equality/inequality location
+                    this.skip("IN/EQUALITY");
                     this.astExpr();
                     this.skip("CLOSE PARENTHESIS");
                     _AST.moveUp();
@@ -266,12 +268,12 @@ namespace Compiler {
             switch (astToken.description) {
                 
                 case "EQUALITY":
-                    this.skip("EQUALITY");
+                    //this.skip("EQUALITY");
                     return "Equality";
                     //break;
                 
                 case "INEQUALITY":
-                    this.skip("INEQUALITY");
+                    //this.skip("INEQUALITY");
                     return "Inequality";
                     //break;
 
@@ -371,7 +373,7 @@ namespace Compiler {
                         //printing equality/inequality
                         else if (currentNode.name === "Inequality" || currentNode.name === "Equality") {
                             Control.putDebug("Lets check '!=' or '=='");
-                            this.checkEquality();
+                            this.checkEquality(currentNode.tokenPointer.startIndex);
                         }
 
                         //If printing a variable...
@@ -549,7 +551,7 @@ namespace Compiler {
                     var newError = new ErrorCompiler("REFERENCE TO UNDECLARED VARIABLE", id, currentNode.tokenPointer.startIndex);
                 }
                 else if (_SymbolTableTree.getTypeAnyScope(id) !== "int") {
-                    var newError = new ErrorCompiler("INCOMPATABLE TYPES", "Cannot add and int with a "+ _SymbolTableTree.getTypeAnyScope(id) +" variable "+id, currentNode.tokenPointer.startIndex);
+                    var newError = new ErrorCompiler("INCOMPATABLE TYPES", "Cannot add an int with a "+ _SymbolTableTree.getTypeAnyScope(id) +" variable "+id, currentNode.tokenPointer.startIndex);
                 }
             }
             
@@ -561,7 +563,7 @@ namespace Compiler {
             }
         }
 
-        public static checkEquality():String {
+        public static checkEquality(equalityIndex):String {
             var leftType = null;
             var rightType = null;
 
@@ -576,7 +578,7 @@ namespace Compiler {
             //Compare 'em
             if (leftType != rightType){
                 //return error 
-                var newError = new ErrorCompiler("INCOMPATABLE TYPES", "Cannot add and int with "+ currentNode.name, currentNode.tokenPointer.startIndex);
+                var newError = new ErrorCompiler("INCOMPATABLE TYPES", "Cannot compare "+leftType+" with "+ rightType, equalityIndex);
             }
             else {
                 return leftType;
@@ -599,7 +601,7 @@ namespace Compiler {
             
             //BOOLEAN
             else if (currentNode.name === "Inequality" || currentNode.name === "Equality") {
-                thisType = this.checkEquality();
+                thisType = this.checkEquality(currentNode.tokenPointer.startIndex);
                 thisType = "boolean";
             }
             else if (currentNode.tokenPointer.description === "ID") {

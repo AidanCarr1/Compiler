@@ -19,14 +19,13 @@
         <p>User Program</p>
         <textarea id="taSourceCode" cols="65" rows="10">
 {
-/*works*/
+/*works
 print((1+1 == 1))
-print((1 == 1+2))
-/*good error*/
+print((1 == 1+2))*/
+/*good errors
 print((6 == (true==false)))
+print(((true==false) == 1+2))*/
 
-/*wont work*/
-print(((true==false) == 1+2))
 print((1+1 == 1+3))
 print(((1==2) == (true==false)))
 }$</textarea>
