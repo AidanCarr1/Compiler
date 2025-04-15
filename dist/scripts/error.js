@@ -20,7 +20,7 @@ var Compiler;
                 message += " [ " + str + " ] ";
                 message += description;
                 message += " </mark><mark class='address'> at " + Compiler.Utils.address(index) + "</mark>";
-                Compiler.Control.putMessage(message);
+                Compiler.Control.putImportantMessage(message);
             }
         }
     }

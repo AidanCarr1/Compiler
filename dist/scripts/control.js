@@ -44,20 +44,20 @@ var Compiler;
                 var isSemanticSuccessful = false;
                 //Display program start
                 this.putHeader1("PROGRAM #" + (i + 1));
-                this.putLine();
+                this.putImportantLine();
                 //Lex
                 this.putMessage("Begin LEX");
                 Compiler.Lexer.lex(programs[i]);
                 //Print result
                 if (errorCount == 0) {
-                    this.putMessage("LEX complete with " + warningCount + " warning(s) and 0 errors");
+                    this.putImportantMessage("LEX complete with " + warningCount + " warning(s) and 0 errors");
                     isLexSuccessful = true;
                 }
                 else {
-                    this.putMessage("LEX exited with " + warningCount + " warning(s) and " + errorCount + " error(s)");
+                    this.putImportantMessage("LEX exited with " + warningCount + " warning(s) and " + errorCount + " error(s)");
                 }
-                this.putLine();
-                //Reset errors and CST
+                this.putImportantLine();
+                //Reset errors and Trees
                 warningCount = 0;
                 errorCount = 0;
                 _CST.reset();
@@ -70,22 +70,24 @@ var Compiler;
                     Compiler.Parser.parse();
                     //Print result
                     if (errorCount == 0) {
-                        this.putMessage("PARSE complete with " + warningCount + " warning(s) and 0 errors");
+                        this.putImportantMessage("PARSE complete with " + warningCount + " warning(s) and 0 errors");
                         isParseSuccessful = true;
                     }
                     else {
-                        this.putMessage("PARSE exited with " + warningCount + " warning(s) and " + errorCount + " error(s)");
+                        this.putImportantMessage("PARSE exited with " + warningCount + " warning(s) and " + errorCount + " error(s)");
                     }
                     //CST
                     if (isParseSuccessful) {
-                        this.putLine();
-                        this.putMessage("Concrete Syntax Tree");
+                        this.putImportantLine();
+                        this.putImportantMessage("Concrete Syntax Tree");
                         _CST.printTree();
                     }
                 }
                 else {
                     this.putMessage("PARSE Skipped");
                 }
+                //Reset warnings
+                warningCount = 0;
                 //Was Parse completed?
                 if (isParseSuccessful) {
                     //Creat AST
@@ -93,21 +95,22 @@ var Compiler;
                     this.putMessage("Begin SEMANTIC ANALYSIS");
                     Compiler.Semantic.createAST();
                     //Print AST
-                    this.putLine();
-                    this.putMessage("Abstract Syntax Tree");
+                    this.putImportantLine();
+                    this.putImportantMessage("Abstract Syntax Tree");
                     _AST.printTree();
                     //Check type and scope
-                    this.putLine();
+                    this.putImportantLine();
                     Compiler.Semantic.checkTypeScope();
+                    this.putLine();
                     //Check scope tree warnings
                     _SymbolTableTree.checkWarnings(_SymbolTableTree.root);
                     //Print result
                     if (errorCount == 0) {
-                        this.putMessage("SEMANTIC complete with " + warningCount + " warning(s) and 0 errors");
+                        this.putImportantMessage("SEMANTIC complete with " + warningCount + " warning(s) and 0 errors");
                         isSemanticSuccessful = true;
                     }
                     else {
-                        this.putMessage("SEMANTIC exited with " + warningCount + " warning(s) and " + errorCount + " error(s)");
+                        this.putImportantMessage("SEMANTIC exited with " + warningCount + " warning(s) and " + errorCount + " error(s)");
                     }
                     //Scope Tree/Symbol Table
                     if (isSemanticSuccessful) {
@@ -121,7 +124,7 @@ var Compiler;
                     //Do code gen here!!!!!!!!!!
                 }
                 //Next Program
-                this.putLine(2);
+                this.putImportantLine(2);
             }
             //All programs are done
             this.putHeader1("END");
@@ -131,6 +134,18 @@ var Compiler;
             // On, turns on debug features, printing a more in-depth compiler output
             if (document.getElementById("btnVerbose").value === "OFF") {
                 document.getElementById("btnVerbose").value = "ON";
+                verbose = true;
+            }
+            else {
+                document.getElementById("btnVerbose").value = "OFF";
+                verbose = false;
+            }
+        }
+        static btnDebug_click() {
+            // Toggleable button: Verbose mode on or off
+            // On, turns on debug features, printing a more in-depth compiler output
+            if (document.getElementById("btnDebug").value === "OFF") {
+                document.getElementById("btnDebug").value = "ON";
                 debug = true;
             }
             else {
@@ -139,6 +154,12 @@ var Compiler;
             }
         }
         static putMessage(msg) {
+            if (verbose || debug) {
+                document.getElementById("taOutput").innerHTML
+                    += "<p>" + msg + "</p>";
+            }
+        }
+        static putImportantMessage(msg) {
             document.getElementById("taOutput").innerHTML
                 += "<p>" + msg + "</p>";
         }
@@ -156,6 +177,15 @@ var Compiler;
                 += "<h2>" + msg + "</h2>";
         }
         static putLine(numOfLines) {
+            if (verbose || debug) {
+                if (!numOfLines) {
+                    numOfLines = 1;
+                }
+                document.getElementById("taOutput").innerHTML
+                    += "<br>".repeat(numOfLines);
+            }
+        }
+        static putImportantLine(numOfLines) {
             if (!numOfLines) {
                 numOfLines = 1;
             }
@@ -163,21 +193,27 @@ var Compiler;
                 += "<br>".repeat(numOfLines);
         }
         static putParseMessage(msg) {
-            if (errorCount <= 0) {
-                document.getElementById("taOutput").innerHTML
-                    += "<p><mark class='label'>PARSE</mark> <mark class='info'>" + msg + "</mark></p>";
+            if (verbose || debug) {
+                if (errorCount <= 0) {
+                    document.getElementById("taOutput").innerHTML
+                        += "<p><mark class='label'>PARSE</mark> <mark class='info'>" + msg + "</mark></p>";
+                }
             }
         }
         static putASTMessage(msg) {
-            if (errorCount <= 0) {
-                document.getElementById("taOutput").innerHTML
-                    += "<p><mark class='label'>Semantic AST</mark> <mark class='info'>" + msg + "</mark></p>";
+            if (verbose || debug) {
+                if (errorCount <= 0) {
+                    document.getElementById("taOutput").innerHTML
+                        += "<p><mark class='label'>SEMANTIC AST</mark> <mark class='info'>" + msg + "</mark></p>";
+                }
             }
         }
         static putSemanticMessage(msg) {
-            if (errorCount <= 0) {
-                document.getElementById("taOutput").innerHTML
-                    += "<p><mark class='label'>Semantic</mark> <mark class='info'>" + msg + "</mark></p>";
+            if (verbose || debug) {
+                if (errorCount <= 0) {
+                    document.getElementById("taOutput").innerHTML
+                        += "<p><mark class='label'>SEMANTIC</mark> <mark class='info'>" + msg + "</mark></p>";
+                }
             }
         }
     }

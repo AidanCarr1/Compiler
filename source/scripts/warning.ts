@@ -30,7 +30,7 @@ namespace Compiler {
                 "at " + Utils.address(index) + "</mark>";
             }
 
-            Control.putMessage(message);
+            Control.putImportantMessage(message);
         }
     }
 }

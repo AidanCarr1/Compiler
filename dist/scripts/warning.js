@@ -25,7 +25,7 @@ var Compiler;
             if (index != null) {
                 "at " + Compiler.Utils.address(index) + "</mark>";
             }
-            Compiler.Control.putMessage(message);
+            Compiler.Control.putImportantMessage(message);
         }
     }
     Compiler.Warning = Warning;

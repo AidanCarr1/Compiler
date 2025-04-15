@@ -97,7 +97,7 @@ var Compiler;
             for (var code = 0; code < 26; code++) {
                 //convert number to letter
                 var letter = String.fromCharCode("a".charCodeAt(0) + code);
-                Compiler.Control.putDebug("check " + letter);
+                //Control.putDebug("check "+letter);
                 //get the Symbol Node
                 var thisSymbolNode = thisScope.table[code];
                 if (thisSymbolNode.type != null) {
@@ -137,7 +137,7 @@ var Compiler;
             for (var code = 0; code < 26; code++) {
                 //convert number to letter
                 var letter = String.fromCharCode("a".charCodeAt(0) + code);
-                Compiler.Control.putDebug("check " + letter);
+                //Control.putDebug("check "+letter);
                 //get the Symbol Node
                 var thisSymbolNode = node.table[code];
                 //Found an entry!

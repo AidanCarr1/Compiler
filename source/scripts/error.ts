@@ -25,7 +25,7 @@ namespace Compiler {
                 message += description;
                 message += " </mark><mark class='address'> at " + Utils.address(index) + "</mark>";
 
-                Control.putMessage(message);
+                Control.putImportantMessage(message);
             }
         }
     }

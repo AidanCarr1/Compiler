@@ -54,7 +54,7 @@ namespace Compiler {
 
                 //Display program start
                 this.putHeader1("PROGRAM #"+ (i+1));
-                this.putLine();
+                this.putImportantLine();
     
                 //Lex
                 this.putMessage("Begin LEX");
@@ -62,15 +62,15 @@ namespace Compiler {
 
                 //Print result
                 if (errorCount == 0){
-                    this.putMessage("LEX complete with " + warningCount +" warning(s) and 0 errors");
+                    this.putImportantMessage("LEX complete with " + warningCount +" warning(s) and 0 errors");
                     isLexSuccessful = true;
                 }
                 else {
-                    this.putMessage("LEX exited with " + warningCount +" warning(s) and "+ errorCount +" error(s)");
+                    this.putImportantMessage("LEX exited with " + warningCount +" warning(s) and "+ errorCount +" error(s)");
                 }
-                this.putLine();
+                this.putImportantLine();
 
-                //Reset errors and CST
+                //Reset errors and Trees
                 warningCount = 0;
                 errorCount = 0;
                 _CST.reset();
@@ -86,23 +86,26 @@ namespace Compiler {
 
                     //Print result
                     if (errorCount == 0) {
-                        this.putMessage("PARSE complete with " + warningCount +" warning(s) and 0 errors");
+                        this.putImportantMessage("PARSE complete with " + warningCount +" warning(s) and 0 errors");
                         isParseSuccessful = true;
                     }
                     else {
-                        this.putMessage("PARSE exited with " + warningCount +" warning(s) and "+ errorCount +" error(s)");
+                        this.putImportantMessage("PARSE exited with " + warningCount +" warning(s) and "+ errorCount +" error(s)");
                     }
 
                     //CST
                     if (isParseSuccessful) {
-                        this.putLine();
-                        this.putMessage("Concrete Syntax Tree");
+                        this.putImportantLine();
+                        this.putImportantMessage("Concrete Syntax Tree");
                         _CST.printTree();
                     }
                 }
                 else {
                     this.putMessage("PARSE Skipped");
                 }
+
+                //Reset warnings
+                warningCount = 0;
 
                 //Was Parse completed?
                 if (isParseSuccessful) {
@@ -113,24 +116,25 @@ namespace Compiler {
                     Semantic.createAST();
 
                     //Print AST
-                    this.putLine();
-                    this.putMessage("Abstract Syntax Tree");
+                    this.putImportantLine();
+                    this.putImportantMessage("Abstract Syntax Tree");
                     _AST.printTree();
 
                     //Check type and scope
-                    this.putLine();
+                    this.putImportantLine();
                     Semantic.checkTypeScope();
+                    this.putLine();
 
                     //Check scope tree warnings
                     _SymbolTableTree.checkWarnings(_SymbolTableTree.root);
 
                     //Print result
                     if (errorCount == 0) {
-                        this.putMessage("SEMANTIC complete with " + warningCount +" warning(s) and 0 errors");
+                        this.putImportantMessage("SEMANTIC complete with " + warningCount +" warning(s) and 0 errors");
                         isSemanticSuccessful = true;
                     }
                     else {
-                        this.putMessage("SEMANTIC exited with " + warningCount +" warning(s) and "+ errorCount +" error(s)");
+                        this.putImportantMessage("SEMANTIC exited with " + warningCount +" warning(s) and "+ errorCount +" error(s)");
                     }
 
                     //Scope Tree/Symbol Table
@@ -147,7 +151,7 @@ namespace Compiler {
                 }
 
                 //Next Program
-                this.putLine(2);
+                this.putImportantLine(2);
             }
 
             //All programs are done
@@ -160,6 +164,20 @@ namespace Compiler {
             // On, turns on debug features, printing a more in-depth compiler output
             if ((<HTMLInputElement> document.getElementById("btnVerbose")).value === "OFF") {
                 (<HTMLInputElement> document.getElementById("btnVerbose")).value = "ON";
+                verbose = true;
+            }
+            else {
+                (<HTMLInputElement> document.getElementById("btnVerbose")).value = "OFF";
+                verbose = false;
+            }
+        }
+
+
+        public static btnDebug_click() {        
+            // Toggleable button: Verbose mode on or off
+            // On, turns on debug features, printing a more in-depth compiler output
+            if ((<HTMLInputElement> document.getElementById("btnDebug")).value === "OFF") {
+                (<HTMLInputElement> document.getElementById("btnDebug")).value = "ON";
                 debug = true;
             }
             else {
@@ -170,6 +188,12 @@ namespace Compiler {
 
 
         public static putMessage(msg) {
+            if (verbose || debug) {
+                (<HTMLInputElement> document.getElementById("taOutput")).innerHTML 
+                += "<p>"+msg + "</p>";
+            }
+        }
+        public static putImportantMessage(msg) {
             (<HTMLInputElement> document.getElementById("taOutput")).innerHTML 
             += "<p>"+msg + "</p>";
         }
@@ -178,6 +202,7 @@ namespace Compiler {
                 this.putMessage("<mark class='debug'>>> "+msg+"</mark>");
             }
         }
+        
         public static putHeader1(msg) {
             (<HTMLInputElement> document.getElementById("taOutput")).innerHTML 
             += "<h1>"+msg + "</h1>";
@@ -186,32 +211,47 @@ namespace Compiler {
             (<HTMLInputElement> document.getElementById("taOutput")).innerHTML 
             += "<h2>"+msg + "</h2>";
         }
+
         public static putLine(numOfLines?) {
+            if (verbose || debug) {
+                if (!numOfLines){
+                    numOfLines = 1;
+                }
+                (<HTMLInputElement> document.getElementById("taOutput")).innerHTML 
+                += "<br>".repeat(numOfLines);
+            }
+        }
+        public static putImportantLine(numOfLines?) {
             if (!numOfLines){
                 numOfLines = 1;
             }
             (<HTMLInputElement> document.getElementById("taOutput")).innerHTML 
             += "<br>".repeat(numOfLines);
         }
+
         public static putParseMessage(msg) {
-            if (errorCount <= 0) {
-                (<HTMLInputElement> document.getElementById("taOutput")).innerHTML 
-                += "<p><mark class='label'>PARSE</mark> <mark class='info'>"+msg+"</mark></p>";
+            if (verbose || debug) {
+                if (errorCount <= 0) {
+                    (<HTMLInputElement> document.getElementById("taOutput")).innerHTML 
+                    += "<p><mark class='label'>PARSE</mark> <mark class='info'>"+msg+"</mark></p>";
+                }
             }
         }
         public static putASTMessage(msg) {
-            if (errorCount <= 0) {
-                (<HTMLInputElement> document.getElementById("taOutput")).innerHTML 
-                += "<p><mark class='label'>Semantic AST</mark> <mark class='info'>"+msg+"</mark></p>";
+            if (verbose || debug) {
+                if (errorCount <= 0) {
+                    (<HTMLInputElement> document.getElementById("taOutput")).innerHTML 
+                    += "<p><mark class='label'>SEMANTIC AST</mark> <mark class='info'>"+msg+"</mark></p>";
+                }
             }
         }
-
         public static putSemanticMessage(msg) {
-            if (errorCount <= 0) {
-                (<HTMLInputElement> document.getElementById("taOutput")).innerHTML 
-                += "<p><mark class='label'>Semantic</mark> <mark class='info'>"+msg+"</mark></p>";
+            if (verbose || debug) {
+                if (errorCount <= 0) {
+                    (<HTMLInputElement> document.getElementById("taOutput")).innerHTML 
+                    += "<p><mark class='label'>SEMANTIC</mark> <mark class='info'>"+msg+"</mark></p>";
+                }
             }
         }        
-
     }
 }

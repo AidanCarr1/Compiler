@@ -19,7 +19,6 @@ var Compiler;
         addNode(nodeName, isLeaf, token) {
             Compiler.Control.putDebug("in add node");
             var newNode = new Compiler.Node(nodeName);
-            Compiler.Control.putDebug("1");
             //First node, root node
             if (this.root == null) {
                 this.root = newNode;
@@ -31,7 +30,6 @@ var Compiler;
                 newNode.parent.addChild(newNode);
                 Compiler.Control.putDebug("NODE [" + newNode.name + ", parent: " + newNode.parent.name + ", children: " + newNode.children + "]");
             }
-            Compiler.Control.putDebug("2");
             //Move current pointer down the tree (unless its a leaf node)
             if (!isLeaf) {
                 this.current = newNode;
@@ -41,7 +39,6 @@ var Compiler;
                 Compiler.Control.putDebug("&gt;&gt; TOKEN [" + newNode.tokenPointer.str + "] at " + Compiler.Utils.address(newNode.tokenPointer.startIndex));
             }
             newNode.isLeaf = isLeaf;
-            Compiler.Control.putDebug("3");
             //add it to the in order node list
             this.nodeList.push(newNode);
             Compiler.Control.putDebug("done adding node");
@@ -71,7 +68,7 @@ var Compiler;
             //Start with blank slate
             traversalResult = "";
             this.expand(this.root, 0);
-            Compiler.Control.putMessage(traversalResult);
+            Compiler.Control.putImportantMessage(traversalResult);
         }
         expand(node, depth) {
             //Skip the fake leaf! (empty List item)

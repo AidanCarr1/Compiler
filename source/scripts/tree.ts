@@ -23,7 +23,6 @@ namespace Compiler {
         public addNode(nodeName: String, isLeaf?: boolean, token?: Token): Node {
             Control.putDebug("in add node");
             var newNode = new Node(nodeName);
-            Control.putDebug("1");
             //First node, root node
             if (this.root == null) {
                 this.root = newNode;
@@ -36,7 +35,6 @@ namespace Compiler {
                 newNode.parent.addChild(newNode);
                 Control.putDebug("NODE ["+newNode.name+", parent: "+newNode.parent.name+", children: "+newNode.children + "]");
             }
-            Control.putDebug("2");
             //Move current pointer down the tree (unless its a leaf node)
             if (! isLeaf) {
                 this.current = newNode;
@@ -46,7 +44,6 @@ namespace Compiler {
                 Control.putDebug("&gt;&gt; TOKEN ["+newNode.tokenPointer.str +"] at "+Utils.address(newNode.tokenPointer.startIndex));
             }
             newNode.isLeaf = isLeaf;
-            Control.putDebug("3");
             //add it to the in order node list
             this.nodeList.push(newNode);
             Control.putDebug("done adding node");
@@ -83,7 +80,7 @@ namespace Compiler {
             traversalResult = "";
 
             this.expand(this.root, 0);
-            Control.putMessage(traversalResult);
+            Control.putImportantMessage(traversalResult);
         }
 
         private expand(node: Node, depth) {

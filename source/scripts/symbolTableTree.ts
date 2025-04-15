@@ -124,7 +124,7 @@ namespace Compiler {
             for (var code = 0; code < 26; code++) {
                 //convert number to letter
                 var letter = String.fromCharCode("a".charCodeAt(0) + code);
-                Control.putDebug("check "+letter);
+                //Control.putDebug("check "+letter);
 
                 //get the Symbol Node
                 var thisSymbolNode:SymbolNode = thisScope.table[code];
@@ -175,7 +175,7 @@ namespace Compiler {
             for (var code = 0; code < 26; code++) {
                 //convert number to letter
                 var letter = String.fromCharCode("a".charCodeAt(0) + code);
-                Control.putDebug("check "+letter);
+                //Control.putDebug("check "+letter);
 
                 //get the Symbol Node
                 var thisSymbolNode:SymbolNode = node.table[code];
