@@ -15,32 +15,27 @@
     </div>
     <br>
 
-    <div>
-        <p>User Program</p>
-        <textarea id="taSourceCode" cols="65" rows="10">
-/*useage warnings*/
-{
-    string n /*never used*/
-    int a a=9
-    boolean u
-    if (a==8) {
-        print(a)
-        string e
-        e="io"
-    }
-    { 
-        string r r="init"
-    }
-    u = ("p" != "rrrrr")
-}$</textarea>
+    <div style="display: flex;">
+        <div id="left" style="width: 600px;">
+            <p>User Program</p>               <!--rows="10"-->
+            <textarea id="taSourceCode" cols="45" rows="20"></textarea>
+            <br>
+            <div style="display: flex;">
+                <div id="tinyLeft" style="width: 250px;">
+                    Verbose Mode is <input type="button" id="btnVerbose" value="ON" onclick="Compiler.Control.btnVerbose_click();"/>
+                    <br>
+                    Debug Mode is <input type="button" id="btnDebug" value="OFF" onclick="Compiler.Control.btnDebug_click();"/>
+                </div>
+                <br>
+                <div id="tinyRight" style="width: 250px;">
+                    <input type="button" id="btnCompile" value="Compile" onclick="Compiler.Control.btnCompile_click();"/>
+                </div>
+            </div>
+        </div>
         <br>
-        Verbose Mode is <input type="button" id="btnVerbose" value="ON" onclick="Compiler.Control.btnVerbose_click();"/>
-        <br>
-        Debug Mode is <input type="button" id="btnDebug" value="OFF" onclick="Compiler.Control.btnDebug_click();"/>
-        <br>
-        <input type="button" id="btnCompile" value="Compile" onclick="Compiler.Control.btnCompile_click();"/>
-        <br>
-        <div id="taOutput"></div>
+        <div id="right" style="width: 800px;">
+            <div id="taOutput"></div>
+        </div>
         <!--<textarea id="taOutput" cols="64" rows="25" readonly></textarea>-->
     </div>
 

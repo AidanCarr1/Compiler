@@ -55,8 +55,8 @@ textarea, pre {
 	font-size: 14pt;
 
 	background-color: white;
-	width: 700px;
-	height: 530px;
+	width: 800px;
+	height: 600px;
 	overflow-y:auto;
 	margin-top: 10px;
 }
@@ -112,4 +112,8 @@ textarea, pre {
 }
 #taOutput .warning {
 	color:rgb(255, 175, 0);
+}
+
+#btnCompile {
+	font-size: 40px;
 }

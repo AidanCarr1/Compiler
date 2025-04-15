@@ -8,14 +8,14 @@ namespace Compiler {
 
         public static init() {
             // Clear the message box.
-            (<HTMLInputElement> document.getElementById("taOutput")).innerHTML = `<pre class='centered'>\n\n\n\n\n\n
-<mark style="color:lightgray">                                )  
-                               (  \`  
-                              )   ) (  </mark> <mark style="color:orange">
-                           __..---..__
-                       ,-='  <mark style="color:darkorange">/  |  \\ </mark> \`=-.
-                      :--..___________..--</mark><mark style="color:gray">;
-                       \\.,_____________,./ </mark></pre>`;
+            (<HTMLInputElement> document.getElementById("taOutput")).innerHTML = `<pre class='centered'>\n\n\n\n\n\n\n\n
+<mark style="color:lightgray">                                      )  
+                                     (  \`  
+                                    )   ) (  </mark> <mark style="color:orange">
+                                 __..---..__
+                             ,-='  <mark style="color:darkorange">/  |  \\ </mark> \`=-.
+                            :--..___________..--</mark><mark style="color:gray">;
+                             \\.,_____________,./ </mark></pre>`;
             //Pie credit: https://ascii.co.uk/art/pie
     
             // Set the initial values for our globals.
