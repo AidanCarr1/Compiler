@@ -90,9 +90,12 @@ namespace Compiler {
 
         
         //set a variable as used
-        //can only come here if id exists
         public setUsed(id:String) {
             this.getSymbolAnyScope(id).IsUsed = true;
+        }
+        //set a variable as initialized
+        public setInitialized(id:String) {
+            this.getSymbolAnyScope(id).isInitialized = true;
         }
 
 

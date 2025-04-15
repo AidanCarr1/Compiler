@@ -73,9 +73,12 @@ var Compiler;
             }
         }
         //set a variable as used
-        //can only come here if id exists
         setUsed(id) {
             this.getSymbolAnyScope(id).IsUsed = true;
+        }
+        //set a variable as initialized
+        setInitialized(id) {
+            this.getSymbolAnyScope(id).isInitialized = true;
         }
         getSymbolAnyScope(id) {
             var checking = this.current;

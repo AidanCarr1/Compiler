@@ -309,6 +309,10 @@ var Compiler;
                         if (!_SymbolTableTree.isDeclaredAnyScope(currentNode.tokenPointer.str)) {
                             var newError = new Compiler.ErrorCompiler("UNDECLARED VARIABLE", "Cannot assign a value to " + id, currentNode.tokenPointer.startIndex);
                         }
+                        else {
+                            //We'll just assume it will be initialized. If theres an error, we will never see this anyway
+                            _SymbolTableTree.setInitialized(id);
+                        }
                         //Get value
                         this.nextNode();
                         //If it's a string constant...
