@@ -425,6 +425,18 @@ namespace Compiler {
                             Control.putDebug("String "+id+" = " +currentNode.name);
                         }
 
+                        //Equality/inequality
+                        else if (currentNode.name === "Inequality" || currentNode.name === "Equality"){
+                            if (_SymbolTableTree.getTypeAnyScope(id) === "boolean") {
+                                Control.putDebug("Lets check '!=' or '=='");
+                                this.checkEquality(currentNode.tokenPointer.startIndex);
+                            }
+                            else {
+                                var newError = new ErrorCompiler("TYPE MISMATCH", "Cannot assign boolean value to "+
+                                    _SymbolTableTree.getTypeAnyScope(id)+" variable "+id, currentNode.tokenPointer.startIndex);
+                            }
+                        }
+
                         //If it's addition...
                         else if (currentNode.name == "Addition") {
                             this.checkAddition();
@@ -464,6 +476,8 @@ namespace Compiler {
                             }
                             Control.putDebug("Int "+id+" = " +currentNode.name);
                         }
+
+                        
 
                         
 

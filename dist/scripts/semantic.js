@@ -319,6 +319,17 @@ var Compiler;
                             }
                             Compiler.Control.putDebug("String " + id + " = " + currentNode.name);
                         }
+                        //Equality/inequality
+                        else if (currentNode.name === "Inequality" || currentNode.name === "Equality") {
+                            if (_SymbolTableTree.getTypeAnyScope(id) === "boolean") {
+                                Compiler.Control.putDebug("Lets check '!=' or '=='");
+                                this.checkEquality(currentNode.tokenPointer.startIndex);
+                            }
+                            else {
+                                var newError = new Compiler.ErrorCompiler("TYPE MISMATCH", "Cannot assign boolean value to " +
+                                    _SymbolTableTree.getTypeAnyScope(id) + " variable " + id, currentNode.tokenPointer.startIndex);
+                            }
+                        }
                         //If it's addition...
                         else if (currentNode.name == "Addition") {
                             this.checkAddition();
