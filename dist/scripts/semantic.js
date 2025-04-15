@@ -289,7 +289,7 @@ var Compiler;
                                 var newError = new Compiler.ErrorCompiler("PRINT REFERENCE TO UNDECLARED VARIABLE", id, currentNode.tokenPointer.startIndex);
                             }
                             else {
-                                //_SymbolTableTree.setUsed(id);
+                                _SymbolTableTree.setUsed(id);
                                 Compiler.Control.putDebug("Print id " + id + " exists");
                             }
                         }
@@ -364,6 +364,9 @@ var Compiler;
                                 var newError = new Compiler.ErrorCompiler("TYPE MISMATCH", "Cannot assign " +
                                     _SymbolTableTree.getTypeAnyScope(currentNode.name) + " variable " + currentNode.name + " to " +
                                     _SymbolTableTree.getTypeAnyScope(id) + " variable " + id, currentNode.tokenPointer.startIndex);
+                            }
+                            else {
+                                _SymbolTableTree.setUsed(currentNode.name);
                             }
                             Compiler.Control.putDebug("Int " + id + " = " + currentNode.name);
                         }
@@ -453,6 +456,9 @@ var Compiler;
                 else if (_SymbolTableTree.getTypeAnyScope(id) !== "int") {
                     var newError = new Compiler.ErrorCompiler("INCOMPATABLE TYPES", "Cannot add an int with a " + _SymbolTableTree.getTypeAnyScope(id) + " variable " + id, currentNode.tokenPointer.startIndex);
                 }
+                else {
+                    _SymbolTableTree.setUsed(id);
+                }
             }
             else {
                 //return error, not an int!!
@@ -498,6 +504,9 @@ var Compiler;
                 thisType = _SymbolTableTree.getTypeAnyScope(id);
                 if (thisType == null) {
                     var newError = new Compiler.ErrorCompiler("REFERENCE TO UNDECLARED VARIABLE", id, currentNode.tokenPointer.startIndex);
+                }
+                else {
+                    _SymbolTableTree.setUsed(id);
                 }
             }
             //INT

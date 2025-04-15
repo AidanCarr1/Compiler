@@ -387,7 +387,7 @@ namespace Compiler {
                                 var newError = new ErrorCompiler("PRINT REFERENCE TO UNDECLARED VARIABLE", id, currentNode.tokenPointer.startIndex);
                             }
                             else {
-                                //_SymbolTableTree.setUsed(id);
+                                _SymbolTableTree.setUsed(id);
                                 Control.putDebug("Print id "+id+" exists");
                             }
                         } 
@@ -477,6 +477,9 @@ namespace Compiler {
                                 var newError = new ErrorCompiler("TYPE MISMATCH", "Cannot assign "+ 
                                     _SymbolTableTree.getTypeAnyScope(currentNode.name)+" variable "+currentNode.name+" to "+
                                     _SymbolTableTree.getTypeAnyScope(id)+" variable "+id, currentNode.tokenPointer.startIndex);
+                            }
+                            else {
+                                _SymbolTableTree.setUsed(currentNode.name);
                             }
                             Control.putDebug("Int "+id+" = " +currentNode.name);
                         }
@@ -586,6 +589,9 @@ namespace Compiler {
                 else if (_SymbolTableTree.getTypeAnyScope(id) !== "int") {
                     var newError = new ErrorCompiler("INCOMPATABLE TYPES", "Cannot add an int with a "+ _SymbolTableTree.getTypeAnyScope(id) +" variable "+id, currentNode.tokenPointer.startIndex);
                 }
+                else {
+                    _SymbolTableTree.setUsed(id);
+                }
             }
             
             else {
@@ -642,6 +648,9 @@ namespace Compiler {
                 if (thisType == null) {
                     var newError = new ErrorCompiler("REFERENCE TO UNDECLARED VARIABLE", id, currentNode.tokenPointer.startIndex);
                 }               
+                else {
+                    _SymbolTableTree.setUsed(id);
+                }
             }
             //INT
             else if (currentNode.tokenPointer.description === "DIGIT") {

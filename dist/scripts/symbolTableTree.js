@@ -18,7 +18,6 @@ var Compiler;
             scopeCounter++;
             var newSymbolTable = new Compiler.SymbolTable(scopeName);
             Compiler.Control.putDebug("New Symbol Table: " + newSymbolTable.name);
-            //Control.putDebug("1");
             //First scope, root symbol table "node"
             if (this.root == null) {
                 this.root = newSymbolTable;
@@ -28,17 +27,7 @@ var Compiler;
             else {
                 newSymbolTable.parent = this.current;
                 newSymbolTable.parent.addChild(newSymbolTable);
-                //Control.putDebug(" ["+newSymbolTable.name+", parent: "+newNode.parent.name+", children: "+newNode.children + "]");
             }
-            //Control.putDebug("2");
-            //Move current pointer down the tree (unless its a leaf node)
-            //newSymbolTable.tokenPointer = token;
-            //Control.putDebug("&gt;&gt; TOKEN ["+newNode.tokenPointer.str +"] at "+Utils.address(newNode.tokenPointer.startIndex));
-            //newNode.isLeaf = isLeaf;
-            //Control.putDebug("3");
-            //add it to the in order node list
-            //this.nodeList.push(newNode);
-            //Control.putDebug("done adding node");
             //make it the new current
             this.current = newSymbolTable;
             //Control.putDebug("returning");
@@ -75,22 +64,6 @@ var Compiler;
         }
         //Return type with closest found scope or null if not found
         getTypeAnyScope(id) {
-            // Control.putDebug("in get type any scope STT");
-            // //var isFound = false;
-            // //var idCode:number = (id.charCodeAt(0) - "a".charCodeAt(0));
-            // //try the first scope
-            // var foundType = this.current.getType(id);
-            // //var scopesMoved = 0;
-            // var checking:SymbolTable = this.current;
-            // //check up the scopes
-            // while (foundType == null && checking.parent != null) {
-            //     //scopesMoved++;
-            //     checking = checking.parent;
-            //     Control.putDebug("Lets check " +checking.name);
-            //     foundType = checking.getType(id);
-            // }
-            // Control.putDebug("FOUND TYPE: "+foundType);
-            // return foundType;
             var symbol = this.getSymbolAnyScope(id);
             if (symbol == null) {
                 return null;
@@ -101,17 +74,9 @@ var Compiler;
         }
         //set a variable as used
         //can only come here if id exists
-        // public setUsed(id:String) {
-        //     var foundType = false;
-        //     var checking:SymbolTable = this.current;
-        //     //check up the scopes
-        //     while (foundID == null && checking.parent != null) {
-        //         checking = checking.parent;
-        //         Control.putDebug("Lets check " +checking.name);
-        //         foundType = checking.getType(id);
-        //     }
-        //     return foundType;
-        // }
+        setUsed(id) {
+            this.getSymbolAnyScope(id).IsUsed = true;
+        }
         getSymbolAnyScope(id) {
             var checking = this.current;
             var foundSymbolNode = checking.getSymbol(id);
