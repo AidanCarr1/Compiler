@@ -12,7 +12,7 @@ var warningCount = 0;
 var errorCount = 0;
 
 // UI Controls
-var debug = true;
+var debug = false;
 
 // User Program Index
 const LINE = 0;

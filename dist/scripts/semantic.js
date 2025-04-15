@@ -389,6 +389,7 @@ var Compiler;
         //precondition: current=Addition
         //post condition: current= after the whole addition block?
         static checkAddition() {
+            Compiler.Control.putSemanticMessage("Check Addition");
             //Get left (left id is impossible by parse)
             this.nextNode();
             Compiler.Control.putDebug("left" + currentNode.name);
@@ -433,6 +434,7 @@ var Compiler;
             }
         }
         static checkEquality(equalityIndex) {
+            Compiler.Control.putSemanticMessage("Check Type Equality");
             var leftType = null;
             var rightType = null;
             //Get left
@@ -460,9 +462,6 @@ var Compiler;
                 this.checkAddition();
                 Compiler.Control.putDebug("done with eq addition");
             }
-            else if (currentNode.tokenPointer.description === "DIGIT") {
-                thisType = "int";
-            }
             //BOOLEAN
             else if (currentNode.name === "Inequality" || currentNode.name === "Equality") {
                 thisType = this.checkEquality(currentNode.tokenPointer.startIndex);
@@ -474,6 +473,18 @@ var Compiler;
                 if (thisType == null) {
                     var newError = new Compiler.ErrorCompiler("REFERENCE TO UNDECLARED VARIABLE", id, currentNode.tokenPointer.startIndex);
                 }
+            }
+            //INT
+            else if (currentNode.tokenPointer.description === "DIGIT") {
+                thisType = "int";
+            }
+            //STRING
+            else if (currentNode.name.charAt(0) === "\"") {
+                thisType = "string";
+            }
+            //BOOLEAN
+            else if (currentNode.name === "true" || currentNode.name === "false") {
+                thisType = "boolean";
             }
             else {
                 //return error
