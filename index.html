@@ -19,10 +19,10 @@
         <p>User Program</p>
         <textarea id="taSourceCode" cols="65" rows="10">
 {
-int a a=9
-a=7 a=6 /*
-a = false*/
-a=(8+9 != 9)
+ int a a=9
+ if (a==8) {
+  print(a)
+ }
 }$</textarea>
         <br>
         Verbose Mode is <input type="button" id="btnVerbose" value="OFF" onclick="Compiler.Control.btnVerbose_click();"/>

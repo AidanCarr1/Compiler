@@ -477,17 +477,36 @@ namespace Compiler {
                             Control.putDebug("Int "+id+" = " +currentNode.name);
                         }
 
-                        
-
-                        
-
+            
                         //Next statement
                         this.nextNode();
                         break;
 
 
+                    case "If":
+                    case "While":
+                        Control.putSemanticMessage("If-While Type/Scope Check");
 
+                        //get conditional
+                        this.nextNode();
 
+                        //Inequality/Equality
+                        if (currentNode.name === "Inequality" || currentNode.name === "Equality"){
+                            this.checkEquality(currentNode.tokenPointer.startIndex);
+                        }
+
+                        //true or false
+                        else if (currentNode.name === "true" || currentNode.name === "false") {
+                            //we cool
+                        }
+
+                        else {
+                            Control.putDebug("Impossible to get here. While/If");
+                        }
+
+                        //Next statement
+                        this.nextNode();
+                        break;
                     
                     //End of block, scope up
                     case "SCOPE UP":
