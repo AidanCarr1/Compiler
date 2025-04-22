@@ -34,6 +34,59 @@ h2 {
 	font-size:   20pt;
 	font-weight: normal;
 	font-style: normal;	
+	margin-bottom: 0px;
+}
+
+/*main containers*/
+#container {
+	margin-left: auto;
+    margin-right: auto;
+    display: flex; 
+    flex-wrap: wrap; 
+    gap: 10px;
+    justify-content: center;
+}
+#left {
+	/*flex: 1 1; */
+	/* margin-left: 20px; */
+	/* background-color: aqua; */
+	max-width: 400px;
+
+	margin-left: auto;
+    margin-right: auto;
+    display: flex; 
+    flex-wrap: wrap; 
+}
+#tinyLeft {
+	margin-top: 10px;
+	text-align: left;
+	/*background-color: pink;*/
+	min-width: 200px;
+}
+#tinyRight {
+	margin-top: 10px;
+	margin-left: 20px;
+	/*flex: 1 1 200px; 
+	min-width: 100px;
+	margin-right: 0px;*/
+	text-align: right;
+	/* background-color: darkolivegreen; */
+}
+#btnCompile {
+	font-size: 30pt;
+}
+#right {
+	/* flex: 1 1 275px;  */
+	/* margin-right: 20px; */
+	/* background-color: blueviolet; */
+	/*max-width: 400px;
+    max-height: 400px;*/
+	width: 800px;
+
+	margin-left: auto;
+    margin-right: auto;
+    display: flex; 
+    flex-wrap: wrap; 
 }
 
 input {
@@ -53,9 +106,8 @@ textarea, pre {
 #taOutput {
 	font-family: monospace;
 	font-size: 14pt;
-
-	background-color: white;
 	width: 800px;
+	background-color: white;
 	height: 600px;
 	overflow-y:auto;
 	margin-top: 10px;
@@ -114,6 +166,4 @@ textarea, pre {
 	color:rgb(255, 175, 0);
 }
 
-#btnCompile {
-	font-size: 40px;
-}
+

@@ -101,7 +101,7 @@ var Compiler;
                     //Check type and scope
                     this.putImportantLine();
                     Compiler.Semantic.checkTypeScope();
-                    this.putLine();
+                    //this.putLine();
                     //Check scope tree warnings
                     _SymbolTableTree.checkWarnings(_SymbolTableTree.root);
                     //Print result
@@ -149,7 +149,7 @@ var Compiler;
                 debug = true;
             }
             else {
-                document.getElementById("btnVerbose").value = "OFF";
+                document.getElementById("btnDebug").value = "OFF";
                 debug = false;
             }
         }

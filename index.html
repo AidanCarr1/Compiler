@@ -15,25 +15,24 @@
     </div>
     <br>
 
-    <div style="display: flex;">
-        <div id="left" style="width: 600px;">
-            <p>User Program</p>               <!--rows="10"-->
-            <textarea id="taSourceCode" cols="45" rows="20"></textarea>
+    <div id="container">
+        <div id="left">
+            <h2>User Program</h2>               <!--rows="10"-->
+            <textarea id="taSourceCode" cols="37" rows="20"></textarea>
             <br>
             <div style="display: flex;">
-                <div id="tinyLeft" style="width: 250px;">
-                    Verbose Mode is <input type="button" id="btnVerbose" value="ON" onclick="Compiler.Control.btnVerbose_click();"/>
+                <div id="tinyLeft">
+                    Verbose Mode <input type="button" id="btnVerbose" value="ON" onclick="Compiler.Control.btnVerbose_click();"/>
                     <br>
-                    Debug Mode is <input type="button" id="btnDebug" value="OFF" onclick="Compiler.Control.btnDebug_click();"/>
+                    Debug Mode <input type="button" id="btnDebug" value="OFF" onclick="Compiler.Control.btnDebug_click();"/>
                 </div>
-                <br>
-                <div id="tinyRight" style="width: 250px;">
+                <div id="tinyRight">
                     <input type="button" id="btnCompile" value="Compile" onclick="Compiler.Control.btnCompile_click();"/>
                 </div>
             </div>
         </div>
         <br>
-        <div id="right" style="width: 800px;">
+        <div id="right">
             <div id="taOutput"></div>
         </div>
         <!--<textarea id="taOutput" cols="64" rows="25" readonly></textarea>-->

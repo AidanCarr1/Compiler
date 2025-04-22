@@ -123,7 +123,7 @@ namespace Compiler {
                     //Check type and scope
                     this.putImportantLine();
                     Semantic.checkTypeScope();
-                    this.putLine();
+                    //this.putLine();
 
                     //Check scope tree warnings
                     _SymbolTableTree.checkWarnings(_SymbolTableTree.root);
@@ -181,7 +181,7 @@ namespace Compiler {
                 debug = true;
             }
             else {
-                (<HTMLInputElement> document.getElementById("btnVerbose")).value = "OFF";
+                (<HTMLInputElement> document.getElementById("btnDebug")).value = "OFF";
                 debug = false;
             }
         }
