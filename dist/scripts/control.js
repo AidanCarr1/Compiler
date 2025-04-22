@@ -6,14 +6,15 @@ var Compiler;
     class Control {
         static init() {
             // Clear the message box.
-            document.getElementById("taOutput").innerHTML = `<pre class='centered'>\n\n\n\n\n\n\n\n
-<mark style="color:lightgray">                                      )  
-                                     (  \`  
-                                    )   ) (  </mark> <mark style="color:orange">
-                                 __..---..__
-                             ,-='  <mark style="color:darkorange">/  |  \\ </mark> \`=-.
-                            :--..___________..--</mark><mark style="color:gray">;
-                             \\.,_____________,./ </mark></pre>`;
+            document.getElementById("taOutput").innerHTML = `<pre class='centered'>\n\n\n\n\n\n\n
+<mark style="color:lightgray">
+                             )  
+                            (  \`  
+                           )   ) (  </mark> <mark style="color:orange">
+                        __..---..__
+                    ,-='  <mark style="color:darkorange">/  |  \\ </mark> \`=-.
+                   :--..___________..--</mark><mark style="color:gray">;
+                    \\.,_____________,./ </mark></pre>`;
             //Pie credit: https://ascii.co.uk/art/pie
             // Set the initial values for our globals.
             tokens = "";
@@ -90,7 +91,7 @@ var Compiler;
                 warningCount = 0;
                 //Was Parse completed?
                 if (isParseSuccessful) {
-                    //Creat AST
+                    //Create AST
                     this.putLine();
                     this.putMessage("Begin SEMANTIC ANALYSIS");
                     Compiler.Semantic.createAST();
@@ -114,14 +115,17 @@ var Compiler;
                     }
                     //Scope Tree/Symbol Table
                     if (isSemanticSuccessful) {
-                        this.putLine();
-                        this.putMessage("Symbol Table");
+                        this.putImportantLine();
+                        this.putImportantMessage("Symbol Table");
                         _SymbolTableTree.printTree();
                     }
                 }
                 //Was Semantic Completed?
                 if (isSemanticSuccessful) {
-                    //Do code gen here!!!!!!!!!!
+                    //Creat AST
+                    this.putLine();
+                    this.putMessage("Begin CODE GENERATION");
+                    Compiler.CodeGen.generate();
                 }
                 //Next Program
                 this.putImportantLine(2);
@@ -213,6 +217,14 @@ var Compiler;
                 if (errorCount <= 0) {
                     document.getElementById("taOutput").innerHTML
                         += "<p><mark class='label'>SEMANTIC</mark> <mark class='info'>" + msg + "</mark></p>";
+                }
+            }
+        }
+        static putCodeGenMessage(msg) {
+            if (verbose || debug) {
+                if (errorCount <= 0) {
+                    document.getElementById("taOutput").innerHTML
+                        += "<p><mark class='label'>CODE GEN</mark> <mark class='info'>" + msg + "</mark></p>";
                 }
             }
         }

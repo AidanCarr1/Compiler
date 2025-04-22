@@ -153,7 +153,7 @@ namespace Compiler {
             traversalResult = "";
 
             this.expand(this.root, 0);
-            Control.putMessage(traversalResult);
+            Control.putImportantMessage(traversalResult);
         }
 
         private expand(node: SymbolTable, depth) {

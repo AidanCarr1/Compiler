@@ -120,7 +120,7 @@ var Compiler;
             //Start with blank slate
             traversalResult = "";
             this.expand(this.root, 0);
-            Compiler.Control.putMessage(traversalResult);
+            Compiler.Control.putImportantMessage(traversalResult);
         }
         expand(node, depth) {
             //Skip the fake leaf! (empty List item)
