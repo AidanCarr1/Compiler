@@ -34,8 +34,6 @@ namespace Compiler {
             
             this.init();
             (<HTMLInputElement> document.getElementById("taOutput")).innerHTML = "";
-            //this.putMessage("Compilation Started!");
-            //this.putLine(3);
             
             //Separate the user generated source code into programs
             var programs = Utils.getPrograms();
@@ -63,11 +61,11 @@ namespace Compiler {
 
                 //Print result
                 if (errorCount == 0){
-                    this.putImportantMessage("LEX complete with " + warningCount +" warning(s) and 0 errors");
+                    this.putImportantMessage("<mark class='label'>LEX</mark> complete with " + warningCount +" warning(s) and 0 errors");
                     isLexSuccessful = true;
                 }
                 else {
-                    this.putImportantMessage("LEX exited with " + warningCount +" warning(s) and "+ errorCount +" error(s)");
+                    this.putImportantMessage("<mark class='label'>LEX</mark> exited with " + warningCount +" warning(s) and "+ errorCount +" error(s)");
                 }
                 this.putImportantLine();
 
@@ -87,11 +85,11 @@ namespace Compiler {
 
                     //Print result
                     if (errorCount == 0) {
-                        this.putImportantMessage("PARSE complete with " + warningCount +" warning(s) and 0 errors");
+                        this.putImportantMessage("<mark class='label'>PARSE</mark> complete with " + warningCount +" warning(s) and 0 errors");
                         isParseSuccessful = true;
                     }
                     else {
-                        this.putImportantMessage("PARSE exited with " + warningCount +" warning(s) and "+ errorCount +" error(s)");
+                        this.putImportantMessage("<mark class='label'>PARSE</mark> exited with " + warningCount +" warning(s) and "+ errorCount +" error(s)");
                     }
 
                     //CST
@@ -124,18 +122,17 @@ namespace Compiler {
                     //Check type and scope
                     this.putImportantLine();
                     Semantic.checkTypeScope();
-                    //this.putLine();
 
                     //Check scope tree warnings
                     _SymbolTableTree.checkWarnings(_SymbolTableTree.root);
 
                     //Print result
                     if (errorCount == 0) {
-                        this.putImportantMessage("SEMANTIC complete with " + warningCount +" warning(s) and 0 errors");
+                        this.putImportantMessage("<mark class='label'>SEMANTIC</mark> complete with " + warningCount +" warning(s) and 0 errors");
                         isSemanticSuccessful = true;
                     }
                     else {
-                        this.putImportantMessage("SEMANTIC exited with " + warningCount +" warning(s) and "+ errorCount +" error(s)");
+                        this.putImportantMessage("<mark class='label'>SEMANTIC</mark> exited with " + warningCount +" warning(s) and "+ errorCount +" error(s)");
                     }
 
                     //Scope Tree/Symbol Table
@@ -146,13 +143,25 @@ namespace Compiler {
                     }  
                 }
 
+                //reset warnings
+                warningCount = 0;
+
                 //Was Semantic Completed?
                 if (isSemanticSuccessful) {
 
-                    //Creat AST
-                    this.putLine();
-                    this.putMessage("Begin CODE GENERATION");
+                    //Generate code
+                    this.putImportantLine();
+                    this.putImportantMessage("Begin CODE GEN");
                     CodeGen.generate();
+
+                    //Print result (only errors should be code is too big?)
+                    // if (errorCount == 0) {
+                    //     this.putImportantMessage("<mark class='label'>CODE GEN</mark> complete with " + warningCount +" warning(s) and 0 errors");
+                    //     isSemanticSuccessful = true;
+                    // }
+                    // else {
+                    //     this.putImportantMessage("<mark class='label'>CODE GEN</mark> exited with " + warningCount +" warning(s) and "+ errorCount +" error(s)");
+                    // }
                 }
 
                 //Next Program

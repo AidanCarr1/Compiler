@@ -234,7 +234,6 @@ namespace Compiler {
 
     public static nextNode() {
         nodeCounter++;
-        //Control.putDebug("prev node: " +currentNode.name);
         if (nodeCounter >= (_AST.nodeList).length) {
             currentNode = null;
         }
