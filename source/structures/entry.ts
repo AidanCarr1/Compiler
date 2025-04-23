@@ -7,16 +7,22 @@ namespace Compiler {
 
         //New Entry
         constructor(
-            public id?: String,
-            public temp?: String,
+            public id: String,
+            public entryNumber: number,
+
             public scope?: number,
-            public address?: number
+            public tempAddress?: String,
+            public offset?: number
             ) { 
 
-            this.id = "T"+variableCounter+"XX";
-            this.temp = "";
+            //String id
+            this.id = id;
             this.scope = scopeCounter;
-            this.address = variableCounter;
+            this.entryNumber = entryNumber;
+
+            //string address and placement
+            this.tempAddress = "T"+entryNumber+"XX";
+            this.offset = entryNumber+1;
 
         }
     }

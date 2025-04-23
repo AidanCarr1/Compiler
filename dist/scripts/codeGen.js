@@ -10,9 +10,10 @@ var Compiler;
         static generate() {
             //code
             code = "";
-            variableCounter = 0;
+            //variableCounter = 0;
             //tables
-            _staticTable;
+            _StaticTable;
+            _StaticTable.reset();
             //Scope 0
             scopeCounter = 0;
             currentNode = _AST.root;
@@ -41,10 +42,12 @@ var Compiler;
                         var id = currentNode.tokenPointer.str; //"a" "b" "c"...
                         //Put it in the symbol table
                         _SymbolTableTree.newVariable(type, id);
-                        //Update code
+                        //int/boolean = put in static table
+                        var entry = _StaticTable.newEntry(id);
+                        //Initialize int/boolean as 00
                         code += "A9 00 8D ";
                         //Add temporary variable location
-                        code += "T0 XX ";
+                        code += entry.tempAddress + " ";
                         //Next statement
                         this.nextNode();
                         break;

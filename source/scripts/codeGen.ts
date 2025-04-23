@@ -12,10 +12,11 @@ namespace Compiler {
         
         //code
         code = "";
-        variableCounter = 0;
+        //variableCounter = 0;
 
         //tables
-        _staticTable;
+        _StaticTable;
+        _StaticTable.reset();
 
         //Scope 0
         scopeCounter = 0;
@@ -57,11 +58,14 @@ namespace Compiler {
                     //Put it in the symbol table
                     _SymbolTableTree.newVariable(type, id);
 
+                    //int/boolean = put in static table
+                    var entry = _StaticTable.newEntry(id);
 
-                    //Update code
+
+                    //Initialize int/boolean as 00
                     code += "A9 00 8D "
                     //Add temporary variable location
-                    code += "T0 XX ";
+                    code += entry.tempAddress + " ";
 
                     //Next statement
                     this.nextNode();

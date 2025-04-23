@@ -5,15 +5,19 @@ var Compiler;
 (function (Compiler) {
     class Entry {
         //New Entry
-        constructor(id, temp, scope, address) {
+        constructor(id, entryNumber, scope, tempAddress, offset) {
             this.id = id;
-            this.temp = temp;
+            this.entryNumber = entryNumber;
             this.scope = scope;
-            this.address = address;
-            this.id = "T" + variableCounter + "XX";
-            this.temp = "";
+            this.tempAddress = tempAddress;
+            this.offset = offset;
+            //String id
+            this.id = id;
             this.scope = scopeCounter;
-            this.address = variableCounter;
+            this.entryNumber = entryNumber;
+            //string address and placement
+            this.tempAddress = "T" + entryNumber + "XX";
+            this.offset = entryNumber + 1;
         }
     }
     Compiler.Entry = Entry;
