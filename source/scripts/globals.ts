@@ -58,3 +58,6 @@ var nodeCounter = 0;
 
 // CODE GEN
 var code:String = "";
+var variableCounter = 0;
+
+var _StaticTable = new Compiler.StaticTable();

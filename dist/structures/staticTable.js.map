@@ -1,0 +1,1 @@
+{"version":3,"file":"staticTable.js","sourceRoot":"","sources":["../../source/structures/staticTable.ts"],"names":[],"mappings":"AAAA;;EAEE;AAEF,IAAU,QAAQ,CAUjB;AAVD,WAAU,QAAQ;IACd,MAAa,WAAW;QAEpB,kBAAkB;QAClB,YAAmB,OAAiB;YAAjB,YAAO,GAAP,OAAO,CAAU;YAGhC,IAAI,CAAC,OAAO,GAAG,EAAE,CAAC,CAAC,6BAA6B;QACpD,CAAC;KACJ;IARY,oBAAW,cAQvB,CAAA;AACL,CAAC,EAVS,QAAQ,KAAR,QAAQ,QAUjB"}

@@ -10,6 +10,9 @@ var Compiler;
         static generate() {
             //code
             code = "";
+            variableCounter = 0;
+            //tables
+            _staticTable;
             //Scope 0
             scopeCounter = 0;
             currentNode = _AST.root;

@@ -42,4 +42,6 @@ var nodeCounter = 0;
 //var currentSymbolTable = null;
 // CODE GEN
 var code = "";
+var variableCounter = 0;
+var _StaticTable = new Compiler.StaticTable();
 //# sourceMappingURL=globals.js.map

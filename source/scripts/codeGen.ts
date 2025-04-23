@@ -12,6 +12,10 @@ namespace Compiler {
         
         //code
         code = "";
+        variableCounter = 0;
+
+        //tables
+        _staticTable;
 
         //Scope 0
         scopeCounter = 0;
