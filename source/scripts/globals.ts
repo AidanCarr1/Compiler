@@ -54,3 +54,7 @@ var scopeCounter = 0;
 var currentNode = null;
 var nodeCounter = 0;
 //var currentSymbolTable = null;
+
+
+// CODE GEN
+var code:String = "";

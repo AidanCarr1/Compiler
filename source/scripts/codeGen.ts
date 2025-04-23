@@ -10,6 +10,9 @@ namespace Compiler {
 
     public static generate() {
         
+        //code
+        code = "";
+
         //Scope 0
         scopeCounter = 0;
         currentNode = _AST.root;
@@ -28,7 +31,7 @@ namespace Compiler {
 
 
                 case "Block":
-                    Control.putCodeGenMessage("Block Type/Scope Check");
+                    Control.putCodeGenMessage("Block");
 
                     //New scope, grow up the tree
                     _SymbolTableTree.addScope();
@@ -38,7 +41,7 @@ namespace Compiler {
 
 
                 case "Var Decl":
-                    Control.putCodeGenMessage("Var Decl Type/Scope Check");
+                    Control.putCodeGenMessage("Var Decl");
 
                     //Get type
                     this.nextNode();
@@ -49,6 +52,12 @@ namespace Compiler {
 
                     //Put it in the symbol table
                     _SymbolTableTree.newVariable(type, id);
+
+
+                    //Update code
+                    code += "A9 00 8D "
+                    //Add temporary variable location
+                    code += "T0 XX ";
 
                     //Next statement
                     this.nextNode();

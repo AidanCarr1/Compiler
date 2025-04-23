@@ -8,6 +8,8 @@ var Compiler;
 (function (Compiler) {
     class CodeGen {
         static generate() {
+            //code
+            code = "";
             //Scope 0
             scopeCounter = 0;
             currentNode = _AST.root;
@@ -20,14 +22,14 @@ var Compiler;
             while (currentNode != null) {
                 switch (currentNode.name) {
                     case "Block":
-                        Compiler.Control.putCodeGenMessage("Block Type/Scope Check");
+                        Compiler.Control.putCodeGenMessage("Block");
                         //New scope, grow up the tree
                         _SymbolTableTree.addScope();
                         //Go to first statement inside the block
                         this.nextNode();
                         break;
                     case "Var Decl":
-                        Compiler.Control.putCodeGenMessage("Var Decl Type/Scope Check");
+                        Compiler.Control.putCodeGenMessage("Var Decl");
                         //Get type
                         this.nextNode();
                         var type = currentNode.tokenPointer.str; //"int" "boolean" "string"
@@ -36,6 +38,10 @@ var Compiler;
                         var id = currentNode.tokenPointer.str; //"a" "b" "c"...
                         //Put it in the symbol table
                         _SymbolTableTree.newVariable(type, id);
+                        //Update code
+                        code += "A9 00 8D ";
+                        //Add temporary variable location
+                        code += "T0 XX ";
                         //Next statement
                         this.nextNode();
                         break;

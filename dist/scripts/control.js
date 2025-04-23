@@ -133,6 +133,10 @@ var Compiler;
                     // else {
                     //     this.putImportantMessage("<mark class='label'>CODE GEN</mark> exited with " + warningCount +" warning(s) and "+ errorCount +" error(s)");
                     // }
+                    //Print code
+                    this.putImportantLine();
+                    this.putImportantMessage("6502 Code");
+                    this.putImportantMessage(code);
                 }
                 //Next Program
                 this.putImportantLine(2);
