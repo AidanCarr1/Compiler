@@ -45,9 +45,10 @@ var Compiler;
                         //int/boolean = put in static table
                         var entry = _StaticTable.newEntry(id);
                         //Initialize int/boolean as 00
-                        code += "A9 00 8D ";
+                        code += "" + Compiler.Utils.toHex(0xA9) + Compiler.Utils.toHex(6) + Compiler.Utils.toHex(0x8D);
+                        //code += "A9 00 8D ";
                         //Add temporary variable location
-                        code += entry.tempAddress + " ";
+                        code += "" + entry.tempAddress;
                         //Next statement
                         this.nextNode();
                         break;

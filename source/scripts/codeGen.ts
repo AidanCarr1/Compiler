@@ -63,9 +63,10 @@ namespace Compiler {
 
 
                     //Initialize int/boolean as 00
-                    code += "A9 00 8D "
+                    code += ""+Utils.toHex(0xA9)+Utils.toHex(6)+Utils.toHex(0x8D);
+                    //code += "A9 00 8D ";
                     //Add temporary variable location
-                    code += entry.tempAddress + " ";
+                    code += ""+entry.tempAddress;
 
                     //Next statement
                     this.nextNode();
