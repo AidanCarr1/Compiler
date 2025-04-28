@@ -124,7 +124,7 @@ var Compiler;
                 if (isSemanticSuccessful) {
                     //Generate code
                     this.putImportantLine();
-                    this.putMessage("Begin CODE GEN");
+                    this.putMessage("Begin CODE GENERATION");
                     Compiler.CodeGen.generate();
                     //Print result (only errors should be code is too big?)
                     if (errorCount == 0) {

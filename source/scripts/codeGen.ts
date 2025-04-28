@@ -84,13 +84,13 @@ namespace Compiler {
 
                         //If printing an addition
                         if (currentNode.name === "Addition") {
-                            Control.putDebug("Lets check '+'");
-                            this.checkAddition();
+                            // Control.putDebug("Lets check '+'");
+                            // this.checkAddition();
                         }
                         //printing equality/inequality
                         else if (currentNode.name === "Inequality" || currentNode.name === "Equality") {
-                            Control.putDebug("Lets check '!=' or '=='");
-                            this.checkEquality(currentNode.tokenPointer.startIndex);
+                            // Control.putDebug("Lets check '!=' or '=='");
+                            // this.checkEquality(currentNode.tokenPointer.startIndex);
                         }
 
                         //If printing a variable...
@@ -134,86 +134,64 @@ namespace Compiler {
                         //Get id
                         this.nextNode();
                         var id:String = currentNode.tokenPointer.str; //"a" "b" "c"...
-
-                        Control.putDebug("GET NODE ANY SCOPE "+id+": "+_SymbolTableTree.getSymbolAnyScope(id).type+
-                            " used:"+ _SymbolTableTree.getSymbolAnyScope(id).IsUsed);
-                        
-                        //Check if id has been declared
-                        if (!_SymbolTableTree.isDeclaredAnyScope(currentNode.tokenPointer.str)) {
-                            var newError = new ErrorCompiler("UNDECLARED VARIABLE", "Cannot assign a value to "+id, 
-                                currentNode.tokenPointer.startIndex);
-                        }
-                        else {
-                            //We'll just assume it will be initialized. If theres an error, we will never see this anyway
-                            _SymbolTableTree.setInitialized(id);
-                        }
+                        var addressStr = _SymbolTableTree.getAddressById(id);
 
                         //Get value
                         this.nextNode();
 
                         //If it's a string constant...
                         if (currentNode.name.charAt(0) === "\"") {
-                            //But the id isnt a string
-                            if (_SymbolTableTree.getTypeAnyScope(id) !== "string") {
-                                var newError = new ErrorCompiler("TYPE MISMATCH", "Cannot assign string value to "+
-                                    _SymbolTableTree.getTypeAnyScope(id)+" variable "+id, currentNode.tokenPointer.startIndex);
-                            }
+                            //MORE TO DO HERE
                             Control.putDebug("String "+id+" = " +currentNode.name);
                         }
 
                         //Equality/inequality
                         else if (currentNode.name === "Inequality" || currentNode.name === "Equality"){
-                            if (_SymbolTableTree.getTypeAnyScope(id) === "boolean") {
-                                Control.putDebug("Lets check '!=' or '=='");
-                                this.checkEquality(currentNode.tokenPointer.startIndex);
-                            }
-                            else {
-                                var newError = new ErrorCompiler("TYPE MISMATCH", "Cannot assign boolean value to "+
-                                    _SymbolTableTree.getTypeAnyScope(id)+" variable "+id, currentNode.tokenPointer.startIndex);
-                            }
+                            // if (_SymbolTableTree.getTypeAnyScope(id) === "boolean") {
+                            //     Control.putDebug("Lets check '!=' or '=='");
+                            //     this.checkEquality(currentNode.tokenPointer.startIndex);
+                            // }
+                            // else {
+                            //     var newError = new ErrorCompiler("TYPE MISMATCH", "Cannot assign boolean value to "+
+                            //         _SymbolTableTree.getTypeAnyScope(id)+" variable "+id, currentNode.tokenPointer.startIndex);
+                            // }
                         }
 
                         //If it's addition...
                         else if (currentNode.name == "Addition") {
-                            this.checkAddition();
+                            // this.checkAddition();
                         }
 
                         //If it's a digit...
                         else if (currentNode.tokenPointer.description === "DIGIT") {
-                            //But the id isnt an int
-                            if (_SymbolTableTree.getTypeAnyScope(id) !== "int") {
-                                var newError = new ErrorCompiler("TYPE MISMATCH", "Cannot assign int value to "+
-                                    _SymbolTableTree.getTypeAnyScope(id)+" variable "+id, currentNode.tokenPointer.startIndex);
-                            }
-                            Control.putDebug("Int "+id+" = " +currentNode.name);
+
+                            //load acc with constant digit
+                            code += "A9" + "0"+currentNode.name;
+                            //store in id address
+                            code += "8D" + addressStr;
                         }
 
                         //If it's a boolean...
                         else if (currentNode.tokenPointer.description === "BOOLEAN VALUE") {
-                            //But the id isnt a boolean
-                            if (_SymbolTableTree.getTypeAnyScope(id) !== "boolean") {
-                                var newError = new ErrorCompiler("TYPE MISMATCH", "Cannot assign boolean value to "+
-                                    _SymbolTableTree.getTypeAnyScope(id)+" variable "+id, currentNode.tokenPointer.startIndex);
-                            }
-                            Control.putDebug("Int "+id+" = " +currentNode.name);
+                            // //But the id isnt a boolean
+                            // if (_SymbolTableTree.getTypeAnyScope(id) !== "boolean") {
+                            //     var newError = new ErrorCompiler("TYPE MISMATCH", "Cannot assign boolean value to "+
+                            //         _SymbolTableTree.getTypeAnyScope(id)+" variable "+id, currentNode.tokenPointer.startIndex);
+                            // }
+                            // Control.putDebug("Int "+id+" = " +currentNode.name);
                         }
 
                         //If it's an id...
                         else if (currentNode.tokenPointer.description === "ID") {
-                            //But the id is undeclared
-                            if (!_SymbolTableTree.getTypeAnyScope(currentNode.tokenPointer.str)) {
-                                var newError = new ErrorCompiler("REFERENCE TO UNDECLARED VARIABLE", id, currentNode.tokenPointer.startIndex);
-                            }
-                            //But the id types dont match
-                            else if (_SymbolTableTree.getTypeAnyScope(id) !== _SymbolTableTree.getTypeAnyScope(currentNode.name)) {
-                                var newError = new ErrorCompiler("TYPE MISMATCH", "Cannot assign "+ 
-                                    _SymbolTableTree.getTypeAnyScope(currentNode.name)+" variable "+currentNode.name+" to "+
-                                    _SymbolTableTree.getTypeAnyScope(id)+" variable "+id, currentNode.tokenPointer.startIndex);
-                            }
-                            else {
-                                _SymbolTableTree.setUsed(currentNode.name);
-                            }
-                            Control.putDebug("Int "+id+" = " +currentNode.name);
+
+                            //get secondary id
+                            var secondaryId:String = currentNode.tokenPointer.str;
+                            var secondaryAddress = _SymbolTableTree.getAddressById(secondaryId);
+
+                            //store secondary id value in acc
+                            code += "AD" + secondaryAddress;
+                            //put value in id
+                            code += "8D" + addressStr;
                         }
             
                         //Next statement
