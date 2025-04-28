@@ -10,7 +10,8 @@ namespace Compiler {
 
             //public isInherited?: boolean,
             public isInitialized?: boolean,
-            public IsUsed?: boolean
+            public IsUsed?: boolean,
+            public entryPointer?: Entry
             ) { 
 
             //Know the data type
@@ -22,6 +23,7 @@ namespace Compiler {
             //For error/warning reasons
             this.isInitialized = false;
             this.IsUsed = false;
+            this.entryPointer = null;
         }
 
     }

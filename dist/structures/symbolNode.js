@@ -7,10 +7,11 @@ var Compiler;
         //New Node
         constructor(type, 
         //public isInherited?: boolean,
-        isInitialized, IsUsed) {
+        isInitialized, IsUsed, entryPointer) {
             this.type = type;
             this.isInitialized = isInitialized;
             this.IsUsed = IsUsed;
+            this.entryPointer = entryPointer;
             //Know the data type
             this.type = null;
             //For scope reasons
@@ -18,6 +19,7 @@ var Compiler;
             //For error/warning reasons
             this.isInitialized = false;
             this.IsUsed = false;
+            this.entryPointer = null;
         }
     }
     Compiler.SymbolNode = SymbolNode;

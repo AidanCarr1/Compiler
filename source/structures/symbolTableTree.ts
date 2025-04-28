@@ -114,6 +114,12 @@ namespace Compiler {
             return foundSymbolNode;
         }
 
+        public getAddressById(id:String) {
+            var symbolNode = _SymbolTableTree.getSymbolAnyScope(id);
+            return symbolNode.entryPointer.tempAddress;
+        }
+
+
 
 
         /* after everyhting is done, traverse the tree to print and find warnings*/
@@ -215,5 +221,6 @@ namespace Compiler {
                 }
             }
         }
+
     }
 }

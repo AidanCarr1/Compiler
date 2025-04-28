@@ -684,3 +684,11 @@ mess with temp addresses*/
   e = 4
   e = 6
 }$
+
+
+/*print different a scopes*/
+{
+    int a print(a)
+    {int a print(a)}
+    print(a)
+}$

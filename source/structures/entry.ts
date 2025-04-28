@@ -10,7 +10,7 @@ namespace Compiler {
             public id: String,
             public entryNumber: number,
 
-            public scope?: number,
+            public scope?: String,
             public tempAddress?: string, //there's a difference between string and String??
                                          //needed for find and replace later
             public offset?: number
@@ -18,7 +18,7 @@ namespace Compiler {
 
             //String id
             this.id = id;
-            this.scope = scopeCounter;
+            this.scope = _SymbolTableTree.current.name; // current scope name "SCOPE1"
             this.entryNumber = entryNumber;
 
             //string address and placement

@@ -14,7 +14,8 @@ var Compiler;
             //tables
             _StaticTable;
             _StaticTable.reset();
-            //Scope 0
+            //Redo the scope table
+            _SymbolTableTree.reset();
             scopeCounter = 0;
             currentNode = _AST.root;
             nodeCounter = 0;
@@ -42,8 +43,11 @@ var Compiler;
                         var id = currentNode.tokenPointer.str; //"a" "b" "c"...
                         //Put it in the symbol table
                         _SymbolTableTree.newVariable(type, id);
-                        //int/boolean = put in static table
+                        var symbolNode = _SymbolTableTree.getSymbolAnyScope(id);
+                        //Put in static table
                         var entry = _StaticTable.newEntry(id);
+                        //Symbol node points to static table entry
+                        symbolNode.entryPointer = entry;
                         //Initialize int/boolean as 00
                         code += "A9" + "00" + "8D";
                         //Add temporary variable location
@@ -68,13 +72,22 @@ var Compiler;
                         }
                         //If printing a variable...
                         else if (currentNode.tokenPointer.description === "ID") {
-                            //Check that it's not undeclared!
-                            if (!_SymbolTableTree.isDeclaredAnyScope(currentNode.tokenPointer.str)) {
-                                var newError = new Compiler.ErrorCompiler("PRINT REFERENCE TO UNDECLARED VARIABLE", id, currentNode.tokenPointer.startIndex);
+                            //Get address
+                            var addressStr = _SymbolTableTree.getAddressById(id);
+                            var type = _SymbolTableTree.getTypeAnyScope(id);
+                            //int
+                            if (type === "int") {
+                                code += "AC" + addressStr + "A201FF";
                             }
-                            else {
-                                _SymbolTableTree.setUsed(id);
-                                Compiler.Control.putDebug("Print id " + id + " exists");
+                            //string
+                            else if (type === "string") {
+                                code += "AC" + addressStr + "A202FF";
+                            }
+                            //boolean
+                            else if (type === "boolean") {
+                                //PRINT BOOLEAN!!!
+                                //Come back to this...
+                                code += "AC" + addressStr + "A2BBFF";
                             }
                         }
                         //any other expr

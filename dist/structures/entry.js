@@ -15,7 +15,7 @@ var Compiler;
             this.offset = offset;
             //String id
             this.id = id;
-            this.scope = scopeCounter;
+            this.scope = _SymbolTableTree.current.name; // current scope name "SCOPE1"
             this.entryNumber = entryNumber;
             //string address and placement
             this.tempAddress = "T" + entryNumber + "XX"; //lil endian shit

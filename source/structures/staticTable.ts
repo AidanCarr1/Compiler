@@ -25,6 +25,9 @@ namespace Compiler {
             //Add to list of Entries
             this.entries.push(newEntry);
 
+            //Add pointer to symbolNode
+            // entryPointer
+
             return this.entries[this.entryCount-1];
         }
 

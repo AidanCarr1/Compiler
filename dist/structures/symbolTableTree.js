@@ -90,6 +90,10 @@ var Compiler;
             }
             return foundSymbolNode;
         }
+        getAddressById(id) {
+            var symbolNode = _SymbolTableTree.getSymbolAnyScope(id);
+            return symbolNode.entryPointer.tempAddress;
+        }
         /* after everyhting is done, traverse the tree to print and find warnings*/
         checkWarnings(thisScope) {
             Compiler.Control.putDebug("Checking warnings on a SCOPE " + thisScope.name);
