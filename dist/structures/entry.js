@@ -17,7 +17,7 @@ var Compiler;
             this.entryNumber = entryNumber;
             //string address and placement
             this.tempAddress = "T" + entryNumber + "XX";
-            this.offset = entryNumber + 1;
+            this.offset = entryNumber;
         }
     }
     Compiler.Entry = Entry;

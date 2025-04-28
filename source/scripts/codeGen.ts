@@ -247,6 +247,34 @@ namespace Compiler {
                     this.nextNode();
             }
         }
+
+        //AST has been traversed, most of code done
+        
+        //add HALT
+        code += "00";
+        Control.putDebug("With temp addresses:");
+        Control.putDebug(Utils.separateHex(code));
+
+        //Convert temporary address to actual adresses
+
+        //get code length
+        var codeLength = code.length / 2;
+
+        //for every entry
+        for (var i=0; i<_StaticTable.entries.length; i++) {
+
+            //calculate address code length and offset...
+            var entry = _StaticTable.entries[i];
+            var address = codeLength + entry.offset;
+            Control.putDebug("0x"+Utils.toHex(address));
+
+            //find temp values and replace with real value
+            this.findAndReplace(entry, address);
+
+            //add 00s for variable location
+            code += "00";
+        }
+
     } 
 
 
@@ -386,5 +414,11 @@ namespace Compiler {
 
         return thisType;
     }
+
+    public static findAndReplace(entry:Entry, addressNum:number) {
+
+        var addressStr = Utils.toHex(addressNum) + "00";
+    }
+
     }
 }

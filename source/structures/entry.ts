@@ -22,7 +22,7 @@ namespace Compiler {
 
             //string address and placement
             this.tempAddress = "T"+entryNumber+"XX";
-            this.offset = entryNumber+1;
+            this.offset = entryNumber;
 
         }
     }
