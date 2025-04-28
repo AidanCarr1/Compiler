@@ -18,7 +18,10 @@ var Compiler;
             this.scope = scopeCounter;
             this.entryNumber = entryNumber;
             //string address and placement
-            this.tempAddress = "T" + entryNumber + "XX";
+            this.tempAddress = "T" + entryNumber + "XX"; //lil endian shit
+            if (entryNumber >= 10) {
+                this.tempAddress = "" + entryNumber + "XX";
+            }
             this.offset = entryNumber;
         }
     }
