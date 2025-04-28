@@ -136,7 +136,7 @@ var Compiler;
                     //Print code
                     this.putImportantLine();
                     this.putImportantMessage("6502 Code");
-                    this.putImportantMessage(code);
+                    this.putImportantMessage(Compiler.Utils.separateHex(code));
                 }
                 //Next Program
                 this.putImportantLine(2);

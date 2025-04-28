@@ -59,6 +59,7 @@ var Compiler;
             }
             return programs;
         }
+        //add space before code so index is correct
         static addSpacing(programs) {
             for (var i = 1; i < programs.length; i++) {
                 //get previous program spacing
@@ -78,6 +79,7 @@ var Compiler;
             }
             return programs;
         }
+        //convert number to hex string
         static toHex(decimal) {
             //normal numbers:                      221   0   26     number
             var hexRaw = decimal.toString(16); // dd    0   1a     hex
@@ -88,6 +90,14 @@ var Compiler;
             }
             //final hex
             return hexRaw;
+        }
+        //add spaces inbetween hex code
+        static separateHex(hexString) {
+            var newHexString = "";
+            for (var i = 0; i < hexString.length; i += 2) {
+                newHexString += hexString.substring(i, i + 2) + " ";
+            }
+            return newHexString;
         }
     }
     Compiler.Utils = Utils;
