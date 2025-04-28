@@ -41,6 +41,7 @@ var Compiler;
                 var isLexSuccessful = false;
                 var isParseSuccessful = false;
                 var isSemanticSuccessful = false;
+                var isCodeGenSuccessful = false;
                 //Display program start
                 this.putHeader1("PROGRAM #" + (i + 1));
                 this.putImportantLine();
@@ -82,9 +83,9 @@ var Compiler;
                         _CST.printTree();
                     }
                 }
-                else {
-                    this.putMessage("PARSE Skipped");
-                }
+                // else {
+                //     this.putMessage("PARSE Skipped");
+                // }
                 //Reset warnings
                 warningCount = 0;
                 //Was Parse completed?
@@ -123,16 +124,19 @@ var Compiler;
                 if (isSemanticSuccessful) {
                     //Generate code
                     this.putImportantLine();
-                    this.putImportantMessage("Begin CODE GEN");
+                    this.putMessage("Begin CODE GEN");
                     Compiler.CodeGen.generate();
                     //Print result (only errors should be code is too big?)
-                    // if (errorCount == 0) {
-                    //     this.putImportantMessage("<mark class='label'>CODE GEN</mark> complete with " + warningCount +" warning(s) and 0 errors");
-                    //     isSemanticSuccessful = true;
-                    // }
-                    // else {
-                    //     this.putImportantMessage("<mark class='label'>CODE GEN</mark> exited with " + warningCount +" warning(s) and "+ errorCount +" error(s)");
-                    // }
+                    if (errorCount == 0) {
+                        this.putImportantMessage("<mark class='label'>CODE GEN</mark> complete with" + /*+ warningCount +" warning(s) and"*/ " 0 errors");
+                        isCodeGenSuccessful = true;
+                    }
+                    else {
+                        this.putImportantMessage("<mark class='label'>CODE GEN</mark> exited with " /*+ warningCount +" warning(s) and "*/ + errorCount + " error(s)");
+                    }
+                }
+                //Was Code Gen Completed?
+                if (isCodeGenSuccessful) {
                     //Print code
                     this.putImportantLine();
                     this.putImportantMessage("6502 Code");

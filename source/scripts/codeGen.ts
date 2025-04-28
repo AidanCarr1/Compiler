@@ -247,14 +247,14 @@ namespace Compiler {
                 }
             }
 
-            //AST has been traversed, most of code done
-            
             //add HALT
             code += "00";
-            Control.putCodeGenMessage("CODE with temp addresses:");
-            Control.putCodeGenMessage(Utils.separateHex(code));
 
-            //Convert temporary address to actual adresses
+            //whats the code look like so far?
+            Control.putDebug("CODE with temp addresses:");
+            Control.putDebug(Utils.separateHex(code));
+
+            //Convert temporary STATIC addresses to actual adresses
 
             //get code length
             var codeLength = code.length / 2;
@@ -276,7 +276,7 @@ namespace Compiler {
                 //check we havent gone too far
                 Control.putDebug("code len check: "+(code.length/2));
                 if (code.length / 2 > 256) {
-                    var newError = new ErrorCompiler("CODE EXCEEDS 256 BYTES","thats just too long");
+                    var newError = new ErrorCompiler("CODE EXCEEDS 256 BYTES","");
                     return;
                 }
             }

@@ -675,3 +675,12 @@ mess with temp addresses*/
     int g int h int i int j }
 {int a int b}
 }$
+
+
+/*int decl + assignment*/
+{
+  int e
+  e = 2
+  e = 4
+  e = 6
+}$
