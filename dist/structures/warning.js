@@ -20,10 +20,9 @@ var Compiler;
             //print WARNING Message
             var message = "<mark class='warning'>WARNING";
             message += " [ " + str + " ]</mark> ";
-            message += "<mark class='address'> ";
             //print the index, if there is one
             if (index != null) {
-                "at " + Compiler.Utils.address(index) + "</mark>";
+                "<mark class='address'> at " + Compiler.Utils.address(index) + "</mark>";
             }
             Compiler.Control.putImportantMessage(message);
         }

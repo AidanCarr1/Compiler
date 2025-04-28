@@ -6,12 +6,17 @@ namespace Compiler {
 
         constructor(public str, 
                     public description,
-                    public index, 
+                    public index?, 
                     public eid?) { 
                         
             //set variables
             this.str = str;
-            this.index = index.slice();
+            if (index != null) {
+                this.index = index.slice();
+            }
+            else {
+                this.index = null;
+            }
 
 
             //new ERROR constructed!
@@ -23,8 +28,11 @@ namespace Compiler {
                 var message = "<mark class='error'>ERROR";
                 message += " [ " + str + " ] ";
                 message += description;
-                message += " </mark><mark class='address'> at " + Utils.address(index) + "</mark>";
-
+                message += " </mark>";
+                //print the index, if there is one
+                if (index != null) {
+                    message += "<mark class='address'> at " + Utils.address(index) + "</mark>";
+                }
                 Control.putImportantMessage(message);
             }
         }

@@ -637,3 +637,41 @@ mess with temp addresses*/
   int m
   int n
 }$
+
+
+/*too many ids*/
+{
+  {int a int b int c 
+  int d int e int f 
+  int g int h int i int j }
+  {int a int b int c 
+  int d int e int f 
+  int g int h int i int j }
+  {int a int b int c 
+  int d int e int f 
+  int g int h int i int j }
+  {int a int b int c 
+  int d int e int f 
+  int g int h int i int j }
+  {int a int b int c 
+  int d int e int f 
+  int g int h int i int j }
+}$
+
+
+/*just barely fits*/
+{
+{int a int b int c 
+    int d int e int f 
+    int g int h int i int j }
+{int a int b int c 
+    int d int e int f 
+    int g int h int i int j }
+{int a int b int c 
+    int d int e int f 
+    int g int h int i int j }
+{int a int b int c 
+    int d int e int f 
+    int g int h int i int j }
+{int a int b}
+}$

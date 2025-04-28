@@ -45,8 +45,7 @@ var Compiler;
                         //int/boolean = put in static table
                         var entry = _StaticTable.newEntry(id);
                         //Initialize int/boolean as 00
-                        code += "" + Compiler.Utils.toHex(0xA9) + Compiler.Utils.toHex(6) + Compiler.Utils.toHex(0x8D);
-                        //code += "A9 00 8D ";
+                        code += "A9" + "00" + "8D";
                         //Add temporary variable location
                         code += "" + entry.tempAddress;
                         //Next statement
@@ -197,8 +196,8 @@ var Compiler;
             //AST has been traversed, most of code done
             //add HALT
             code += "00";
-            Compiler.Control.putDebug("CODE with temp addresses:");
-            Compiler.Control.putDebug(Compiler.Utils.separateHex(code));
+            Compiler.Control.putCodeGenMessage("CODE with temp addresses:");
+            Compiler.Control.putCodeGenMessage(Compiler.Utils.separateHex(code));
             //Convert temporary address to actual adresses
             //get code length
             var codeLength = code.length / 2;
@@ -207,11 +206,17 @@ var Compiler;
                 //calculate address code length and offset...
                 var entry = _StaticTable.entries[i];
                 var address = codeLength + entry.offset;
-                Compiler.Control.putDebug("0x" + Compiler.Utils.toHex(address));
+                Compiler.Control.putDebug("new address: 0x" + Compiler.Utils.toHex(address));
                 //find temp values and replace with real value
                 this.findAndReplace(entry, address);
                 //add 00s for variable location
                 code += "00";
+                //check we havent gone too far
+                Compiler.Control.putDebug("code len check: " + (code.length / 2));
+                if (code.length / 2 > 256) {
+                    var newError = new Compiler.ErrorCompiler("CODE EXCEEDS 256 BYTES", "thats just too long");
+                    return;
+                }
             }
         }
         static nextNode() {

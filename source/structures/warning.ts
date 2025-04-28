@@ -24,10 +24,9 @@ namespace Compiler {
             //print WARNING Message
             var message = "<mark class='warning'>WARNING";
             message += " [ " + str + " ]</mark> ";
-            message += "<mark class='address'> "
             //print the index, if there is one
             if (index != null) { 
-                "at " + Utils.address(index) + "</mark>";
+                "<mark class='address'> at " + Utils.address(index) + "</mark>";
             }
 
             Control.putImportantMessage(message);

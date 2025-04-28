@@ -63,8 +63,7 @@ namespace Compiler {
 
 
                         //Initialize int/boolean as 00
-                        code += ""+Utils.toHex(0xA9)+Utils.toHex(6)+Utils.toHex(0x8D);
-                        //code += "A9 00 8D ";
+                        code += "A9"+"00"+"8D";
                         //Add temporary variable location
                         code += ""+entry.tempAddress;
 
@@ -252,8 +251,8 @@ namespace Compiler {
             
             //add HALT
             code += "00";
-            Control.putDebug("CODE with temp addresses:");
-            Control.putDebug(Utils.separateHex(code));
+            Control.putCodeGenMessage("CODE with temp addresses:");
+            Control.putCodeGenMessage(Utils.separateHex(code));
 
             //Convert temporary address to actual adresses
 
@@ -266,15 +265,23 @@ namespace Compiler {
                 //calculate address code length and offset...
                 var entry = _StaticTable.entries[i];
                 var address = codeLength + entry.offset;
-                Control.putDebug("0x"+Utils.toHex(address));
+                Control.putDebug("new address: 0x"+Utils.toHex(address));
 
                 //find temp values and replace with real value
                 this.findAndReplace(entry, address);
 
                 //add 00s for variable location
                 code += "00";
+
+                //check we havent gone too far
+                Control.putDebug("code len check: "+(code.length/2));
+                if (code.length / 2 > 256) {
+                    var newError = new ErrorCompiler("CODE EXCEEDS 256 BYTES","thats just too long");
+                    return;
+                }
             }
 
+            
         } 
 
 
