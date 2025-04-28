@@ -197,7 +197,7 @@ var Compiler;
             //AST has been traversed, most of code done
             //add HALT
             code += "00";
-            Compiler.Control.putDebug("With temp addresses:");
+            Compiler.Control.putDebug("CODE with temp addresses:");
             Compiler.Control.putDebug(Compiler.Utils.separateHex(code));
             //Convert temporary address to actual adresses
             //get code length
@@ -225,7 +225,7 @@ var Compiler;
         }
         //replace all instances of TEMP address with REAL address
         static findAndReplace(entry, addressNum) {
-            var realAddress = Compiler.Utils.toHex(addressNum) + "00";
+            var realAddress = Compiler.Utils.toHex(addressNum) + "00"; //lil endian shit
             var replaceTemporary = code.replaceAll(entry.tempAddress, realAddress);
             code = replaceTemporary;
         }
