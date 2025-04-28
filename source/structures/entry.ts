@@ -11,7 +11,8 @@ namespace Compiler {
             public entryNumber: number,
 
             public scope?: number,
-            public tempAddress?: String,
+            public tempAddress?: string, //there's a difference between string and String??
+                                         //needed for find and replace later
             public offset?: number
             ) { 
 

@@ -223,119 +223,123 @@ var Compiler;
                 currentNode = _AST.nodeList[nodeCounter];
             }
         }
+        //replace all instances of TEMP address with REAL address
+        static findAndReplace(entry, addressNum) {
+            var realAddress = Compiler.Utils.toHex(addressNum) + "00";
+            var replaceTemporary = code.replaceAll(entry.tempAddress, realAddress);
+            code = replaceTemporary;
+        }
         //precondition:   current= Addition
         //post condition: current= after the whole addition block?
         static checkAddition() {
-            Compiler.Control.putCodeGenMessage("Check Addition");
-            //Get left (left wont be id, impossible by parse)
-            this.nextNode();
-            Compiler.Control.putDebug("left" + currentNode.name);
-            if (currentNode.tokenPointer.description === "DIGIT") {
-                //left is good
-                Compiler.Control.putDebug("left is good (" + currentNode.name + ")");
-            }
-            else if (currentNode.name === "Addition") {
-                this.checkAddition();
-            }
-            else {
-                //return error
-                Compiler.Control.putCodeGenMessage("HOW are we here left");
-            }
-            //Get right
-            this.nextNode();
-            Compiler.Control.putDebug("right" + currentNode.name);
-            if (currentNode.name === "Addition") {
-                Compiler.Control.putDebug("right addition lets do it again ");
-                this.checkAddition();
-            }
-            else if (currentNode.tokenPointer.description === "DIGIT") {
-                //right is good
-                Compiler.Control.putDebug("right digit");
-            }
-            else if (currentNode.tokenPointer.description === "ID") {
-                Compiler.Control.putDebug("right id");
-                //make sure it's an int id
-                var id = currentNode.tokenPointer.str;
-                //but first, does it even exist?
-                if (_SymbolTableTree.getTypeAnyScope(id) === null) {
-                    var newError = new Compiler.ErrorCompiler("REFERENCE TO UNDECLARED VARIABLE", id, currentNode.tokenPointer.startIndex);
-                }
-                else if (_SymbolTableTree.getTypeAnyScope(id) !== "int") {
-                    var newError = new Compiler.ErrorCompiler("INCOMPATABLE TYPES", "Cannot add an int with a " + _SymbolTableTree.getTypeAnyScope(id) + " variable " + id, currentNode.tokenPointer.startIndex);
-                }
-                else {
-                    _SymbolTableTree.setUsed(id);
-                }
-            }
-            else {
-                //return error, not an int!!
-                var newError = new Compiler.ErrorCompiler("INCOMPATABLE TYPES", "Cannot add an int with " + currentNode.name, currentNode.tokenPointer.startIndex);
-            }
+            // Control.putCodeGenMessage("Check Addition");
+            // //Get left (left wont be id, impossible by parse)
+            // this.nextNode();
+            // Control.putDebug("left"+currentNode.name);
+            // if (currentNode.tokenPointer.description === "DIGIT") {
+            //     //left is good
+            //     Control.putDebug("left is good ("+currentNode.name+")");
+            // }
+            // else if (currentNode.name === "Addition"){
+            //     this.checkAddition();
+            // }
+            // else {
+            //     //return error
+            //     Control.putCodeGenMessage("HOW are we here left");
+            // }
+            // //Get right
+            // this.nextNode();
+            // Control.putDebug("right"+currentNode.name);
+            // if (currentNode.name === "Addition"){
+            //     Control.putDebug("right addition lets do it again ");
+            //     this.checkAddition();
+            // }
+            // else if (currentNode.tokenPointer.description === "DIGIT") {
+            //     //right is good
+            //     Control.putDebug("right digit");
+            // }
+            // else if (currentNode.tokenPointer.description === "ID") {
+            //     Control.putDebug("right id");
+            //     //make sure it's an int id
+            //     var id:String = currentNode.tokenPointer.str;
+            //     //but first, does it even exist?
+            //     if (_SymbolTableTree.getTypeAnyScope(id) === null) {
+            //         var newError = new ErrorCompiler("REFERENCE TO UNDECLARED VARIABLE", id, currentNode.tokenPointer.startIndex);
+            //     }
+            //     else if (_SymbolTableTree.getTypeAnyScope(id) !== "int") {
+            //         var newError = new ErrorCompiler("INCOMPATABLE TYPES", "Cannot add an int with a "+ _SymbolTableTree.getTypeAnyScope(id) +" variable "+id, currentNode.tokenPointer.startIndex);
+            //     }
+            //     else {
+            //         _SymbolTableTree.setUsed(id);
+            //     }
+            // }
+            // else {
+            //     //return error, not an int!!
+            //     var newError = new ErrorCompiler("INCOMPATABLE TYPES", "Cannot add an int with "+ currentNode.name, currentNode.tokenPointer.startIndex);
+            // }
         }
         static checkEquality(equalityIndex) {
-            Compiler.Control.putCodeGenMessage("Check Type Equality");
-            var leftType = null;
-            var rightType = null;
-            //Get left
-            this.nextNode();
-            leftType = this.getLeftRightType();
-            //Get right
-            this.nextNode();
-            rightType = this.getLeftRightType();
-            //Compare 'em
-            if (leftType != rightType) {
-                //return error 
-                var newError = new Compiler.ErrorCompiler("INCOMPATABLE TYPES", "Cannot compare " + leftType + " with " + rightType, equalityIndex);
-            }
-            else {
-                return leftType;
-            }
+            // Control.putCodeGenMessage("Check Type Equality");
+            // var leftType = null;
+            // var rightType = null;
+            // //Get left
+            // this.nextNode();
+            // leftType = this.getLeftRightType();            
+            // //Get right
+            // this.nextNode();
+            // rightType = this.getLeftRightType(); 
+            // //Compare 'em
+            // if (leftType != rightType){
+            //     //return error 
+            //     var newError = new ErrorCompiler("INCOMPATABLE TYPES", "Cannot compare "+leftType+" with "+ rightType, equalityIndex);
+            // }
+            // else {
+            //     return leftType;
+            // }
+            return "";
         }
         static getLeftRightType() {
-            Compiler.Control.putDebug("One side: " + currentNode.name);
-            var thisType = null;
-            //INT
-            if (currentNode.name === "Addition") {
-                thisType = "int";
-                //Control.putDebug("start eq add");
-                this.checkAddition();
-                //Control.putDebug("done with eq addition");
-            }
-            //BOOLEAN
-            else if (currentNode.name === "Inequality" || currentNode.name === "Equality") {
-                thisType = this.checkEquality(currentNode.tokenPointer.startIndex);
-                thisType = "boolean";
-            }
-            else if (currentNode.tokenPointer.description === "ID") {
-                var id = currentNode.tokenPointer.str;
-                thisType = _SymbolTableTree.getTypeAnyScope(id);
-                if (thisType == null) {
-                    var newError = new Compiler.ErrorCompiler("REFERENCE TO UNDECLARED VARIABLE", id, currentNode.tokenPointer.startIndex);
-                }
-                else {
-                    _SymbolTableTree.setUsed(id);
-                }
-            }
-            //INT
-            else if (currentNode.tokenPointer.description === "DIGIT") {
-                thisType = "int";
-            }
-            //STRING
-            else if (currentNode.name.charAt(0) === "\"") {
-                thisType = "string";
-            }
-            //BOOLEAN
-            else if (currentNode.name === "true" || currentNode.name === "false") {
-                thisType = "boolean";
-            }
-            else {
-                //return error
-                Compiler.Control.putDebug("Nothing found, left/right");
-            }
-            return thisType;
-        }
-        static findAndReplace(entry, addressNum) {
-            var addressStr = Compiler.Utils.toHex(addressNum) + "00";
+            //     Control.putDebug("One side: "+currentNode.name);
+            //     var thisType = null;
+            //     //INT
+            //     if (currentNode.name === "Addition"){
+            //         thisType = "int";
+            //         //Control.putDebug("start eq add");
+            //         this.checkAddition();
+            //         //Control.putDebug("done with eq addition");
+            //     }            
+            //     //BOOLEAN
+            //     else if (currentNode.name === "Inequality" || currentNode.name === "Equality") {
+            //         thisType = this.checkEquality(currentNode.tokenPointer.startIndex);
+            //         thisType = "boolean";
+            //     }
+            //     else if (currentNode.tokenPointer.description === "ID") {
+            //         var id:String = currentNode.tokenPointer.str;
+            //         thisType = _SymbolTableTree.getTypeAnyScope(id); 
+            //         if (thisType == null) {
+            //             var newError = new ErrorCompiler("REFERENCE TO UNDECLARED VARIABLE", id, currentNode.tokenPointer.startIndex);
+            //         }               
+            //         else {
+            //             _SymbolTableTree.setUsed(id);
+            //         }
+            //     }
+            //     //INT
+            //     else if (currentNode.tokenPointer.description === "DIGIT") {
+            //         thisType = "int";
+            //     }
+            //     //STRING
+            //     else if (currentNode.name.charAt(0) === "\"") {
+            //         thisType = "string";
+            //     }
+            //     //BOOLEAN
+            //     else if (currentNode.name === "true" || currentNode.name === "false") {
+            //         thisType = "boolean";
+            //     }
+            //     else {
+            //         //return error
+            //         Control.putDebug("Nothing found, left/right");
+            //     }
+            //     return thisType;
         }
     }
     Compiler.CodeGen = CodeGen;

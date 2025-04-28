@@ -5,7 +5,9 @@ var Compiler;
 (function (Compiler) {
     class Entry {
         //New Entry
-        constructor(id, entryNumber, scope, tempAddress, offset) {
+        constructor(id, entryNumber, scope, tempAddress, //there's a difference between string and String??
+        //needed for find and replace later
+        offset) {
             this.id = id;
             this.entryNumber = entryNumber;
             this.scope = scope;
