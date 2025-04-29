@@ -739,3 +739,10 @@ mess with temp addresses*/
     w=4+w     /*32=0x20*/
     print(w)
 }$
+
+
+/*print addition*/
+{
+    int e e=5
+    print(2+1+e)
+}

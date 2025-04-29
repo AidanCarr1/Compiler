@@ -84,8 +84,15 @@ namespace Compiler {
 
                         //If printing an addition
                         if (currentNode.name === "Addition") {
-                            // Control.putDebug("Lets check '+'");
-                            // this.checkAddition();
+                            //load acc with addition
+                            this.doAddition();
+                            //create entry for this
+                            var constantEntry = _StaticTable.newEntry("PRINT"+currentNode.name);
+                            //store in an address
+                            code += "8D" + constantEntry.tempAddress;
+                            //print that address
+                            code += "AC" + constantEntry.tempAddress + "A201FF";
+
                         }
                         //printing equality/inequality
                         else if (currentNode.name === "Inequality" || currentNode.name === "Equality") {
@@ -330,7 +337,7 @@ namespace Compiler {
             else if (currentNode.tokenPointer.description === "ID") {
                 //Reached the end of ADDING
                 Control.putDebug("right is id");
-                Control.putCodeGenMessage("BEGIN ADDING");
+                Control.putDebug("BEGIN ADDING");
 
                 //store id value in acc
                 var id:String = currentNode.tokenPointer.str;
