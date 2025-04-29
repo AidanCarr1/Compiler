@@ -121,7 +121,9 @@ var Compiler;
                         }
                         //If it's addition...
                         else if (currentNode.name == "Addition") {
+                            //Do addition, store it in the acc
                             this.doAddition();
+                            code += "8D" + addressStr;
                         }
                         //If it's a digit...
                         else if (currentNode.tokenPointer.description === "DIGIT") {
@@ -226,36 +228,28 @@ var Compiler;
             code = replaceTemporary;
         }
         //precondition:   current= Addition
-        //post condition: current= after the whole addition block?
+        //post condition: added material is in the acc
         static doAddition() {
             Compiler.Control.putCodeGenMessage("Do Addition");
-            // GO DEEP FIRST
             //Get left (left wont be id, impossible by parse)
             this.nextNode();
-            Compiler.Control.putDebug("left" + currentNode.name);
             if (currentNode.tokenPointer.description === "DIGIT") {
-                //left is good
-                Compiler.Control.putCodeGenMessage("LOAD ACC " + currentNode.name);
-                Compiler.Control.putCodeGenMessage("STOR ACC $00" + currentNode.name);
-            }
-            else if (currentNode.name === "Addition") {
-                Compiler.Control.putCodeGenMessage("left is addition");
-                this.doAddition();
-            }
-            else {
-                //return error
-                Compiler.Control.putCodeGenMessage("HOW are we here left");
+                //make a variable entry for the constant digit
+                var constantEntry = _StaticTable.newEntry("CONST" + currentNode.name);
+                //load acc and store it
+                code += "A9" + "0" + currentNode.name;
+                code += "8D" + constantEntry.tempAddress;
             }
             //Get right
             this.nextNode();
-            Compiler.Control.putDebug("right" + currentNode.name);
             if (currentNode.name === "Addition") {
                 Compiler.Control.putDebug("right addition, do it again");
                 this.doAddition();
             }
             else if (currentNode.tokenPointer.description === "DIGIT") {
                 //Reached the end of ADDING
-                Compiler.Control.putDebug("right digit");
+                //load acc with constant digit
+                code += "A9" + "0" + currentNode.name;
             }
             else if (currentNode.tokenPointer.description === "ID") {
                 //Reached the end of ADDING
@@ -266,12 +260,8 @@ var Compiler;
                 var address = _SymbolTableTree.getAddressById(id);
                 code += "AD" + address;
             }
-            else {
-                //return error
-                Compiler.Control.putCodeGenMessage("HOW are we here right");
-            }
-            //THEN MAKE OUR WAY UP TO ADD
-            code += "LEFT+RIGHT";
+            //ADD, THEN MAKE OUR WAY OUT OF STACK
+            code += "6D" + constantEntry.tempAddress;
         }
         static checkEquality(equalityIndex) {
             // Control.putCodeGenMessage("Check Type Equality");

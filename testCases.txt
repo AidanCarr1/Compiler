@@ -719,7 +719,7 @@ mess with temp addresses*/
   print(r) /*9*/
   e = 2+2
   print(e) /*4*/
-}
+}$
 
 
 /*basic addition*/
@@ -727,4 +727,15 @@ mess with temp addresses*/
     int e 
     int b b=4
     e=2+3+b
-}
+}$
+
+/*big addition*/
+{
+    int e 
+    e=1+2+3+4 /*10=0x0A*/
+    int w
+    w=9+9+e   /*28=0x1C*/
+    print(w)
+    w=4+w     /*32=0x20*/
+    print(w)
+}$
