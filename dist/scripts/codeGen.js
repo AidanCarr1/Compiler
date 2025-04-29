@@ -121,7 +121,7 @@ var Compiler;
                         }
                         //If it's addition...
                         else if (currentNode.name == "Addition") {
-                            // this.checkAddition();
+                            this.doAddition();
                         }
                         //If it's a digit...
                         else if (currentNode.tokenPointer.description === "DIGIT") {
@@ -227,52 +227,51 @@ var Compiler;
         }
         //precondition:   current= Addition
         //post condition: current= after the whole addition block?
-        static checkAddition() {
-            // Control.putCodeGenMessage("Check Addition");
-            // //Get left (left wont be id, impossible by parse)
-            // this.nextNode();
-            // Control.putDebug("left"+currentNode.name);
-            // if (currentNode.tokenPointer.description === "DIGIT") {
-            //     //left is good
-            //     Control.putDebug("left is good ("+currentNode.name+")");
-            // }
-            // else if (currentNode.name === "Addition"){
-            //     this.checkAddition();
-            // }
-            // else {
-            //     //return error
-            //     Control.putCodeGenMessage("HOW are we here left");
-            // }
-            // //Get right
-            // this.nextNode();
-            // Control.putDebug("right"+currentNode.name);
-            // if (currentNode.name === "Addition"){
-            //     Control.putDebug("right addition lets do it again ");
-            //     this.checkAddition();
-            // }
-            // else if (currentNode.tokenPointer.description === "DIGIT") {
-            //     //right is good
-            //     Control.putDebug("right digit");
-            // }
-            // else if (currentNode.tokenPointer.description === "ID") {
-            //     Control.putDebug("right id");
-            //     //make sure it's an int id
-            //     var id:String = currentNode.tokenPointer.str;
-            //     //but first, does it even exist?
-            //     if (_SymbolTableTree.getTypeAnyScope(id) === null) {
-            //         var newError = new ErrorCompiler("REFERENCE TO UNDECLARED VARIABLE", id, currentNode.tokenPointer.startIndex);
-            //     }
-            //     else if (_SymbolTableTree.getTypeAnyScope(id) !== "int") {
-            //         var newError = new ErrorCompiler("INCOMPATABLE TYPES", "Cannot add an int with a "+ _SymbolTableTree.getTypeAnyScope(id) +" variable "+id, currentNode.tokenPointer.startIndex);
-            //     }
-            //     else {
-            //         _SymbolTableTree.setUsed(id);
-            //     }
-            // }
-            // else {
-            //     //return error, not an int!!
-            //     var newError = new ErrorCompiler("INCOMPATABLE TYPES", "Cannot add an int with "+ currentNode.name, currentNode.tokenPointer.startIndex);
-            // }
+        static doAddition() {
+            Compiler.Control.putCodeGenMessage("Do Addition");
+            // GO DEEP FIRST
+            //Get left (left wont be id, impossible by parse)
+            this.nextNode();
+            Compiler.Control.putDebug("left" + currentNode.name);
+            if (currentNode.tokenPointer.description === "DIGIT") {
+                //left is good
+                Compiler.Control.putCodeGenMessage("LOAD ACC " + currentNode.name);
+                Compiler.Control.putCodeGenMessage("STOR ACC $00" + currentNode.name);
+            }
+            else if (currentNode.name === "Addition") {
+                Compiler.Control.putCodeGenMessage("left is addition");
+                this.doAddition();
+            }
+            else {
+                //return error
+                Compiler.Control.putCodeGenMessage("HOW are we here left");
+            }
+            //Get right
+            this.nextNode();
+            Compiler.Control.putDebug("right" + currentNode.name);
+            if (currentNode.name === "Addition") {
+                Compiler.Control.putDebug("right addition, do it again");
+                this.doAddition();
+            }
+            else if (currentNode.tokenPointer.description === "DIGIT") {
+                //Reached the end of ADDING
+                Compiler.Control.putDebug("right digit");
+            }
+            else if (currentNode.tokenPointer.description === "ID") {
+                //Reached the end of ADDING
+                Compiler.Control.putDebug("right is id");
+                Compiler.Control.putCodeGenMessage("BEGIN ADDING");
+                //store id value in acc
+                var id = currentNode.tokenPointer.str;
+                var address = _SymbolTableTree.getAddressById(id);
+                code += "AD" + address;
+            }
+            else {
+                //return error
+                Compiler.Control.putCodeGenMessage("HOW are we here right");
+            }
+            //THEN MAKE OUR WAY UP TO ADD
+            code += "LEFT+RIGHT";
         }
         static checkEquality(equalityIndex) {
             // Control.putCodeGenMessage("Check Type Equality");

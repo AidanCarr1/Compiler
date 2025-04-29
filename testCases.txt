@@ -709,3 +709,22 @@ mess with temp addresses*/
   print(a) /*8*/
   a=0 print(a) /*0*/
 }$
+
+
+/*addition*/
+{
+  int e e=8
+  print(e) /*8*/
+  int r r=9
+  print(r) /*9*/
+  e = 2+2
+  print(e) /*4*/
+}
+
+
+/*basic addition*/
+{
+    int e 
+    int b b=4
+    e=2+3+b
+}
