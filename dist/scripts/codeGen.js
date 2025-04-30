@@ -120,14 +120,8 @@ var Compiler;
                         }
                         //Inequality
                         else if (currentNode.name === "Inequality") {
-                            // if (_SymbolTableTree.getTypeAnyScope(id) === "boolean") {
-                            //     Control.putDebug("Lets check '!=' or '=='");
-                            //     this.checkEquality(currentNode.tokenPointer.startIndex);
-                            // }
-                            // else {
-                            //     var newError = new ErrorCompiler("TYPE MISMATCH", "Cannot assign boolean value to "+
-                            //         _SymbolTableTree.getTypeAnyScope(id)+" variable "+id, currentNode.tokenPointer.startIndex);
-                            // }
+                            this.doEquality();
+                            this.storeOppositeZFlag(addressStr);
                         }
                         //If it's addition...
                         else if (currentNode.name == "Addition") {
@@ -311,8 +305,13 @@ var Compiler;
                 // thisType = "string";
             }
             //BOOLEAN
-            else if (currentNode.name === "true" || currentNode.name === "false") {
-                // thisType = "boolean";
+            else if (currentNode.name === "true") {
+                //load x register with TRUE
+                code += "A2" + "01";
+            }
+            else if (currentNode.name === "false") {
+                //load x register with FALSE
+                code += "A2" + "00";
             }
             else {
                 //return error
@@ -331,9 +330,24 @@ var Compiler;
             //INT
             else if (currentNode.tokenPointer.description === "DIGIT") {
                 //create address for constant
-                var constantEntry = _StaticTable.newEntry("PRINT" + currentNode.name);
+                var constantEntry = _StaticTable.newEntry("COSNT" + currentNode.name);
+                code += "A9" + "0" + currentNode.name;
+                code += "8D" + constantEntry.tempAddress;
                 //compare byte in mem to x reg
                 code += "EC" + constantEntry.tempAddress;
+            }
+            //BOOLEAN
+            else if (currentNode.name === "true") {
+                var booleanEntry = _StaticTable.newEntry("TRUE");
+                code += "A9" + "01" + "8D" + booleanEntry.tempAddress;
+                //compare byte in mem to x reg
+                code += "EC" + booleanEntry.tempAddress;
+            }
+            else if (currentNode.name === "false") {
+                var booleanEntry = _StaticTable.newEntry("FALSE");
+                code += "A9" + "00" + "8D" + booleanEntry.tempAddress;
+                //compare byte in mem to x reg
+                code += "EC" + booleanEntry.tempAddress;
             }
         }
         static storeZFlag(address) {
@@ -343,6 +357,16 @@ var Compiler;
             code += "D0" + "02";
             //else, set acc 1 true
             code += "A9" + "01";
+            //now store acc(zflag) in memory location
+            code += "8D" + address;
+        }
+        static storeOppositeZFlag(address) {
+            //first set acc 1 true 
+            code += "A9" + "01";
+            //Branch n bytes if Z flag == 0
+            code += "D0" + "02";
+            //else, set acc 0 false
+            code += "A9" + "00";
             //now store acc(zflag) in memory location
             code += "8D" + address;
         }
