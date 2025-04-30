@@ -76,7 +76,7 @@ namespace Compiler {
                     
 
                     case "Print":
-                        Control.putCodeGenMessage("Print Type/Scope Check");
+                        Control.putCodeGenMessage("Print");
 
                         //What we are printing:
                         this.nextNode();
@@ -86,18 +86,34 @@ namespace Compiler {
                         if (currentNode.name === "Addition") {
                             //load acc with addition
                             this.doAddition();
+
                             //create entry for this
                             var constantEntry = _StaticTable.newEntry("PRINT"+currentNode.name);
                             //store in an address
                             code += "8D" + constantEntry.tempAddress;
-                            //print that address
+                            //put it in xreg, print that address
                             code += "AC" + constantEntry.tempAddress + "A201FF";
 
                         }
                         //printing equality/inequality
-                        else if (currentNode.name === "Inequality" || currentNode.name === "Equality") {
-                            // Control.putDebug("Lets check '!=' or '=='");
-                            // this.checkEquality(currentNode.tokenPointer.startIndex);
+                        else if (currentNode.name === "Inequality") {
+                            this.doEquality();
+
+                            //make a variable entry for the constant digit
+                            var inequalityEntry = _StaticTable.newEntry("INEQUALITY");
+                            //store acc
+                            code += "8D" + inequalityEntry.tempAddress;
+                            //put it in xreg, print that address
+                            code += "AC" + inequalityEntry.tempAddress + "A201FF";
+                        } 
+                        else if (currentNode.name === "Equality") {
+                            this.doEquality();
+                            //make a variable entry for the constant digit
+                            var equalityEntry = _StaticTable.newEntry("EQUALITY");
+                            //store acc
+                            code += "8D" + equalityEntry.tempAddress;
+                            //put it in xreg, print that address
+                            code += "AC" + equalityEntry.tempAddress + "A201FF";
                         }
 
                         //If printing a variable...
@@ -122,12 +138,15 @@ namespace Compiler {
                                 //print 1 or 0 (MAY change to true/false)
                                 code += "AC" + addressStr + "A201FF";
                             }
-
-
                         } 
 
-                        //any other expr
-                        else{}
+                        //Digit
+                        else if (currentNode.tokenPointer.description === "DIGIT") {
+                            //load xreg with constant, print
+                            code += "A0"+ "0"+currentNode.name +"A201FF";
+                        }
+
+                        
 
                         //Next statement
                         this.nextNode();
@@ -135,7 +154,7 @@ namespace Compiler {
 
 
                     case "Assignment":
-                        Control.putCodeGenMessage("Assignment Type/Scope Check");
+                        Control.putCodeGenMessage("Assignment");
 
                         //Get id
                         this.nextNode();
@@ -464,6 +483,24 @@ namespace Compiler {
 
             //now store acc(zflag) in memory location
             code += "8D" + address
+        }
+
+        public static accZFlag() {
+            //first set acc 0 false 
+            code += "A9" + "00";
+            //Branch n bytes if Z flag == 0
+            code += "D0" + "02";
+            //else, set acc 1 true
+            code += "A9" + "01";
+        }
+
+        public static accOppositeZFlag() {
+            //first set acc 1 true 
+            code += "A9" + "01";
+            //Branch n bytes if Z flag == 0
+            code += "D0" + "02";
+            //else, set acc 0 false
+            code += "A9" + "00";
         }
 
         public static checkEquality(equalityIndex):String {
