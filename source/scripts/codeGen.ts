@@ -119,9 +119,8 @@ namespace Compiler {
 
                             //boolean
                             else if (type==="boolean") {
-                                //PRINT BOOLEAN!!!
-                                //Come back to this...
-                                code += "AC" + addressStr + "A2BBFF";
+                                //print 1 or 0 (MAY change to true/false)
+                                code += "AC" + addressStr + "A201FF";
                             }
 
 
@@ -155,6 +154,7 @@ namespace Compiler {
                         //Equality
                         else if (currentNode.name === "Equality" ) {
                             this.doEquality();
+                            this.storeZFlag(addressStr);
                         }
                         //Inequality
                         else if (currentNode.name === "Inequality"){
@@ -186,12 +186,16 @@ namespace Compiler {
 
                         //If it's a boolean...
                         else if (currentNode.tokenPointer.description === "BOOLEAN VALUE") {
-                            // //But the id isnt a boolean
-                            // if (_SymbolTableTree.getTypeAnyScope(id) !== "boolean") {
-                            //     var newError = new ErrorCompiler("TYPE MISMATCH", "Cannot assign boolean value to "+
-                            //         _SymbolTableTree.getTypeAnyScope(id)+" variable "+id, currentNode.tokenPointer.startIndex);
-                            // }
-                            // Control.putDebug("Int "+id+" = " +currentNode.name);
+                            if (currentNode.name === "true") {
+                                //load acc TRUE
+                                code += "A9" + "01";
+                            }
+                            else {
+                                //load acc TRUE
+                                code += "A9" + "00";
+                            }
+                            //store number in address
+                            code += "8D" + addressStr;
                         }
 
                         //If it's an id...
@@ -419,6 +423,19 @@ namespace Compiler {
                 //compare byte in mem to x reg
                 code += "EC" + constantEntry.tempAddress;
             }
+        }
+
+
+        public static storeZFlag(address) {
+            //first set acc 0 false 
+            code += "A9" + "00";
+            //Branch n bytes if Z flag == 0
+            code += "D0" + "02";
+            //else, set acc 1 true
+            code += "A9" + "01";
+
+            //now store acc(zflag) in memory location
+            code += "8D" + address
         }
 
         public static checkEquality(equalityIndex):String {

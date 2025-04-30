@@ -746,3 +746,26 @@ mess with temp addresses*/
     int e e=5
     print(2+1+e)
 }
+
+/*assign boolean with equality*/
+{
+  int a a = 6
+  boolean b
+  b = (8==a)
+  print(b)
+  {
+    boolean b
+    b = (a==a)
+    print(b)
+  }
+}$
+
+
+{
+  boolean t 
+  t = true 
+  print(t)
+  boolean f 
+  f = false 
+  print(f)
+}$
