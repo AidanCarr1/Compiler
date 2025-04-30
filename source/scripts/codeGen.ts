@@ -152,8 +152,12 @@ namespace Compiler {
                             Control.putDebug("String "+id+" = " +currentNode.name);
                         }
 
-                        //Equality/inequality
-                        else if (currentNode.name === "Inequality" || currentNode.name === "Equality"){
+                        //Equality
+                        else if (currentNode.name === "Equality" ) {
+                            this.doEquality();
+                        }
+                        //Inequality
+                        else if (currentNode.name === "Inequality"){
                             // if (_SymbolTableTree.getTypeAnyScope(id) === "boolean") {
                             //     Control.putDebug("Lets check '!=' or '=='");
                             //     this.checkEquality(currentNode.tokenPointer.startIndex);
@@ -349,6 +353,73 @@ namespace Compiler {
             code += "6D" +constantEntry.tempAddress;
         }
 
+
+        //post condition: z flag has been set
+        public static doEquality() {
+            Control.putCodeGenMessage("Do Equality");
+
+            //Get left
+            this.nextNode();
+            var thisType = null;
+
+            //INT
+            if (currentNode.name === "Addition"){
+                // thisType = "int";
+                // //Control.putDebug("start eq add");
+                // this.checkAddition();
+                // //Control.putDebug("done with eq addition");
+            }            
+            //BOOLEAN
+            else if (currentNode.name === "Inequality" || currentNode.name === "Equality") {
+                // thisType = this.checkEquality(currentNode.tokenPointer.startIndex);
+                // thisType = "boolean";
+            }
+            else if (currentNode.tokenPointer.description === "ID") {
+                var id:String = currentNode.tokenPointer.str;
+                var address = _SymbolTableTree.getAddressById(id); 
+                
+                //load x register from memory
+                code += "AE" + address;
+            }
+            //INT
+            else if (currentNode.tokenPointer.description === "DIGIT") {
+                //load x register with constant
+                code += "A2" + "0"+currentNode.name;
+            }
+            //STRING
+            else if (currentNode.name.charAt(0) === "\"") {
+                // thisType = "string";
+            }
+            //BOOLEAN
+            else if (currentNode.name === "true" || currentNode.name === "false") {
+                // thisType = "boolean";
+            }
+            else {
+                //return error
+                // Control.putDebug("Nothing found, left/right");
+            }
+
+
+            //Get right
+            this.nextNode();
+            var thisType = null;
+            //ID          
+            if (currentNode.tokenPointer.description === "ID") {
+                var id:String = currentNode.tokenPointer.str;
+                var address = _SymbolTableTree.getAddressById(id); 
+                
+                //compare byte in mem to x reg
+                code += "EC" + address;
+            }
+            //INT
+            else if (currentNode.tokenPointer.description === "DIGIT") {
+                //create address for constant
+                var constantEntry = _StaticTable.newEntry("PRINT"+currentNode.name);
+
+                //compare byte in mem to x reg
+                code += "EC" + constantEntry.tempAddress;
+            }
+        }
 
         public static checkEquality(equalityIndex):String {
 
