@@ -885,3 +885,29 @@ mess with temp addresses*/
  print("heap is too big if this gets printed")
 */
 }$
+
+
+
+/*reusing printed strings and string variables*/
+{
+    string p p = "pillow case"
+    print(p)
+    print(" is ")
+    print("pillow case")
+
+    print(" ")
+
+    print("abc")
+    print(" is ")
+    string l l = "abc"
+    print(l)
+
+    print(" ")
+    
+    string c c = "copy of "
+    print(c)
+    print(p)
+    print(" is ")
+    c = p
+    print(c)
+}$

@@ -49,9 +49,17 @@ var Compiler;
                         //Symbol node points to static table entry
                         symbolNode.entryPointer = entry;
                         //Initialize int/boolean as 00
-                        code += "A9" + "00" + "8D";
-                        //Add temporary variable location
-                        code += "" + entry.tempAddress;
+                        if (type === "int" || type === "boolean") {
+                            code += "A9" + "00" + "8D";
+                            //Add temporary variable location
+                            code += "" + entry.tempAddress;
+                        }
+                        //Initialize string pointer to 0xFF which will be string termination or 00s
+                        else if (type === "string") {
+                            code += "A9" + "FF" + "8D";
+                            //Add temporary variable location
+                            code += "" + entry.tempAddress;
+                        }
                         //Next statement
                         this.nextNode();
                         break;
@@ -151,8 +159,14 @@ var Compiler;
                         this.nextNode();
                         //If it's a string constant...
                         if (currentNode.name.charAt(0) === "\"") {
-                            //MORE TO DO HERE
-                            Compiler.Control.putDebug("String " + id + " = " + currentNode.name);
+                            //store in the heap
+                            var strAddress = this.storeStringInHeapAndReturnAddress(currentNode.name);
+                            Compiler.Control.putDebug("Address: " + strAddress);
+                            Compiler.Control.putDebug("New heap = " + heapCode);
+                            //load acc with strAddress from heap
+                            code += "A9" + strAddress;
+                            //store in id address
+                            code += "8D" + addressStr;
                         }
                         //Equality
                         else if (currentNode.name === "Equality") {
