@@ -12,7 +12,7 @@ namespace Compiler {
             
             //code
             code = "";
-            //variableCounter = 0;
+            heapCode = "";
 
             //tables
             _StaticTable;
@@ -160,9 +160,11 @@ namespace Compiler {
 
                         //Printing string
                         else if (currentNode.name.charAt(0) === "\"") {
-                            Utils.stringToHex(currentNode.name);
-                            Control.putCodeGenMessage(Utils.stringToHex(currentNode.name));
-                            //Control.putCodeGenMessage(Utils.stringToHex("-ABC-"));
+                            //store in the heap
+                            var strAddress = this.storeStringInHeapAndReturnAddress(currentNode.name);
+                            Control.putCodeGenMessage("Address: "+strAddress);
+                            Control.putCodeGenMessage("New heap");
+                            Control.putCodeGenMessage(heapCode);
                         }
 
 
@@ -524,6 +526,32 @@ namespace Compiler {
             code += "D0" + "02";
             //else, set acc 0 false
             code += "A9" + "00";
+        }
+
+        public static storeStringInHeapAndReturnAddress(str:String):String {
+            //remove quotes, convert to hex
+            var hexString = Utils.stringToHex(str);
+            
+            //is it already in heap?
+            var index = heapCode.indexOf(""+hexString);
+            //found it
+            if (index !== -1) {
+                //convert index to address
+                return this.indexToAddress(index);
+            }
+            //add it in
+            else {
+                heapCode = ""+ hexString + heapCode;
+                //calculate address
+                return this.indexToAddress(0);
+            }
+        }
+
+        public static indexToAddress(index:number):String {
+            var numberBytesInHeap = heapCode.length / 2;
+            var byteIndex = (index/2);
+            var topOfHeap = 0x100 - numberBytesInHeap;
+            return Utils.toHex(topOfHeap + byteIndex);
         }
 
         public static checkEquality(equalityIndex):String {
