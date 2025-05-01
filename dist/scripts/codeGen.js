@@ -358,6 +358,7 @@ var Compiler;
                 // thisType = this.checkEquality(currentNode.tokenPointer.startIndex);
                 // thisType = "boolean";
             }
+            //ID
             else if (currentNode.tokenPointer.description === "ID") {
                 var id = currentNode.tokenPointer.str;
                 var address = _SymbolTableTree.getAddressById(id);
@@ -371,7 +372,10 @@ var Compiler;
             }
             //STRING
             else if (currentNode.name.charAt(0) === "\"") {
-                // thisType = "string";
+                //store in the heap
+                var strAddress = this.storeStringInHeapAndReturnAddress(currentNode.name);
+                //load x reg from memory
+                code += "AE" + strAddress + "00";
             }
             //BOOLEAN
             else if (currentNode.name === "true") {
@@ -404,6 +408,13 @@ var Compiler;
                 code += "8D" + constantEntry.tempAddress;
                 //compare byte in mem to x reg
                 code += "EC" + constantEntry.tempAddress;
+            }
+            //STRING
+            else if (currentNode.name.charAt(0) === "\"") {
+                //store in the heap
+                var strAddress = this.storeStringInHeapAndReturnAddress(currentNode.name);
+                //compare byte in mem to x reg
+                code += "EC" + strAddress + "00";
             }
             //BOOLEAN
             else if (currentNode.name === "true") {
