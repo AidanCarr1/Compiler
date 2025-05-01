@@ -124,6 +124,12 @@ var Compiler;
                             //load xreg with 1, print
                             code += "A0" + "00" + "A201FF";
                         }
+                        //Printing string
+                        else if (currentNode.name.charAt(0) === "\"") {
+                            Compiler.Utils.stringToHex(currentNode.name);
+                            Compiler.Control.putCodeGenMessage(Compiler.Utils.stringToHex(currentNode.name));
+                            //Control.putCodeGenMessage(Utils.stringToHex("-ABC-"));
+                        }
                         else {
                             Compiler.Control.putDebug("unknown print");
                         }

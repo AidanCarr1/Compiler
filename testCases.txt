@@ -820,3 +820,31 @@ mess with temp addresses*/
   }
 
 }$
+
+
+/*add 4s*/
+{
+  int d
+  d = 4+4+4+4
+  print(d)
+}$
+
+
+/*string shit*/
+{
+  string g 
+  print(g)
+}$
+{
+  string b 
+  b = "word"
+  print(b)
+}$
+
+/*print two strings*/
+{
+  print("hello")
+  string w 
+  w = " world"
+  print(w)
+}$

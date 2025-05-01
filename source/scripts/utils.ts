@@ -124,5 +124,23 @@ namespace Compiler {
             }
             return newHexString;
         }
+
+        public static stringToHex (rawStr:String): String {
+            var fullHexString = "";
+
+            //remove quotes (beginning and end)
+            var str = rawStr.substring(1,rawStr.length-1);
+
+            for (var i=0; i<str.length; i++) {
+                //convert to ascii
+                var ascii = str.charCodeAt(i);
+                //convert number to hex
+                var hex = this.toHex(ascii);
+                fullHexString += hex;
+            }
+
+            //and add the string termination symbol
+            return fullHexString + "00";
+        }
     }
 }

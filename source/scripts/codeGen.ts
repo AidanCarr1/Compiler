@@ -157,6 +157,15 @@ namespace Compiler {
                             //load xreg with 1, print
                             code += "A0"+ "00" +"A201FF";
                         }
+
+                        //Printing string
+                        else if (currentNode.name.charAt(0) === "\"") {
+                            Utils.stringToHex(currentNode.name);
+                            Control.putCodeGenMessage(Utils.stringToHex(currentNode.name));
+                            //Control.putCodeGenMessage(Utils.stringToHex("-ABC-"));
+                        }
+
+
                         else {
                             Control.putDebug("unknown print");
                         }
