@@ -74,6 +74,7 @@ var Compiler;
                         //printing equality/inequality
                         else if (currentNode.name === "Inequality") {
                             this.doEquality();
+                            this.accOppositeZFlag();
                             //make a variable entry for the constant digit
                             var inequalityEntry = _StaticTable.newEntry("INEQUALITY");
                             //store acc
@@ -83,6 +84,7 @@ var Compiler;
                         }
                         else if (currentNode.name === "Equality") {
                             this.doEquality();
+                            this.accZFlag();
                             //make a variable entry for the constant digit
                             var equalityEntry = _StaticTable.newEntry("EQUALITY");
                             //store acc
@@ -113,6 +115,17 @@ var Compiler;
                         else if (currentNode.tokenPointer.description === "DIGIT") {
                             //load xreg with constant, print
                             code += "A0" + "0" + currentNode.name + "A201FF";
+                        }
+                        else if (currentNode.name === "true") {
+                            //load xreg with 1, print
+                            code += "A0" + "01" + "A201FF";
+                        }
+                        else if (currentNode.name === "false") {
+                            //load xreg with 1, print
+                            code += "A0" + "00" + "A201FF";
+                        }
+                        else {
+                            Compiler.Control.putDebug("unknown print");
                         }
                         //Next statement
                         this.nextNode();
