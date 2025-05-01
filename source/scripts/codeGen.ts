@@ -362,13 +362,13 @@ namespace Compiler {
                 return;
             }
 
-            //finalize the print first
+            //put it all together
             printingCode = "" + Utils.separateHex(code);
-            printingCode += "<mark class='heap'>" + "00 ".repeat(0x100 - amountOfCode) +"</mark>";
-            printingCode += Utils.separateHex(heapCode);
+            if (heapCode.length > 0) {
+                printingCode += "<mark class='heap'>" + "00 ".repeat(0x100 - amountOfCode) +"</mark>";
+                printingCode += Utils.separateHex(heapCode);
+            }
 
-            
-            
         } 
 
 

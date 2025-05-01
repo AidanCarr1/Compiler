@@ -284,10 +284,12 @@ var Compiler;
                 var newError = new Compiler.ErrorCompiler("CODE EXCEEDS 256 BYTES", "Heap too large");
                 return;
             }
-            //finalize the print first
+            //put it all together
             printingCode = "" + Compiler.Utils.separateHex(code);
-            printingCode += "<mark class='heap'>" + "00 ".repeat(0x100 - amountOfCode) + "</mark>";
-            printingCode += Compiler.Utils.separateHex(heapCode);
+            if (heapCode.length > 0) {
+                printingCode += "<mark class='heap'>" + "00 ".repeat(0x100 - amountOfCode) + "</mark>";
+                printingCode += Compiler.Utils.separateHex(heapCode);
+            }
         }
         static nextNode() {
             nodeCounter++;

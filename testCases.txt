@@ -825,7 +825,7 @@ mess with temp addresses*/
 /*add 4s*/
 {
   int d
-  d = 4+4+4+4
+  d = 4+4+4+4+4+4 /*20=0x18*/
   print(d)
 }$
 
