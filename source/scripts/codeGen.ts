@@ -342,15 +342,17 @@ namespace Compiler {
             //Check the lengths before printing
             var amountOfCode = (code.length + heapCode.length)/2;
 
+            if (amountOfCode > 256) {
+                var newError = new ErrorCompiler("CODE EXCEEDS 256 BYTES","Heap too large");
+                return;
+            }
+
             //finalize the print first
             printingCode = "" + Utils.separateHex(code);
             printingCode += "<mark class='heap'>" + "00 ".repeat(0x100 - amountOfCode) +"</mark>";
             printingCode += Utils.separateHex(heapCode);
 
-            if (amountOfCode > 256) {
-                var newError = new ErrorCompiler("CODE EXCEEDS 256 BYTES","Heap too large");
-                return;
-            }
+            
             
         } 
 

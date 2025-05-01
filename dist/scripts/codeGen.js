@@ -266,14 +266,14 @@ var Compiler;
             }
             //Check the lengths before printing
             var amountOfCode = (code.length + heapCode.length) / 2;
-            //finalize the print first
-            printingCode = "" + Compiler.Utils.separateHex(code);
-            printingCode += "<mark class='heap'>" + "00 ".repeat(0x100 - amountOfCode) + "</mark>";
-            printingCode += Compiler.Utils.separateHex(heapCode);
             if (amountOfCode > 256) {
                 var newError = new Compiler.ErrorCompiler("CODE EXCEEDS 256 BYTES", "Heap too large");
                 return;
             }
+            //finalize the print first
+            printingCode = "" + Compiler.Utils.separateHex(code);
+            printingCode += "<mark class='heap'>" + "00 ".repeat(0x100 - amountOfCode) + "</mark>";
+            printingCode += Compiler.Utils.separateHex(heapCode);
         }
         static nextNode() {
             nodeCounter++;
