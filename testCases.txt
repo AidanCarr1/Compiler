@@ -890,16 +890,16 @@ mess with temp addresses*/
 
 /*reusing printed strings and string variables*/
 {
-    string p p = "pillow case"
+    string p p = "pillow"
     print(p)
     print(" is ")
-    print("pillow case")
+    print("pillow")
 
     print(" ")
 
-    print("abc")
+    print("leech")
     print(" is ")
-    string l l = "abc"
+    string l l = "leech"
     print(l)
 
     print(" ")

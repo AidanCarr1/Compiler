@@ -44,7 +44,7 @@ namespace Compiler {
                 var currentChar = sourceString[sourceStringIndex];
                 checkingToken += currentChar;
 
-                Control.putDebug("-"+Utils.address(sourceIndex)+"-");
+                //Control.putDebug("-"+Utils.address(sourceIndex)+"-");
                 //putDebug("    cT:"+checkingToken+" bT:"+bestTokenString);
                 
                 //Change dictionary based on quote/comment state
@@ -137,7 +137,7 @@ namespace Compiler {
                 //If a separator has been found
                 if ((currentChar === " " && !quoteIsOpen) || 
                     currentChar === "\n") {
-                        Control.putDebug("Separator found"); // + "("+address(sourceIndex)+")");
+                        Control.putDebug("Separator found at "+Utils.address(sourceIndex));
                     
                     //Create Token object, check for errors
                     

@@ -17,7 +17,7 @@ var Compiler;
         }
         //Add new Node into the tree somewhere
         addNode(nodeName, isLeaf, token) {
-            Compiler.Control.putDebug("in add node");
+            //Control.putDebug("in add node");
             var newNode = new Compiler.Node(nodeName);
             //First node, root node
             if (this.root == null) {
@@ -41,7 +41,7 @@ var Compiler;
             newNode.isLeaf = isLeaf;
             //add it to the in order node list
             this.nodeList.push(newNode);
-            Compiler.Control.putDebug("done adding node");
+            //Control.putDebug("done adding node");
             return newNode;
         }
         //Up the tree

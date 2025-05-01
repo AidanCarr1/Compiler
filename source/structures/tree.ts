@@ -21,7 +21,7 @@ namespace Compiler {
 
         //Add new Node into the tree somewhere
         public addNode(nodeName: String, isLeaf?: boolean, token?: Token): Node {
-            Control.putDebug("in add node");
+            //Control.putDebug("in add node");
             var newNode = new Node(nodeName);
             //First node, root node
             if (this.root == null) {
@@ -46,7 +46,7 @@ namespace Compiler {
             newNode.isLeaf = isLeaf;
             //add it to the in order node list
             this.nodeList.push(newNode);
-            Control.putDebug("done adding node");
+            //Control.putDebug("done adding node");
             return newNode;
         }
 

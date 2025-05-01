@@ -35,7 +35,7 @@ var Compiler;
                 //Look at the next character
                 var currentChar = sourceString[sourceStringIndex];
                 checkingToken += currentChar;
-                Compiler.Control.putDebug("-" + Compiler.Utils.address(sourceIndex) + "-");
+                //Control.putDebug("-"+Utils.address(sourceIndex)+"-");
                 //putDebug("    cT:"+checkingToken+" bT:"+bestTokenString);
                 //Change dictionary based on quote/comment state
                 if (quoteIsOpen) {
@@ -114,7 +114,7 @@ var Compiler;
                 //If a separator has been found
                 if ((currentChar === " " && !quoteIsOpen) ||
                     currentChar === "\n") {
-                    Compiler.Control.putDebug("Separator found"); // + "("+address(sourceIndex)+")");
+                    Compiler.Control.putDebug("Separator found at " + Compiler.Utils.address(sourceIndex));
                     //Create Token object, check for errors
                     //Separator
                     if ((checkingToken === " " && !quoteIsOpen) ||
