@@ -170,7 +170,8 @@ namespace Compiler {
                     //Print code
                     this.putImportantLine();
                     this.putImportantMessage("6502 Code");
-                    this.putImportantMessage(Utils.separateHex(code));
+                    //this.putImportantMessage(Utils.separateHex(code));
+                    this.putImportantMessage(printingCode);
                 }
 
                 //Next Program

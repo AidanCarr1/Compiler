@@ -43,5 +43,6 @@ var nodeCounter = 0;
 // CODE GEN
 var code = "";
 var heapCode = "";
+var printingCode = "";
 var _StaticTable = new Compiler.StaticTable();
 //# sourceMappingURL=globals.js.map

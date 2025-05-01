@@ -162,9 +162,13 @@ namespace Compiler {
                         else if (currentNode.name.charAt(0) === "\"") {
                             //store in the heap
                             var strAddress = this.storeStringInHeapAndReturnAddress(currentNode.name);
-                            Control.putCodeGenMessage("Address: "+strAddress);
-                            Control.putCodeGenMessage("New heap");
-                            Control.putCodeGenMessage(heapCode);
+                            Control.putDebug("Address: "+strAddress);
+                            Control.putDebug("New heap = "+heapCode);
+
+                            //load yreg with string from heap
+                            code += "A0"+ strAddress; 
+                            //print string
+                            code += "A202FF";
                         }
 
 
@@ -308,6 +312,10 @@ namespace Compiler {
 
             //get code length
             var codeLength = code.length / 2;
+            if (codeLength / 2 > 256) {
+                var newError = new ErrorCompiler("CODE EXCEEDS 256 BYTES","Too large before variables are even assigned");
+                return;
+            }
 
             //for every entry
             for (var i=0; i<_StaticTable.entries.length; i++) {
@@ -326,11 +334,23 @@ namespace Compiler {
                 //check we havent gone too far
                 Control.putDebug("code len check: "+(code.length/2));
                 if (code.length / 2 > 256) {
-                    var newError = new ErrorCompiler("CODE EXCEEDS 256 BYTES","");
+                    var newError = new ErrorCompiler("CODE EXCEEDS 256 BYTES","Static variables too large");
                     return;
                 }
             }
 
+            //Check the lengths before printing
+            var amountOfCode = (code.length + heapCode.length)/2;
+
+            //finalize the print first
+            printingCode = "" + Utils.separateHex(code);
+            printingCode += "<mark class='heap'>" + "00 ".repeat(0x100 - amountOfCode) +"</mark>";
+            printingCode += Utils.separateHex(heapCode);
+
+            if (amountOfCode > 256) {
+                var newError = new ErrorCompiler("CODE EXCEEDS 256 BYTES","Heap too large");
+                return;
+            }
             
         } 
 
@@ -539,7 +559,7 @@ namespace Compiler {
                 //convert index to address
                 return this.indexToAddress(index);
             }
-            //add it in
+            //no? add it in
             else {
                 heapCode = ""+ hexString + heapCode;
                 //calculate address

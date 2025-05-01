@@ -856,3 +856,16 @@ mess with temp addresses*/
   boolean b = (a == "mom")
   print(b)
 }
+
+/*smart heap*/
+{
+    print("computers ")
+    print("omputers ")
+    print("mputers ")
+    print("puters ")
+    print("uters ")
+    print("ters ")
+    print("ers ")
+    print("rs ")
+    print("s ")
+}$

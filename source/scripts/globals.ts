@@ -59,5 +59,6 @@ var nodeCounter = 0;
 // CODE GEN
 var code:String = "";
 var heapCode:String = "";
+var printingCode = "";
 
 var _StaticTable = new Compiler.StaticTable();

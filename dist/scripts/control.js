@@ -140,7 +140,8 @@ var Compiler;
                     //Print code
                     this.putImportantLine();
                     this.putImportantMessage("6502 Code");
-                    this.putImportantMessage(Compiler.Utils.separateHex(code));
+                    //this.putImportantMessage(Utils.separateHex(code));
+                    this.putImportantMessage(printingCode);
                 }
                 //Next Program
                 this.putImportantLine(2);
