@@ -282,15 +282,19 @@ namespace Compiler {
                         //If it's a boolean...
                         if (currentNode.tokenPointer.description === "BOOLEAN VALUE") {
                             if (currentNode.name === "true") {
-                                //load acc TRUE
-                                code += "A9" + "01";
+                                //get address of 01
+                                var addressStr = ""+this.storeAConstant("1");
                             }
                             else {
-                                //load acc TRUE
-                                code += "A9" + "00";
+                                //get address of 00
+                                var addressStr = ""+this.storeAConstant("0");
                             }
-                            //store number in address
-                            code += "8D" + addressStr;
+                            //load xreg with 01 true
+                            code += "A2" + "01";
+                            //compare address to 01 true
+                            code += "EC" + addressStr;
+                            //branch on not equal
+                            code += "D0" + "BB";//jumpdistance
                             // var id:String = currentNode.tokenPointer.str; //"a" "b" "c"...
                             // var addressStr = _SymbolTableTree.getAddressById(id);
                             // //load zflag with id's value (true 01 or false 00)
