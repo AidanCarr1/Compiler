@@ -299,7 +299,7 @@ namespace Compiler {
             //If there is actually code...
             if (code.length > 0) {
                 //Copy code to clipboard
-                navigator.clipboard.writeText(""+Utils.separateHex(code));
+                navigator.clipboard.writeText(clipboardCode);
             
                 //Flash the copied text
                 var element = (<HTMLElement> document.getElementById("copied"));

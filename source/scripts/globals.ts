@@ -60,5 +60,6 @@ var nodeCounter = 0;
 var code:String = "";
 var heapCode:String = "";
 var printingCode = "";
+var clipboardCode = "";
 
 var _StaticTable = new Compiler.StaticTable();

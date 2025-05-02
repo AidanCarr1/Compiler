@@ -44,5 +44,6 @@ var nodeCounter = 0;
 var code = "";
 var heapCode = "";
 var printingCode = "";
+var clipboardCode = "";
 var _StaticTable = new Compiler.StaticTable();
 //# sourceMappingURL=globals.js.map

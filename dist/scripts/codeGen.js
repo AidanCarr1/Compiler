@@ -11,6 +11,7 @@ var Compiler;
             //code
             code = "";
             heapCode = "";
+            clipboardCode = "";
             //tables
             _StaticTable;
             _StaticTable.reset();
@@ -291,12 +292,12 @@ var Compiler;
                     printingCode += "<mark class='heap'>" + "00 ".repeat(0x100 - amountOfCode) + "</mark>";
                     printingCode += Compiler.Utils.separateHex(heapCode);
                     //put it together again (clipboard)
-                    code += "00 ".repeat(0x100 - amountOfCode) + Compiler.Utils.separateHex(heapCode);
+                    clipboardCode = "" + Compiler.Utils.separateHex(code) + "00 ".repeat(0x100 - amountOfCode) + Compiler.Utils.separateHex(heapCode);
                 }
-                if (heapCode.length > 0) {
-                    printingCode += "<mark class='heap'>" + "00 ".repeat(0x100 - amountOfCode) + "</mark>";
-                    printingCode += Compiler.Utils.separateHex(heapCode);
-                }
+                // if (heapCode.length > 0) {
+                //     printingCode += "<mark class='heap'>" + "00 ".repeat(0x100 - amountOfCode) +"</mark>";
+                //     printingCode += Utils.separateHex(heapCode);
+                // }
             }
         }
         static nextNode() {
