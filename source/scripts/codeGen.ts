@@ -275,8 +275,41 @@ namespace Compiler {
 
 
                     case "If":
+                        Control.putCodeGenMessage("If");
+                        //get conditional
+                        this.nextNode();
+
+                        //If it's a boolean...
+                        if (currentNode.tokenPointer.description === "BOOLEAN VALUE") {
+                            if (currentNode.name === "true") {
+                                //load acc TRUE
+                                code += "A9" + "01";
+                            }
+                            else {
+                                //load acc TRUE
+                                code += "A9" + "00";
+                            }
+                            //store number in address
+                            code += "8D" + addressStr;
+                            // var id:String = currentNode.tokenPointer.str; //"a" "b" "c"...
+                            // var addressStr = _SymbolTableTree.getAddressById(id);
+                            // //load zflag with id's value (true 01 or false 00)
+                            // //load xreg with true
+                            // code += "A2" + "01";
+                            // //compare to id's value
+                            // code += "EC" + addressStr;
+                            // code += "BB"; //jump distance
+                        }
+                        //Inequality/Equality
+                        else if (currentNode.name === "Inequality") {
+                            this.doEquality();
+                        } 
+                        else if (currentNode.name === "Equality") {
+                            this.doEquality();
+                        }
+
                     case "While":
-                        Control.putCodeGenMessage("If-While Type/Scope Check");
+                        Control.putCodeGenMessage("While");
 
                         //get conditional
                         this.nextNode();
