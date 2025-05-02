@@ -284,11 +284,19 @@ var Compiler;
                 var newError = new Compiler.ErrorCompiler("CODE EXCEEDS 256 BYTES", "Heap too large");
                 return;
             }
-            //put it all together
-            printingCode = "" + Compiler.Utils.separateHex(code);
-            if (heapCode.length > 0) {
-                printingCode += "<mark class='heap'>" + "00 ".repeat(0x100 - amountOfCode) + "</mark>";
-                printingCode += Compiler.Utils.separateHex(heapCode);
+            //put it all together (HTML)
+            else {
+                printingCode = "" + Compiler.Utils.separateHex(code);
+                if (heapCode.length > 0) {
+                    printingCode += "<mark class='heap'>" + "00 ".repeat(0x100 - amountOfCode) + "</mark>";
+                    printingCode += Compiler.Utils.separateHex(heapCode);
+                    //put it together again (clipboard)
+                    code += "00 ".repeat(0x100 - amountOfCode) + Compiler.Utils.separateHex(heapCode);
+                }
+                if (heapCode.length > 0) {
+                    printingCode += "<mark class='heap'>" + "00 ".repeat(0x100 - amountOfCode) + "</mark>";
+                    printingCode += Compiler.Utils.separateHex(heapCode);
+                }
             }
         }
         static nextNode() {

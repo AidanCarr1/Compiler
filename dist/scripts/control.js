@@ -148,6 +148,10 @@ var Compiler;
             }
             //All programs are done
             this.putHeader1("END");
+            //TEMPORARY!!!
+            //Scroll down to bottom for code gen
+            var elem = document.getElementById('taOutput');
+            elem.scrollTop = elem.scrollHeight;
         }
         static btnVerbose_click() {
             // Toggleable button: Verbose mode on or off
@@ -242,6 +246,20 @@ var Compiler;
                     document.getElementById("taOutput").innerHTML
                         += "<p><mark class='label'>CODE GEN</mark> <mark class='info'>" + msg + "</mark></p>";
                 }
+            }
+        }
+        static btnCopy_click() {
+            //Thanks https://www.w3schools.com/howto/howto_js_copy_clipboard.asp 
+            //If there is actually code...
+            if (code.length > 0) {
+                //Copy code to clipboard
+                navigator.clipboard.writeText("" + Compiler.Utils.separateHex(code));
+                //Flash the copied text
+                var element = document.getElementById("copied");
+                element.classList.add("flash");
+                setTimeout(function () {
+                    element.classList.remove("flash");
+                }, 1);
             }
         }
     }

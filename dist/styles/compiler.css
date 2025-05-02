@@ -169,5 +169,21 @@ textarea, pre {
 	color:rgb(80, 80, 80);
 }
 
+#btnCopy {
+	margin-top: 10px;
+	margin-right: 10px;
+}
+#copied {
+	margin-top: 10px;
+	transition: 2s;
+	color: rgba(255, 255, 255, 0);
+}
+#copied.flash {
+	/* display: none; */
+	color: green;
+	transition: 0s;
+}
+
+
 
 

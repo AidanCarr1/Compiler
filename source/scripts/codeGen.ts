@@ -362,13 +362,23 @@ namespace Compiler {
                 return;
             }
 
-            //put it all together
-            printingCode = "" + Utils.separateHex(code);
-            if (heapCode.length > 0) {
-                printingCode += "<mark class='heap'>" + "00 ".repeat(0x100 - amountOfCode) +"</mark>";
-                printingCode += Utils.separateHex(heapCode);
-            }
+            //put it all together (HTML)
+            else {
+                printingCode = "" + Utils.separateHex(code);
+                if (heapCode.length > 0) {
+                    printingCode += "<mark class='heap'>" + "00 ".repeat(0x100 - amountOfCode) +"</mark>";
+                    printingCode += Utils.separateHex(heapCode);
 
+                    //put it together again (clipboard)
+                    code += "00 ".repeat(0x100 - amountOfCode) + Utils.separateHex(heapCode);
+                }
+
+                
+                if (heapCode.length > 0) {
+                    printingCode += "<mark class='heap'>" + "00 ".repeat(0x100 - amountOfCode) +"</mark>";
+                    printingCode += Utils.separateHex(heapCode);
+                }
+            }
         } 
 
 

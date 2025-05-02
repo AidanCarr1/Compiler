@@ -19,19 +19,11 @@
         <div id="left">
             <h2>User Program</h2>               <!--rows="10"-->
             <textarea id="taSourceCode" cols="37" rows="20">
-/*reusing printed strings and string variables*/
+/*add 4s*/
 {
-    string p p = "pillow case"
-    print(p)
-    print(" is ")
-    print("pillow case")
-
-    print(" ")
-
-    print("abc")
-    print(" is ")
-    string l l = "abc"
-    print(l)
+    int d
+    d = 4+4+4+4+4+4 /*20=0x18*/
+    print(d)
 }$</textarea>
             <br>
             <div style="display: flex;">
@@ -48,6 +40,8 @@
         <br>
         <div id="right">
             <div id="taOutput"></div>
+            <input type="button" id="btnCopy" value="COPY" onclick="Compiler.Control.btnCopy_click();"/>
+            <div id="copied">Copied!</div>
         </div>
         <!--<textarea id="taOutput" cols="64" rows="25" readonly></textarea>-->
     </div>
