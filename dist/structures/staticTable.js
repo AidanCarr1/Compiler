@@ -19,8 +19,23 @@ var Compiler;
             this.entryCount++;
             //Add to list of Entries
             this.entries.push(newEntry);
-            //Add pointer to symbolNode
-            // entryPointer
+            return this.entries[this.entryCount - 1];
+        }
+        //New entry for const numbers 0-9
+        constEntry(id) {
+            //Check if entry already exists
+            //ex: "0" "1" "2"...
+            for (var i = 0; i < this.entryCount; i++) {
+                if (this.entries[i].id === id) {
+                    return this.entries[i];
+                }
+            }
+            //Create Entry object
+            var newEntry = new Compiler.Entry(id, this.entryCount);
+            //Increment count
+            this.entryCount++;
+            //Add to list of Entries
+            this.entries.push(newEntry);
             return this.entries[this.entryCount - 1];
         }
         //reset

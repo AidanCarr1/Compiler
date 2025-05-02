@@ -294,6 +294,7 @@ namespace Compiler {
         
         public static btnCopy_click() {
             //Thanks https://www.w3schools.com/howto/howto_js_copy_clipboard.asp 
+            //and https://stackoverflow.com/questions/16791851/a-flash-of-color-using-pure-css-transitions
 
             //If there is actually code...
             if (code.length > 0) {
@@ -305,7 +306,7 @@ namespace Compiler {
                 element.classList.add("flash");
                 setTimeout(function() {
                     element.classList.remove("flash");
-                }, 1);
+                }, 2);
             }
           }
     }

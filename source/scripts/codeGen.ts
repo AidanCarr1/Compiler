@@ -409,11 +409,7 @@ namespace Compiler {
             this.nextNode();
             if (currentNode.tokenPointer.description === "DIGIT") {
                 //make a variable entry for the constant digit
-                var constantEntry = _StaticTable.newEntry("CONST"+currentNode.name);
-                
-                //load acc and store it
-                code += "A9" + "0"+currentNode.name;
-                code += "8D" + constantEntry.tempAddress;
+                var addressStr = this.storeAConstant(currentNode.name);
             }
 
             //Get right
@@ -439,7 +435,7 @@ namespace Compiler {
             }
 
             //ADD, THEN MAKE OUR WAY OUT OF STACK
-            code += "6D" +constantEntry.tempAddress;
+            code += "6D" +addressStr;
         }
 
 
@@ -513,13 +509,11 @@ namespace Compiler {
             }
             //INT
             else if (currentNode.tokenPointer.description === "DIGIT") {
-                //create address for constant
-                var constantEntry = _StaticTable.newEntry("COSNT"+currentNode.name);
-                code += "A9" + "0"+currentNode.name;
-                code += "8D" + constantEntry.tempAddress;
+                //make a variable entry for the constant digit
+                var addressStr = this.storeAConstant(currentNode.name);
 
                 //compare byte in mem to x reg
-                code += "EC" + constantEntry.tempAddress;
+                code += "EC" + addressStr;
             }
             //STRING
             else if (currentNode.name.charAt(0) === "\"") {
@@ -613,6 +607,31 @@ namespace Compiler {
             var byteIndex = (index/2);
             var topOfHeap = 0x100 - numberBytesInHeap;
             return Utils.toHex(topOfHeap + byteIndex);
+        }
+
+        //get a number as a string, store a constant variable in memory
+        //if one exists, dont do anything
+        public static storeAConstant(numString:String):String {
+            //make a variable entry for the constant digit
+
+            //Check if entry already exists
+            //ex: "0" "1" "2"...
+            for (var i=0; i<_StaticTable.entryCount; i++) {
+                if (_StaticTable.entries[i].id === numString) {
+                    //Constant already exists, return address
+                    return _StaticTable.entries[i].tempAddress;
+                }
+            }
+
+            //Otherwise, create and store one
+            //Create Entry object
+            var constantEntry = _StaticTable.newEntry(numString);
+
+            //load acc and store it
+            code += "A9" + "0"+numString;
+            code += "8D" + constantEntry.tempAddress;
+            //retiurn address
+            return _StaticTable.entries[i].tempAddress;
         }
 
         public static checkEquality(equalityIndex):String {

@@ -175,7 +175,7 @@ textarea, pre {
 }
 #copied {
 	margin-top: 10px;
-	transition: 2s;
+	transition: 3s;
 	color: rgba(255, 255, 255, 0);
 }
 #copied.flash {
