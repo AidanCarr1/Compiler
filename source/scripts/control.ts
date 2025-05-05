@@ -300,6 +300,7 @@ namespace Compiler {
             if (code.length > 0) {
                 //Copy code to clipboard
                 navigator.clipboard.writeText(clipboardCode);
+                //alert("Copied: ["+clipboardCode+"]");
             
                 //Flash the copied text
                 var element = (<HTMLElement> document.getElementById("copied"));

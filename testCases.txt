@@ -919,3 +919,28 @@ mess with temp addresses*/
     c = p
     print(c)
 }$
+
+
+/*addition as booleans*/
+{
+    print((4+5 == 9))
+    boolean b b=(3+3+3 == 4+5)
+    if (b==true) {
+      print("nine")
+    }
+}$
+
+/*compare boolean constants*/
+{
+  print("true")
+    print((true != false))
+    print((true == true))
+    print((false == false))
+
+    print(" false")
+    print((true == false))
+    print((false != false))
+    print((false == true))
+    
+    /*111000*/
+}$

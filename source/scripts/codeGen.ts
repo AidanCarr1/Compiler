@@ -294,7 +294,7 @@ namespace Compiler {
                             //compare address to 01 true
                             code += "EC" + addressStr;
                             //branch on not equal
-                            code += "D0" + "BB";//jumpdistance
+                            code += "D0" + "3B";//jumpdistance
                             // var id:String = currentNode.tokenPointer.str; //"a" "b" "c"...
                             // var addressStr = _SymbolTableTree.getAddressById(id);
                             // //load zflag with id's value (true 01 or false 00)
@@ -410,6 +410,9 @@ namespace Compiler {
                     //put it together again (clipboard)
                     clipboardCode = "" + Utils.separateHex(code) + "00 ".repeat(0x100 - amountOfCode) + Utils.separateHex(heapCode);
                 }
+                else {
+                    clipboardCode = "" + Utils.separateHex(code);
+                }
 
                 
                 // if (heapCode.length > 0) {
@@ -480,6 +483,7 @@ namespace Compiler {
         //post condition: z flag has been set
         public static doEquality() {
             Control.putCodeGenMessage("Do Equality");
+            var addressStr;
 
             //Get left
             this.nextNode();
@@ -487,15 +491,17 @@ namespace Compiler {
 
             //INT
             if (currentNode.name === "Addition"){
-                // thisType = "int";
-                // //Control.putDebug("start eq add");
-                // this.checkAddition();
-                // //Control.putDebug("done with eq addition");
+                Control.putDebug("left eq add");
+                this.doAddition();
+
+                //load x reg with acc
+                var addEntry = _StaticTable.newEntry("ADDITION");
+                code += "8D" + addEntry.tempAddress;
+                code += "AE" + addEntry.tempAddress;
             }            
             //BOOLEAN
             else if (currentNode.name === "Inequality" || currentNode.name === "Equality") {
-                // thisType = this.checkEquality(currentNode.tokenPointer.startIndex);
-                // thisType = "boolean";
+                var newError = new ErrorCompiler("CANNOT GENERATE", "Nested equality/inequality is not supported");
             }
             //ID
             else if (currentNode.tokenPointer.description === "ID") {
@@ -537,8 +543,19 @@ namespace Compiler {
             //Get right
             this.nextNode();
             var thisType = null;
+
+            //INT
+            if (currentNode.name === "Addition"){
+                Control.putDebug("left eq add");
+                this.doAddition();
+
+                //load x reg with acc
+                var addEntry = _StaticTable.newEntry("ADDITION");
+                code += "8D" + addEntry.tempAddress;
+                code += "EC" + addEntry.tempAddress;
+            }   
             //ID          
-            if (currentNode.tokenPointer.description === "ID") {
+            else if (currentNode.tokenPointer.description === "ID") {
                 var id:String = currentNode.tokenPointer.str;
                 var address = _SymbolTableTree.getAddressById(id); 
                 
@@ -548,7 +565,7 @@ namespace Compiler {
             //INT
             else if (currentNode.tokenPointer.description === "DIGIT") {
                 //make a variable entry for the constant digit
-                var addressStr = this.storeAConstant(currentNode.name);
+                addressStr = this.storeAConstant(currentNode.name);
 
                 //compare byte in mem to x reg
                 code += "EC" + addressStr;
@@ -563,18 +580,23 @@ namespace Compiler {
             }
             //BOOLEAN
             else if (currentNode.name === "true") {
-                var booleanEntry = _StaticTable.newEntry("TRUE");
-                code += "A9" + "01" + "8D" + booleanEntry.tempAddress;
+                addressStr = this.storeAConstant("1"); //TRUE
+                //var booleanEntry = _StaticTable.newEntry("TRUE");
+                //code += "A9" + "01" + "8D" + addressStr;
 
                 //compare byte in mem to x reg
-                code += "EC" + booleanEntry.tempAddress;
+                code += "EC" + addressStr;
             }
             else if (currentNode.name === "false") {
-                var booleanEntry = _StaticTable.newEntry("FALSE");
-                code += "A9" + "00" + "8D" + booleanEntry.tempAddress;
+                addressStr = this.storeAConstant("0"); //TRUE
+                //var booleanEntry = _StaticTable.newEntry("FALSE");
+                //code += "A9" + "00" + "8D" + addressStr;
 
                 //compare byte in mem to x reg
-                code += "EC" + booleanEntry.tempAddress;
+                code += "EC" + addressStr;
+            }
+            else if (currentNode.name === "Inequality" || currentNode.name === "Equality") {
+                var newError = new ErrorCompiler("CANNOT GENERATE", "Nested equality/inequality is not supported");
             }
         }
 
