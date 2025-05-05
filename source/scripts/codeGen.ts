@@ -307,7 +307,7 @@ namespace Compiler {
                         //Inequality/Equality
                         else if (currentNode.name === "Inequality") {
                             this.doEquality();
-                            this.accOppositeZFlag();
+                            this.flipZFlag();
                             //zflag is set
                             code += "D0" + "3B"; //jumpdistance FIX!
 
@@ -654,10 +654,14 @@ namespace Compiler {
 
         public static flipZFlag() {
             this.accOppositeZFlag();
-            var inequalityEntry = _StaticTable.newEntry("INEQUALITY");
-            //xreg=0
-            code += "A2" + "00";
+
+            var inequalityEntry = _StaticTable.newEntry("OPPOSITE Z");
+            //store this opposite value
             code += "8D" + inequalityEntry.tempAddress;
+
+            //xreg=0
+            code += "A2" + "01";
+            //code += "8D" + inequalityEntry.tempAddress;
             //compare op to 0 for new zflag
             code += "EC" + inequalityEntry.tempAddress;
 
