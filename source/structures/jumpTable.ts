@@ -24,6 +24,7 @@ namespace Compiler {
             Control.putDebug("jump add:"+Utils.toHex(currentAddress));
 
             var newJump = new JumpEntry("J"+jumpCounter, scopeName, "jump", currentAddress);
+            Control.putDebug("NEW JUMP: "+newJump.name+", "+ newJump.scopeName+", start:"+ Utils.toHex(newJump.startLocation));
             this.jumps.push(newJump);
 
             jumpCounter ++;
@@ -31,21 +32,40 @@ namespace Compiler {
 
         public landJump() {
             //leave if theres no jumps
-            if (jumpCounter == 0) { 
+            if (this.jumps.length == 0) { 
                 return;
             }
             //get name of current scope before leaving
             var scopeName = _SymbolTableTree.current.name;
-            Control.putDebug("compare: "+this.jumps[jumpCounter-1].scopeName+" - "+ scopeName);
+                //Control.putDebug("JUMP compare: "+this.jumps[this.jumps.length-1].scopeName+" - "+ scopeName);
 
-            if(this.jumps[jumpCounter-1].scopeName === scopeName/* && this.jumps[jumpCounter-1].type === "jump"*/) {
+            for (var i=this.jumps.length-1; i >= 0; i --) {
+                //check top of stack for a jump
+                if(this.jumps[i].scopeName === scopeName) {
 
-                //know the land position of the jump
-                var currentAddress = code.length/2;
-                Control.putDebug("landed at:"+Utils.toHex(currentAddress));
+                    //know the land position of the jump
+                    var currentAddress = code.length/2;
+                    Control.putDebug("landed at:"+Utils.toHex(currentAddress));
 
-                this.jumps[jumpCounter-1].endLocation = currentAddress;
+                    this.jumps[i].endLocation = currentAddress;
+                    //var out = this.jumps.pop();
+                    //jumpCounter--;
+                }
             }
+
+            
+            
+            // else if(this.jumps[this.jumps.length-2].scopeName === scopeName) {
+
+            //     //know the land position of the jump
+            //     var currentAddress = code.length/2;
+            //     Control.putDebug("landed at:"+Utils.toHex(currentAddress));
+
+            //     this.jumps[jumpCounter-2].endLocation = currentAddress;
+            //     //var out = this.jumps.pop();
+            //     //jumpCounter--;
+            // }
+            
         }
 
         //New jump (for while loops)
@@ -56,9 +76,10 @@ namespace Compiler {
 
             //know the start position of the jump
             var currentAddress = code.length/2;
-            Control.putDebug("loop add:"+Utils.toHex(currentAddress));
 
             var newLoop = new JumpEntry("L"+loopCounter, scopeName, "loop", currentAddress);
+            Control.putDebug("NEW LOOP: "+newLoop.name+", "+ newLoop.scopeName+", start:"+ Utils.toHex(newLoop.startLocation));
+
             this.loops.push(newLoop);
 
         }
@@ -69,20 +90,19 @@ namespace Compiler {
             if (loopCounter == 0) { 
                 return "";
             }
-
             //get name of current scope before leaving
             var scopeName = _SymbolTableTree.current.name;
-            Control.putDebug("compare: "+this.loops[jumpCounter-1].scopeName+" - "+ scopeName);
+            //Control.putDebug("LOOP compare: "+this.loops[loopCounter-1].scopeName+" - "+ scopeName);
             var loop = this.loops[loopCounter-1];
 
             if(loop.scopeName === scopeName) {
 
                 //know the land position of the jump
                 var currentAddress = code.length/2;
-                Control.putDebug("landed at:"+Utils.toHex(currentAddress));
+                Control.putDebug(loop.name+": landed at:"+Utils.toHex(currentAddress));
 
                 loop.endLocation = currentAddress;
-                Control.putDebug("go from "+Utils.toHex(loop.endLocation)+" to "+ Utils.toHex(loop.startLocation))
+                Control.putDebug(loop.name+": go from "+Utils.toHex(loop.endLocation)+" to "+ Utils.toHex(loop.startLocation))
 
 
                 return loop.name;

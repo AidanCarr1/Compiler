@@ -316,7 +316,9 @@ var Compiler;
                         }
                         //track end of jump/length of scope
                         _JumpTable.landJump();
+                        Compiler.Control.putDebug(_SymbolTableTree.current.name);
                         _SymbolTableTree.moveUp();
+                        Compiler.Control.putDebug(_SymbolTableTree.current.name);
                         //Next statement
                         this.nextNode();
                         break;
@@ -359,7 +361,7 @@ var Compiler;
                 //calculate address code length and offset...
                 var jump = _JumpTable.jumps[j];
                 var distance = jump.endLocation - jump.startLocation;
-                Compiler.Control.putDebug("jump distance " + Compiler.Utils.toHex(distance));
+                Compiler.Control.putDebug("jump distance for " + jump.name + ": " + Compiler.Utils.toHex(distance));
                 //find temp values and replace with real value
                 var replaceTemporary = code.replaceAll("" + jump.name, "" + Compiler.Utils.toHex(distance));
                 code = replaceTemporary;

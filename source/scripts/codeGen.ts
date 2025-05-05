@@ -380,7 +380,6 @@ namespace Compiler {
 
                         //Are we ending a while loop?
                         if (_JumpTable.loopBack() !== "") {
-
                             //unconditional loop back up to top of while statement
                             //compare 01 to 00
                             code += "A2" + "01";
@@ -388,11 +387,13 @@ namespace Compiler {
                             code += "D0" + _JumpTable.loopBack(); //loop distance
                             //loop distance is set on this line
                         }
-
                         //track end of jump/length of scope
                         _JumpTable.landJump();
+                        
 
+                        Control.putDebug(_SymbolTableTree.current.name);
                         _SymbolTableTree.moveUp();
+                        Control.putDebug(_SymbolTableTree.current.name);
 
                         
 
@@ -451,7 +452,7 @@ namespace Compiler {
                 //calculate address code length and offset...
                 var jump:JumpEntry = _JumpTable.jumps[j];
                 var distance = jump.endLocation - jump.startLocation;
-                Control.putDebug("jump distance "+Utils.toHex(distance));
+                Control.putDebug("jump distance for "+jump.name+": "+Utils.toHex(distance));
 
                 //find temp values and replace with real value
                 var replaceTemporary = code.replaceAll(""+jump.name, ""+Utils.toHex(distance));
