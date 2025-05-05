@@ -924,6 +924,8 @@ mess with temp addresses*/
 /*addition as booleans*/
 {
     print((4+5 == 9))
+    print((5+5 != 3+3+3+1))
+    
     boolean b b=(3+3+3 == 4+5)
     if (b==true) {
       print("nine")
@@ -941,6 +943,6 @@ mess with temp addresses*/
     print((true == false))
     print((false != false))
     print((false == true))
-    
+
     /*111000*/
 }$

@@ -237,7 +237,7 @@ var Compiler;
                             //compare address to 01 true
                             code += "EC" + addressStr;
                             //branch on not equal
-                            code += "D0" + "3B"; //jumpdistance
+                            code += "D0" + "3B"; //jumpdistance FIX!
                             // var id:String = currentNode.tokenPointer.str; //"a" "b" "c"...
                             // var addressStr = _SymbolTableTree.getAddressById(id);
                             // //load zflag with id's value (true 01 or false 00)
@@ -250,9 +250,15 @@ var Compiler;
                         //Inequality/Equality
                         else if (currentNode.name === "Inequality") {
                             this.doEquality();
+                            this.accOppositeZFlag();
+                            //zflag is set
+                            code += "D0" + "3B"; //jumpdistance FIX!
                         }
                         else if (currentNode.name === "Equality") {
                             this.doEquality();
+                            //zflag is set
+                            //branch
+                            code += "D0" + "3B"; //jumpdistance FIX!
                         }
                     case "While":
                         Compiler.Control.putCodeGenMessage("While");
@@ -386,7 +392,7 @@ var Compiler;
             //ADD, THEN MAKE OUR WAY OUT OF STACK
             code += "6D" + addressStr;
         }
-        //post condition: z flag has been set
+        //post condition: z flag has been set 
         static doEquality() {
             Compiler.Control.putCodeGenMessage("Do Equality");
             var addressStr;
@@ -525,6 +531,15 @@ var Compiler;
             code += "D0" + "02";
             //else, set acc 0 false
             code += "A9" + "00";
+        }
+        static flipZFlag() {
+            this.accOppositeZFlag();
+            var inequalityEntry = _StaticTable.newEntry("INEQUALITY");
+            //xreg=0
+            code += "A2" + "00";
+            code += "8D" + inequalityEntry.tempAddress;
+            //compare op to 0 for new zflag
+            code += "EC" + inequalityEntry.tempAddress;
         }
         static storeStringInHeapAndReturnAddress(str) {
             //remove quotes, convert to hex
