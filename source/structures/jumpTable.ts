@@ -30,6 +30,10 @@ namespace Compiler {
         }
 
         public landJump() {
+            //leave if theres no jumps
+            if (jumpCounter == 0) { 
+                return;
+            }
             //get name of current scope before leaving
             var scopeName = _SymbolTableTree.current.name;
             Control.putDebug("compare: "+this.jumps[jumpCounter-1].scopeName+" - "+ scopeName);
@@ -48,6 +52,7 @@ namespace Compiler {
         public newLoop() {
             //get name of next scope
             var scopeName = "SCOPE " + (scopeCounter);
+            loopCounter ++;
 
             //know the start position of the jump
             var currentAddress = code.length/2;
@@ -56,23 +61,33 @@ namespace Compiler {
             var newLoop = new JumpEntry("L"+loopCounter, scopeName, "loop", currentAddress);
             this.loops.push(newLoop);
 
-            loopCounter ++;
         }
 
 
-        public landLoop() {
+        public loopBack(): String {
+            //leave if theres no loops
+            if (loopCounter == 0) { 
+                return "";
+            }
+
             //get name of current scope before leaving
             var scopeName = _SymbolTableTree.current.name;
             Control.putDebug("compare: "+this.loops[jumpCounter-1].scopeName+" - "+ scopeName);
+            var loop = this.loops[loopCounter-1];
 
-            if(this.loops[loopCounter-1].scopeName === scopeName) {
+            if(loop.scopeName === scopeName) {
 
                 //know the land position of the jump
                 var currentAddress = code.length/2;
                 Control.putDebug("landed at:"+Utils.toHex(currentAddress));
 
-                this.loops[loopCounter-1].endLocation = currentAddress;
+                loop.endLocation = currentAddress;
+                Control.putDebug("go from "+Utils.toHex(loop.endLocation)+" to "+ Utils.toHex(loop.startLocation))
+
+
+                return loop.name;
             }
+            return "";
         }
 
 

@@ -23,6 +23,10 @@ var Compiler;
             jumpCounter++;
         }
         landJump() {
+            //leave if theres no jumps
+            if (jumpCounter == 0) {
+                return;
+            }
             //get name of current scope before leaving
             var scopeName = _SymbolTableTree.current.name;
             Compiler.Control.putDebug("compare: " + this.jumps[jumpCounter - 1].scopeName + " - " + scopeName);
@@ -37,23 +41,31 @@ var Compiler;
         newLoop() {
             //get name of next scope
             var scopeName = "SCOPE " + (scopeCounter);
+            loopCounter++;
             //know the start position of the jump
             var currentAddress = code.length / 2;
             Compiler.Control.putDebug("loop add:" + Compiler.Utils.toHex(currentAddress));
             var newLoop = new Compiler.JumpEntry("L" + loopCounter, scopeName, "loop", currentAddress);
             this.loops.push(newLoop);
-            loopCounter++;
         }
-        landLoop() {
+        loopBack() {
+            //leave if theres no loops
+            if (loopCounter == 0) {
+                return "";
+            }
             //get name of current scope before leaving
             var scopeName = _SymbolTableTree.current.name;
             Compiler.Control.putDebug("compare: " + this.loops[jumpCounter - 1].scopeName + " - " + scopeName);
-            if (this.loops[loopCounter - 1].scopeName === scopeName) {
+            var loop = this.loops[loopCounter - 1];
+            if (loop.scopeName === scopeName) {
                 //know the land position of the jump
                 var currentAddress = code.length / 2;
                 Compiler.Control.putDebug("landed at:" + Compiler.Utils.toHex(currentAddress));
-                this.loops[loopCounter - 1].endLocation = currentAddress;
+                loop.endLocation = currentAddress;
+                Compiler.Control.putDebug("go from " + Compiler.Utils.toHex(loop.endLocation) + " to " + Compiler.Utils.toHex(loop.startLocation));
+                return loop.name;
             }
+            return "";
         }
         //reset
         reset() {

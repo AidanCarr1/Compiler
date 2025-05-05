@@ -305,9 +305,17 @@ var Compiler;
                     //End of block, scope up
                     case "SCOPE UP":
                         Compiler.Control.putCodeGenMessage("Scope Up");
+                        //Are we ending a while loop?
+                        if (_JumpTable.loopBack() !== "") {
+                            //unconditional loop back up to top of while statement
+                            //compare 01 to 00
+                            code += "A2" + "01";
+                            code += "EC" + "FF" + "00";
+                            code += "D0" + _JumpTable.loopBack(); //loop distance
+                            //loop distance is set on this line
+                        }
                         //track end of jump/length of scope
                         _JumpTable.landJump();
-                        //add code to take to beginning of while loop
                         _SymbolTableTree.moveUp();
                         //Next statement
                         this.nextNode();
