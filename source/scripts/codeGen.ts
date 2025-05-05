@@ -280,22 +280,22 @@ namespace Compiler {
 
                     case "If":
                         Control.putCodeGenMessage("If");
+
                         //get conditional
                         this.nextNode();
-
 
                         //Inequality/Equality
                         if (currentNode.name === "Inequality") {
                             this.doEquality();
                             this.flipZFlag();
                             //zflag is set
-                            code += "D0" + "J"+jumpCounter; //jumpdistance FIX!
+                            code += "D0" + "J"+jumpCounter; //jump distance 
                         } 
                         else if (currentNode.name === "Equality") {
                             this.doEquality();
                             //zflag is set
                             //branch
-                            code += "D0" + "J"+jumpCounter; //jumpdistance FIX!
+                            code += "D0" + "J"+jumpCounter; //jump distance
                         }
 
                         //If it's a boolean...
@@ -313,7 +313,7 @@ namespace Compiler {
                             //compare address to 01 true
                             code += "EC" + addressStr;
                             //branch on not equal
-                            code += "D0" + "J"+jumpCounter; //jumpdistance FIX!
+                            code += "D0" + "J"+jumpCounter; //jump distance 
                         }
                         
                         //Begin jump
@@ -323,6 +323,7 @@ namespace Compiler {
                         this.nextNode();
                         break;
 
+
                     case "While":
                         Control.putCodeGenMessage("While");
 
@@ -330,18 +331,39 @@ namespace Compiler {
                         this.nextNode();
 
                         //Inequality/Equality
-                        if (currentNode.name === "Inequality" || currentNode.name === "Equality"){
-                            this.checkEquality(currentNode.tokenPointer.startIndex);
+                        if (currentNode.name === "Inequality") {
+                            this.doEquality();
+                            this.flipZFlag();
+                            //zflag is set
+                            code += "D0" + "J"+jumpCounter; //jump distance 
+                        } 
+                        else if (currentNode.name === "Equality") {
+                            this.doEquality();
+                            //zflag is set
+                            //branch
+                            code += "D0" + "J"+jumpCounter; //jump distance 
                         }
 
-                        //true or false
-                        else if (currentNode.name === "true" || currentNode.name === "false") {
-                            //we cool
+                        //If it's a boolean...
+                        else if (currentNode.tokenPointer.description === "BOOLEAN VALUE") {
+                            if (currentNode.name === "true") {
+                                //get address of 01
+                                var addressStr = ""+this.storeAConstant("1");
+                            }
+                            else {
+                                //get address of 00
+                                var addressStr = ""+this.storeAConstant("0");
+                            }
+                            //load xreg with 01 true
+                            code += "A2" + "01";
+                            //compare address to 01 true
+                            code += "EC" + addressStr;
+                            //branch on not equal
+                            code += "D0" + "J"+jumpCounter; //jump distance 
                         }
-
-                        else {
-                            Control.putDebug("Impossible to get here. While/If");
-                        }
+                        
+                        //Begin jump
+                        _JumpTable.newJump(); 
 
                         //Next statement
                         this.nextNode();

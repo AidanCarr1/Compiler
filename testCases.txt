@@ -1019,3 +1019,12 @@ if (1!=9) {
     }
     print("done")
 }$
+
+
+{
+  int a a=0
+  if (a != 8) { /*while*/
+    a = 1+a
+    print(a)
+  }
+}$
