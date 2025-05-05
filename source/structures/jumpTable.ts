@@ -5,48 +5,45 @@
 namespace Compiler {
     export class JumpTable {
 
-        //New Static Table
-        constructor(public entries?: Entry[],
-            public entryCount?: number
-            ) { 
+        //New Jump Table
+        constructor(public jumps?: JumpEntry[] ) { 
 
-            this.entries = []; //entries in the static table
-            this.entryCount = 0;
+            this.jumps = []; //entries in the jump table
         }
 
-        //New entry
+        //New jump
         public newJump() {
+            //get name of next scope
+            var scopeName = "SCOPE " + (scopeCounter);
+
             //know the start position of the jump
             var currentAddress = code.length/2;
+            Control.putDebug("jump add:"+Utils.toHex(currentAddress));
 
+            var newJump = new JumpEntry("J"+jumpCounter, scopeName, currentAddress);
+            this.jumps.push(newJump);
+
+            jumpCounter ++;
         }
 
-        //New entry for const numbers 0-9
-        public constEntry(id:String): Entry {
+        public landJump() {
+            //get name of current scope before leaving
+            var scopeName = _SymbolTableTree.current.name;
+            Control.putDebug("compare: "+this.jumps[jumpCounter-1].scopeName+" - "+ scopeName);
 
-            //Check if entry already exists
-            //ex: "0" "1" "2"...
-            for (var i=0; i<this.entryCount; i++) {
-                if (this.entries[i].id === id) {
-                    return this.entries[i];
-                }
+            if(this.jumps[jumpCounter-1].scopeName === scopeName) {
+
+                //know the land position of the jump
+                var currentAddress = code.length/2;
+                Control.putDebug("landed at:"+Utils.toHex(currentAddress));
+
+                this.jumps[jumpCounter-1].endLocation = currentAddress;
             }
-            //Create Entry object
-            var newEntry = new Entry(id, this.entryCount);
-
-            //Increment count
-            this.entryCount ++;
-
-            //Add to list of Entries
-            this.entries.push(newEntry);
-
-            return this.entries[this.entryCount-1];
         }
 
         //reset
         public reset() {
-            this.entries = [];
-            this.entryCount = 0;
+            this.jumps = [];
         }
     }
 }

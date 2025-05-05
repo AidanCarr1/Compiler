@@ -281,6 +281,8 @@ var Compiler;
                     //End of block, scope up
                     case "SCOPE UP":
                         Compiler.Control.putCodeGenMessage("Scope Up");
+                        //track end of jump/length of scope
+                        _JumpTable.landJump();
                         _SymbolTableTree.moveUp();
                         //Next statement
                         this.nextNode();
@@ -319,6 +321,16 @@ var Compiler;
                     var newError = new Compiler.ErrorCompiler("CODE EXCEEDS 256 BYTES", "Static variables too large");
                     return;
                 }
+            }
+            //for every jump entry
+            for (var j = 0; j < _JumpTable.jumps.length; j++) {
+                //calculate address code length and offset...
+                var jump = _JumpTable.jumps[j];
+                var distance = jump.endLocation - jump.startLocation;
+                Compiler.Control.putDebug("jump distance " + Compiler.Utils.toHex(distance));
+                //find temp values and replace with real value
+                var replaceTemporary = code.replaceAll("" + jump.name, "" + Compiler.Utils.toHex(distance));
+                code = replaceTemporary;
             }
             //Check the lengths before printing
             var amountOfCode = (code.length + heapCode.length) / 2;

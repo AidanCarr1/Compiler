@@ -4,39 +4,36 @@
 var Compiler;
 (function (Compiler) {
     class JumpTable {
-        //New Static Table
-        constructor(entries, entryCount) {
-            this.entries = entries;
-            this.entryCount = entryCount;
-            this.entries = []; //entries in the static table
-            this.entryCount = 0;
+        //New Jump Table
+        constructor(jumps) {
+            this.jumps = jumps;
+            this.jumps = []; //entries in the jump table
         }
-        //New entry
+        //New jump
         newJump() {
+            //get name of next scope
+            var scopeName = "SCOPE " + (scopeCounter);
             //know the start position of the jump
             var currentAddress = code.length / 2;
+            Compiler.Control.putDebug("jump add:" + Compiler.Utils.toHex(currentAddress));
+            var newJump = new Compiler.JumpEntry("J" + jumpCounter, scopeName, currentAddress);
+            this.jumps.push(newJump);
+            jumpCounter++;
         }
-        //New entry for const numbers 0-9
-        constEntry(id) {
-            //Check if entry already exists
-            //ex: "0" "1" "2"...
-            for (var i = 0; i < this.entryCount; i++) {
-                if (this.entries[i].id === id) {
-                    return this.entries[i];
-                }
+        landJump() {
+            //get name of current scope before leaving
+            var scopeName = _SymbolTableTree.current.name;
+            Compiler.Control.putDebug("compare: " + this.jumps[jumpCounter - 1].scopeName + " - " + scopeName);
+            if (this.jumps[jumpCounter - 1].scopeName === scopeName) {
+                //know the land position of the jump
+                var currentAddress = code.length / 2;
+                Compiler.Control.putDebug("landed at:" + Compiler.Utils.toHex(currentAddress));
+                this.jumps[jumpCounter - 1].endLocation = currentAddress;
             }
-            //Create Entry object
-            var newEntry = new Compiler.Entry(id, this.entryCount);
-            //Increment count
-            this.entryCount++;
-            //Add to list of Entries
-            this.entries.push(newEntry);
-            return this.entries[this.entryCount - 1];
         }
         //reset
         reset() {
-            this.entries = [];
-            this.entryCount = 0;
+            this.jumps = [];
         }
     }
     Compiler.JumpTable = JumpTable;
