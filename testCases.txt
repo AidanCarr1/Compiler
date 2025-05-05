@@ -1023,8 +1023,9 @@ if (1!=9) {
 
 {
   int a a=0
-  if (a != 8) { /*while*/
+  if (a != 5) { /*while*/
     a = 1+a
     print(a)
   }
+  print(" done")
 }$

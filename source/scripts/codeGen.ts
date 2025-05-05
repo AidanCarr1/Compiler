@@ -458,6 +458,19 @@ namespace Compiler {
                 code = replaceTemporary;
             }
 
+            //for every LOOP entry
+            for (var l=0; l<_JumpTable.loops.length; l++) {
+
+                //calculate address code length and offset...
+                var loop:JumpEntry = _JumpTable.loops[l];
+                var distance = loop.startLocation - loop.endLocation + 254;
+                Control.putDebug("loop distance "+Utils.toHex(distance));
+
+                //find temp values and replace with real value
+                var replaceTemporary = code.replaceAll(""+loop.name, ""+Utils.toHex(distance));
+                code = replaceTemporary;
+            }
+
             //Check the lengths before printing
             var amountOfCode = (code.length + heapCode.length)/2;
 
