@@ -322,6 +322,9 @@ var Compiler;
                         //Next statement
                         this.nextNode();
                         break;
+                    case "SKIP":
+                        this.nextNode();
+                        break;
                     default:
                         Compiler.Control.putCodeGenMessage("ERROR, unknown Node name: " + currentNode.name);
                         this.nextNode();
@@ -481,7 +484,7 @@ var Compiler;
                 //store in the heap
                 var strAddress = this.storeStringInHeapAndReturnAddress(currentNode.name);
                 //load x reg from memory
-                code += "AE" + strAddress + "00";
+                code += "A2" + strAddress;
             }
             //BOOLEAN
             else if (currentNode.name === "true") {
@@ -526,8 +529,10 @@ var Compiler;
             else if (currentNode.name.charAt(0) === "\"") {
                 //store in the heap
                 var strAddress = this.storeStringInHeapAndReturnAddress(currentNode.name);
+                var stringEntry = _StaticTable.newEntry("STRING");
+                code += "A9" + strAddress + "8D" + stringEntry.tempAddress;
                 //compare byte in mem to x reg
-                code += "EC" + strAddress + "00";
+                code += "EC" + stringEntry.tempAddress;
             }
             //BOOLEAN
             else if (currentNode.name === "true") {
