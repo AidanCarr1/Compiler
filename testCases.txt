@@ -1085,3 +1085,40 @@ print(r)
         }
     }
 }$
+
+
+/*nested loop*/
+{       
+  int o o=0
+  int i
+  while (o != 3){
+    i = 0
+    while (i != 3){
+      print(" inner")
+      print(i)
+      print(" outer")
+      print(i)
+      {i = 1+i}
+    }
+  o = 1+o
+  }
+}$
+
+
+/*whiles and ifs*/
+{       
+  int o o=0
+  int i i=9
+  if (i == 9) {
+    i = 8
+  }
+  while (o != 3) {
+    i = 0
+    print(o)
+    o = 1+o
+    if (i==8) {
+      i=7
+    }
+  }
+  print(i)
+}$
