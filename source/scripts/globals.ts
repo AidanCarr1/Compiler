@@ -63,6 +63,7 @@ var printingCode = "";
 var clipboardCode = "";
 
 var jumpCounter = 0;
+var loopCounter = 0;
 var _JumpTable = new Compiler.JumpTable();
 
 var _StaticTable = new Compiler.StaticTable();

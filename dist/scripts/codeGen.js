@@ -22,6 +22,7 @@ var Compiler;
             nodeCounter = 0;
             //Track jumps
             jumpCounter = 0;
+            loopCounter = 0;
             _JumpTable.reset();
             Compiler.Control.putDebug("AST Node list: ");
             for (var i = 0; i < _AST.nodeList.length; i++) {
@@ -262,6 +263,8 @@ var Compiler;
                         break;
                     case "While":
                         Compiler.Control.putCodeGenMessage("While");
+                        //Begin loop jump
+                        _JumpTable.newLoop();
                         //get conditional
                         this.nextNode();
                         //Inequality/Equality
@@ -304,10 +307,10 @@ var Compiler;
                         Compiler.Control.putCodeGenMessage("Scope Up");
                         //track end of jump/length of scope
                         _JumpTable.landJump();
+                        //add code to take to beginning of while loop
                         _SymbolTableTree.moveUp();
                         //Next statement
                         this.nextNode();
-                        //this.nextNode();
                         break;
                     default:
                         Compiler.Control.putCodeGenMessage("ERROR, unknown Node name: " + currentNode.name);
@@ -371,10 +374,6 @@ var Compiler;
                 else {
                     clipboardCode = "" + Compiler.Utils.separateHex(code);
                 }
-                // if (heapCode.length > 0) {
-                //     printingCode += "<mark class='heap'>" + "00 ".repeat(0x100 - amountOfCode) +"</mark>";
-                //     printingCode += Utils.separateHex(heapCode);
-                // }
             }
         }
         static nextNode() {
@@ -620,69 +619,6 @@ var Compiler;
             code += "8D" + constantEntry.tempAddress;
             //retiurn address
             return _StaticTable.entries[i].tempAddress;
-        }
-        static checkEquality(equalityIndex) {
-            // Control.putCodeGenMessage("Check Type Equality");
-            // var leftType = null;
-            // var rightType = null;
-            // //Get left
-            // this.nextNode();
-            // leftType = this.getLeftRightType();            
-            // //Get right
-            // this.nextNode();
-            // rightType = this.getLeftRightType(); 
-            // //Compare 'em
-            // if (leftType != rightType){
-            //     //return error 
-            //     var newError = new ErrorCompiler("INCOMPATABLE TYPES", "Cannot compare "+leftType+" with "+ rightType, equalityIndex);
-            // }
-            // else {
-            //     return leftType;
-            // }
-            return "";
-        }
-        static getLeftRightType() {
-            //     Control.putDebug("One side: "+currentNode.name);
-            //     var thisType = null;
-            //     //INT
-            //     if (currentNode.name === "Addition"){
-            //         thisType = "int";
-            //         //Control.putDebug("start eq add");
-            //         this.checkAddition();
-            //         //Control.putDebug("done with eq addition");
-            //     }            
-            //     //BOOLEAN
-            //     else if (currentNode.name === "Inequality" || currentNode.name === "Equality") {
-            //         thisType = this.checkEquality(currentNode.tokenPointer.startIndex);
-            //         thisType = "boolean";
-            //     }
-            //     else if (currentNode.tokenPointer.description === "ID") {
-            //         var id:String = currentNode.tokenPointer.str;
-            //         thisType = _SymbolTableTree.getTypeAnyScope(id); 
-            //         if (thisType == null) {
-            //             var newError = new ErrorCompiler("REFERENCE TO UNDECLARED VARIABLE", id, currentNode.tokenPointer.startIndex);
-            //         }               
-            //         else {
-            //             _SymbolTableTree.setUsed(id);
-            //         }
-            //     }
-            //     //INT
-            //     else if (currentNode.tokenPointer.description === "DIGIT") {
-            //         thisType = "int";
-            //     }
-            //     //STRING
-            //     else if (currentNode.name.charAt(0) === "\"") {
-            //         thisType = "string";
-            //     }
-            //     //BOOLEAN
-            //     else if (currentNode.name === "true" || currentNode.name === "false") {
-            //         thisType = "boolean";
-            //     }
-            //     else {
-            //         //return error
-            //         Control.putDebug("Nothing found, left/right");
-            //     }
-            //     return thisType;
         }
     }
     Compiler.CodeGen = CodeGen;
