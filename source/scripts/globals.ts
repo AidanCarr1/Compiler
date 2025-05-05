@@ -62,4 +62,7 @@ var heapCode:String = "";
 var printingCode = "";
 var clipboardCode = "";
 
+var jumpCounter = 0;
+var _JumpTable = new Compiler.JumpTable(null, null);
+
 var _StaticTable = new Compiler.StaticTable();

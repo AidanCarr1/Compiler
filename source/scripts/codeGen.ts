@@ -25,6 +25,10 @@ namespace Compiler {
             currentNode = _AST.root;
             nodeCounter = 0;
 
+            //Track jumps
+            jumpCounter = 0;
+            _JumpTable.reset();
+
             Control.putDebug("AST Node list: ");
             for (var i=0; i<_AST.nodeList.length; i++) {
                 Control.putDebug(i+") " +_AST.nodeList[i].name);
@@ -279,8 +283,23 @@ namespace Compiler {
                         //get conditional
                         this.nextNode();
 
+
+                        //Inequality/Equality
+                        if (currentNode.name === "Inequality") {
+                            this.doEquality();
+                            this.flipZFlag();
+                            //zflag is set
+                            code += "D0" + "J"+jumpCounter; //jumpdistance FIX!
+                        } 
+                        else if (currentNode.name === "Equality") {
+                            this.doEquality();
+                            //zflag is set
+                            //branch
+                            code += "D0" + "J"+jumpCounter; //jumpdistance FIX!
+                        }
+
                         //If it's a boolean...
-                        if (currentNode.tokenPointer.description === "BOOLEAN VALUE") {
+                        else if (currentNode.tokenPointer.description === "BOOLEAN VALUE") {
                             if (currentNode.name === "true") {
                                 //get address of 01
                                 var addressStr = ""+this.storeAConstant("1");
@@ -294,32 +313,15 @@ namespace Compiler {
                             //compare address to 01 true
                             code += "EC" + addressStr;
                             //branch on not equal
-                            code += "D0" + "3B"; //jumpdistance FIX!
-                                                    // var id:String = currentNode.tokenPointer.str; //"a" "b" "c"...
-                                                    // var addressStr = _SymbolTableTree.getAddressById(id);
-                                                    // //load zflag with id's value (true 01 or false 00)
-                                                    // //load xreg with true
-                                                    // code += "A2" + "01";
-                                                    // //compare to id's value
-                                                    // code += "EC" + addressStr;
-                                                    // code += "BB"; //jump distance
+                            code += "D0" + "J"+jumpCounter; //jumpdistance FIX!
                         }
-                        //Inequality/Equality
-                        else if (currentNode.name === "Inequality") {
-                            this.doEquality();
-                            this.flipZFlag();
-                            //zflag is set
-                            code += "D0" + "3B"; //jumpdistance FIX!
+                        
+                        //Begin jump
+                        _JumpTable.newJump();
 
-                            
-                        } 
-                        else if (currentNode.name === "Equality") {
-                            this.doEquality();
-                            //zflag is set
-                            //branch
-                            code += "D0" + "3B"; //jumpdistance FIX!
-
-                        }
+                        //Next statement
+                        this.nextNode();
+                        break;
 
                     case "While":
                         Control.putCodeGenMessage("While");
@@ -653,6 +655,7 @@ namespace Compiler {
         }
 
         public static flipZFlag() {
+            Control.putDebug("flip z flag");
             this.accOppositeZFlag();
 
             var inequalityEntry = _StaticTable.newEntry("OPPOSITE Z");
