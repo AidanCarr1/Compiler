@@ -148,10 +148,11 @@ var Compiler;
             }
             //All programs are done
             this.putHeader1("END");
-            //TEMPORARY!!!
             //Scroll down to bottom for code gen
-            var elem = document.getElementById('taOutput');
-            elem.scrollTop = elem.scrollHeight;
+            if (autoScroll) {
+                var elem = document.getElementById('taOutput');
+                elem.scrollTop = elem.scrollHeight;
+            }
         }
         static btnVerbose_click() {
             // Toggleable button: Verbose mode on or off
@@ -175,6 +176,18 @@ var Compiler;
             else {
                 document.getElementById("btnDebug").value = "OFF";
                 debug = false;
+            }
+        }
+        static btnAutoScroll_click() {
+            // Toggleable button: Verbose mode on or off
+            // On, turns on debug features, printing a more in-depth compiler output
+            if (document.getElementById("btnAutoScroll").value === "OFF") {
+                document.getElementById("btnAutoScroll").value = "ON";
+                autoScroll = true;
+            }
+            else {
+                document.getElementById("btnAutoScroll").value = "OFF";
+                autoScroll = false;
             }
         }
         static putMessage(msg) {

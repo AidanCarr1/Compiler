@@ -11,6 +11,7 @@ var errorCount = 0;
 // UI Controls
 var debug = false;
 var verbose = true;
+var autoScroll = true;
 // User Program Index
 const LINE = 0;
 const CHAR = 1;

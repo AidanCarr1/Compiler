@@ -985,7 +985,7 @@ if (1!=9) {
 
 /*nested if*/
 {
-    /* set the 'space' variable"
+    /* set the 'space' variable*/
     string s s = " "
 
     /*if math is wrong*/
@@ -1153,3 +1153,37 @@ $
   }
 }$
 
+{
+ int a a=9
+ string i
+ int c c=8
+ if (a==8+1) {
+  print(a)
+  i="hi"
+  int i i=9+8+2+c
+  print(i)
+ }
+ print(i)
+}$
+
+
+/*this is logical*/
+{
+  if true {
+    print(true)
+  }
+}$
+
+
+/*aa aa aa lot*/
+{
+  while true {
+    print(" a")
+    if true {
+      print("a")
+    }
+    if false {
+      print("b")
+    }
+  }
+}$

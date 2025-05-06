@@ -181,10 +181,11 @@ namespace Compiler {
             //All programs are done
             this.putHeader1("END");
 
-            //TEMPORARY!!!
             //Scroll down to bottom for code gen
-            var elem = document.getElementById('taOutput');
-            elem.scrollTop = elem.scrollHeight;
+            if (autoScroll) {
+                var elem = document.getElementById('taOutput');
+                elem.scrollTop = elem.scrollHeight;
+            }
         }
     
     
@@ -212,6 +213,19 @@ namespace Compiler {
             else {
                 (<HTMLInputElement> document.getElementById("btnDebug")).value = "OFF";
                 debug = false;
+            }
+        }
+
+        public static btnAutoScroll_click() {        
+            // Toggleable button: Verbose mode on or off
+            // On, turns on debug features, printing a more in-depth compiler output
+            if ((<HTMLInputElement> document.getElementById("btnAutoScroll")).value === "OFF") {
+                (<HTMLInputElement> document.getElementById("btnAutoScroll")).value = "ON";
+                autoScroll = true;
+            }
+            else {
+                (<HTMLInputElement> document.getElementById("btnAutoScroll")).value = "OFF";
+                autoScroll = false;
             }
         }
 
