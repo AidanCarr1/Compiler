@@ -24,10 +24,6 @@ var Compiler;
             jumpCounter = 0;
             loopCounter = 0;
             _JumpTable.reset();
-            Compiler.Control.putDebug("AST Node list: ");
-            for (var i = 0; i < _AST.nodeList.length; i++) {
-                Compiler.Control.putDebug(i + ") " + _AST.nodeList[i].name);
-            }
             //Go through the AST until we reach the end
             while (currentNode != null) {
                 switch (currentNode.name) {
@@ -147,9 +143,6 @@ var Compiler;
                             code += "A0" + strAddress;
                             //print string
                             code += "A202FF";
-                        }
-                        else {
-                            Compiler.Control.putDebug("unknown print");
                         }
                         //Next statement
                         this.nextNode();
@@ -495,10 +488,6 @@ var Compiler;
                 //load x register with FALSE
                 code += "A2" + "00";
             }
-            else {
-                //return error
-                // Control.putDebug("Nothing found, left/right");
-            }
             //Get right
             this.nextNode();
             var thisType = null;
@@ -537,15 +526,11 @@ var Compiler;
             //BOOLEAN
             else if (currentNode.name === "true") {
                 addressStr = this.storeAConstant("1"); //TRUE
-                //var booleanEntry = _StaticTable.newEntry("TRUE");
-                //code += "A9" + "01" + "8D" + addressStr;
                 //compare byte in mem to x reg
                 code += "EC" + addressStr;
             }
             else if (currentNode.name === "false") {
                 addressStr = this.storeAConstant("0"); //TRUE
-                //var booleanEntry = _StaticTable.newEntry("FALSE");
-                //code += "A9" + "00" + "8D" + addressStr;
                 //compare byte in mem to x reg
                 code += "EC" + addressStr;
             }

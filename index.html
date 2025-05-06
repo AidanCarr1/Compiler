@@ -18,17 +18,11 @@
     <div id="container">
         <div id="left">
             <h2>User Program</h2>               <!--rows="10"-->
-            <textarea id="taSourceCode" cols="37" rows="20">
-{
-    string a a = "abc"
-    print(("abc" == a))
-    print((a == "abc"))
-    print((a == a))
-}$</textarea>
+            <textarea id="taSourceCode" cols="37" rows="20"></textarea>
             <br>
             <div style="display: flex;">
                 <div id="tinyLeft">
-                    Verbose Mode <input type="button" id="btnVerbose" value="ON" onclick="Compiler.Control.btnVerbose_click();"/>
+                    Verbose Mode <input type="button" id="btnVerbose" value="OFF" onclick="Compiler.Control.btnVerbose_click();"/>
                     <br>
                     Debug Mode <input type="button" id="btnDebug" value="OFF" onclick="Compiler.Control.btnDebug_click();"/>
                     <br>
@@ -42,7 +36,7 @@
         <br>
         <div id="right">
             <div id="taOutput"></div>
-            <input type="button" id="btnCopy" value="COPY" onclick="Compiler.Control.btnCopy_click();"/>
+            <input type="button" id="btnCopy" value="COPY CODE" onclick="Compiler.Control.btnCopy_click();"/>
             <div id="copied">Copied!</div>
         </div>
         <!--<textarea id="taOutput" cols="64" rows="25" readonly></textarea>-->

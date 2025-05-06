@@ -37,7 +37,6 @@ namespace Compiler {
             }
             //get name of current scope before leaving
             var scopeName = _SymbolTableTree.current.name;
-                //Control.putDebug("JUMP compare: "+this.jumps[this.jumps.length-1].scopeName+" - "+ scopeName);
 
             for (var i=this.jumps.length-1; i >= 0; i --) {
                 //check top of stack for a jump
@@ -48,24 +47,8 @@ namespace Compiler {
                     Control.putDebug("landed at:"+Utils.toHex(currentAddress));
 
                     this.jumps[i].endLocation = currentAddress;
-                    //var out = this.jumps.pop();
-                    //jumpCounter--;
                 }
-            }
-
-            
-            
-            // else if(this.jumps[this.jumps.length-2].scopeName === scopeName) {
-
-            //     //know the land position of the jump
-            //     var currentAddress = code.length/2;
-            //     Control.putDebug("landed at:"+Utils.toHex(currentAddress));
-
-            //     this.jumps[jumpCounter-2].endLocation = currentAddress;
-            //     //var out = this.jumps.pop();
-            //     //jumpCounter--;
-            // }
-            
+            }           
         }
 
         //New jump (for while loops)
@@ -92,7 +75,6 @@ namespace Compiler {
             }
             //get name of current scope before leaving
             var scopeName = _SymbolTableTree.current.name;
-            //Control.putDebug("LOOP compare: "+this.loops[loopCounter-1].scopeName+" - "+ scopeName);
             var loop = this.loops[loopCounter-1];
 
             if(loop.scopeName === scopeName) {

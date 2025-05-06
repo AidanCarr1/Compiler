@@ -10,7 +10,7 @@ var warningCount = 0;
 var errorCount = 0;
 // UI Controls
 var debug = false;
-var verbose = true;
+var verbose = false;
 var autoScroll = true;
 // User Program Index
 const LINE = 0;
