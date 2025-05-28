@@ -299,7 +299,9 @@ var Compiler;
                     case "SCOPE UP":
                         Compiler.Control.putCodeGenMessage("Scope Up");
                         //Are we ending a while loop?
+                        //var loopDistance = _JumpTable.loopBack();
                         if (_JumpTable.loopBack() !== "") {
+                            Compiler.Control.putDebug("~~~~END LOOP!");
                             //unconditional loop back up to top of while statement
                             //compare 01 to 00
                             code += "A2" + "01";

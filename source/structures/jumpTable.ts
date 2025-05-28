@@ -70,12 +70,29 @@ namespace Compiler {
 
         public loopBack(): String {
             //leave if theres no loops
-            if (loopCounter == 0) { 
+            if (this.loops.length == 0) { 
+                Control.putDebug("~~~~no loops left");
                 return "";
             }
             //get name of current scope before leaving
             var scopeName = _SymbolTableTree.current.name;
-            var loop = this.loops[loopCounter-1];
+
+            //check if any loops belong to the scope
+            var loop = null;
+            for (var i=this.loops.length-1; i >= 0; i --) {
+                //check top of stack for a jump
+                if(this.loops[i].scopeName === scopeName) {
+                    loop = this.loops[i];
+                    break;
+                }
+            }   
+
+            //no match found
+            if (loop == null) {
+                return "";
+            }
+
+            Control.putDebug("~~~~last loop: "+loop.name+", "+loop.scopeName);
 
             if(loop.scopeName === scopeName) {
 
@@ -86,6 +103,8 @@ namespace Compiler {
                 loop.endLocation = currentAddress;
                 Control.putDebug(loop.name+": go from "+Utils.toHex(loop.endLocation)+" to "+ Utils.toHex(loop.startLocation))
 
+                //remove that loop?
+                //this.loops.pop(); 
 
                 return loop.name;
             }

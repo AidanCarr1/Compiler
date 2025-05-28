@@ -1196,7 +1196,7 @@ $
   string g
 
   boolean r r = ("your" == "youre")
-  if (r) {
+  if (r == true) {
     print("grammer")
   }
   if (r == false) {
