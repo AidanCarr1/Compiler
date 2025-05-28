@@ -52,6 +52,8 @@ namespace Compiler {
                 var isSemanticSuccessful = false;
                 var isCodeGenSuccessful = false;
 
+                code = "";
+
                 //Display program start
                 this.putHeader1("PROGRAM #"+ (i+1));
                 this.putImportantLine();

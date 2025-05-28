@@ -13,8 +13,8 @@ var errorCount = 0;
 
 // UI Controls
 var debug = false;
-var verbose = false;
-var autoScroll = true;
+var verbose = true;
+var autoScroll = false;
 
 // User Program Index
 const LINE = 0;

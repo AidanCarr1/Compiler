@@ -1,8 +1,8 @@
 /* compiler.css */
 
 body {
-	background-color: #909193;	/* The bottom color of background.jpg. */
-	-background-image: url(../images/background.jpg);
+	background-color: rgb(107, 140, 80);	/* The bottom color of background.jpg. */
+	/* background-image: url(../images/background.jpg); */
 	background-repeat: repeat-x;
 	font-family: Helvetica, Verdana, Arial, sans-serif;
 	font-size: 15pt;
@@ -12,13 +12,17 @@ body {
 
 h1 { 
     color: black;
-	font-size:   30pt;
+	font-size:   40pt;
+	line-height: 0pt;
 	font-weight: normal;
 	font-style: normal;	
+	margin: auto;
+	margin-left: 0px;
 }
 #header {
 	display: flex;
-	background-color: rgba(255, 255, 255, 0.1);
+	padding: 5px;
+	background-color: rgba(42, 91, 11, 0.3);
 }
 #title {
 	text-align: center;
@@ -180,10 +184,18 @@ textarea, pre {
 }
 #copied.flash {
 	/* display: none; */
-	color: green;
+	color: rgb(4, 41, 4);
 	transition: 0s;
 }
 
 
 
+#footer { 
+	padding: 10px;
+	margin-top: 50px; 
+	background-color: rgba(42, 91, 11, 0.3);
+}
 
+li {
+	list-style-type: none;
+}

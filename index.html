@@ -11,45 +11,22 @@
 
     <div id="header">
         <img id="icon" src="dist/images/pie.png">
-        <h1 id="title"> Aidan's Com<strong>pie</strong>ler Project</h1>
+        <h1 id="title">Com<strong>PIE</strong>ler</h1>
     </div>
     <br>
 
     <div id="container">
         <div id="left">
             <h2>User Program</h2>               <!--rows="10"-->
-            <textarea id="taSourceCode" cols="37" rows="20">/* 
-a0 
-b0 b1meow b2 
-a1 
-b0 b1meow b2 
-a2 
-b0 b1meow b2 
-*/
-{
-    int a a = 0
-    int b b = 0
-    while (a != 3) {
-        print(" a")
-        print(a)
-        while (b != 3) {
-            print(" b")
-            print(b)
-            b = 1 + b
-        }
-        b = 0
-        a = 1 + a
-    }
-}$
-</textarea>
+            <textarea id="taSourceCode" cols="37" rows="20"></textarea>
             <br>
             <div style="display: flex;">
                 <div id="tinyLeft">
-                    Verbose Mode <input type="button" id="btnVerbose" value="OFF" onclick="Compiler.Control.btnVerbose_click();"/>
+                    Verbose Mode <input type="button" id="btnVerbose" value="ON" onclick="Compiler.Control.btnVerbose_click();"/>
                     <br>
                     Debug Mode <input type="button" id="btnDebug" value="OFF" onclick="Compiler.Control.btnDebug_click();"/>
                     <br>
-                    Auto Scroll <input type="button" id="btnAutoScroll" value="ON" onclick="Compiler.Control.btnAutoScroll_click();"/>
+                    Auto Scroll <input type="button" id="btnAutoScroll" value="OFF" onclick="Compiler.Control.btnAutoScroll_click();"/>
                 </div>
                 <div id="tinyRight">
                     <input type="button" id="btnCompile" value="Compile" onclick="Compiler.Control.btnCompile_click();"/>
@@ -65,16 +42,19 @@ b0 b1meow b2
         <!--<textarea id="taOutput" cols="64" rows="25" readonly></textarea>-->
     </div>
 
-
-    <ul>
-        <li>Compiler Course <a href="https://www.labouseur.com/courses/compilers/">Website</a></li>
-        <li>Projects: <a href="https://www.labouseur.com/courses/compilers/project1.pdf">1</a>, 
-            <a href="https://www.labouseur.com/courses/compilers/project2.pdf">2</a>, 
-            <a href="https://www.labouseur.com/courses/compilers/project3.pdf">3</a>, 
-            <a href="https://www.labouseur.com/courses/compilers/project4.pdf">4</a> </li>
+    <div id="footer">
+            <li>Compiler Course <a href="https://www.labouseur.com/courses/compilers/">Website</a></li>
+            <li>Projects: <a href="https://www.labouseur.com/courses/compilers/project1.pdf">1</a>, 
+                <a href="https://www.labouseur.com/courses/compilers/project2.pdf">2</a>, 
+                <a href="https://www.labouseur.com/courses/compilers/project3.pdf">3</a>, 
+                <a href="https://www.labouseur.com/courses/compilers/project4.pdf">4</a> </li>
             <li>Our <a href="https://www.labouseur.com/courses/compilers/grammar.pdf">Grammar</a> and <a href="https://www.labouseur.com/commondocs/6502alan-instruction-set.pdf">Instruction Set</a></li>
-            
-    </ul>
+            <li>Some <a href="documents/MyTestCases.pdf">Test Cases</a></li> 
+    <br>
+            <li>Aidan Carr 2025</li>
+
+    </div>
+    
 
     <!-- Token, Error, and Warning Classes -->
     <script type="text/javascript" src="dist/structures/token.js"></script>	
