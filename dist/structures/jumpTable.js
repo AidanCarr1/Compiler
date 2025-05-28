@@ -52,11 +52,6 @@ var Compiler;
             this.loops.push(newLoop);
         }
         loopBack() {
-            //leave if theres no loops
-            if (this.loops.length == 0) {
-                Compiler.Control.putDebug("~~~~no loops left");
-                return "";
-            }
             //get name of current scope before leaving
             var scopeName = _SymbolTableTree.current.name;
             //check if any loops belong to the scope

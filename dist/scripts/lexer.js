@@ -12,8 +12,6 @@ var Compiler;
 (function (Compiler) {
     class Lexer {
         static lex(programString) {
-            //Show/hide my comments
-            var loops = 0; //for debugging purposes
             //Grab the "raw" source code. (force a separator to the end)
             var sourceString = programString + "\n";
             sourceString = sourceString.replaceAll("\t", " "); //treat tabs like spaces
@@ -31,12 +29,10 @@ var Compiler;
             var commentIsOpen = false;
             var matchFound = false;
             //Loop through source text to find all tokens
-            while (sourceStringIndex < sourceString.length && loops < 5000) {
+            while (sourceStringIndex < sourceString.length) {
                 //Look at the next character
                 var currentChar = sourceString[sourceStringIndex];
                 checkingToken += currentChar;
-                //Control.putDebug("-"+Utils.address(sourceIndex)+"-");
-                //putDebug("    cT:"+checkingToken+" bT:"+bestTokenString);
                 //Change dictionary based on quote/comment state
                 if (quoteIsOpen) {
                     //we are only looking for characters! (and final quote)
@@ -190,9 +186,6 @@ var Compiler;
                 }
                 //Next source string char
                 sourceStringIndex++;
-                //for debugging
-                loops++;
-                //putDebug("                                "+loops);
             }
             //Mutually Exclusive EOP Errors
             var finalToken = tokenStream[tokenCount - 1];

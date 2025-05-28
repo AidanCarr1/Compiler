@@ -14,8 +14,6 @@ namespace Compiler {
 
 
         public static lex(programString) {
-            //Show/hide my comments
-            var loops = 0; //for debugging purposes
 
             //Grab the "raw" source code. (force a separator to the end)
             var sourceString = programString + "\n";
@@ -38,14 +36,11 @@ namespace Compiler {
             var matchFound = false;
 
             //Loop through source text to find all tokens
-            while (sourceStringIndex < sourceString.length && loops < 5000) {
+            while (sourceStringIndex < sourceString.length) {
 
                 //Look at the next character
                 var currentChar = sourceString[sourceStringIndex];
                 checkingToken += currentChar;
-
-                //Control.putDebug("-"+Utils.address(sourceIndex)+"-");
-                //putDebug("    cT:"+checkingToken+" bT:"+bestTokenString);
                 
                 //Change dictionary based on quote/comment state
                 if (quoteIsOpen) {
@@ -227,9 +222,6 @@ namespace Compiler {
                 //Next source string char
                 sourceStringIndex ++;
 
-                //for debugging
-                loops ++;
-                //putDebug("                                "+loops);
             }
             
 
