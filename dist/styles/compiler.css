@@ -13,7 +13,7 @@ body {
 h1 { 
     color: black;
 	font-size:   40pt;
-	line-height: 0pt;
+	/*line-height: 0pt;*/
 	font-weight: normal;
 	font-style: normal;	
 	margin: auto;
